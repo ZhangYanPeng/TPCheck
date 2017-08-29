@@ -26,7 +26,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="cn.com.tpri" />
+	<context:component-scan base-package="cn.com.tpri.tpcheck" />
 	<!-- 定时器 -->
 	<task:annotation-driven scheduler="myScheduler" />
 	<!-- 推荐配置线程池，若不配置多任务下会有问题。后面会详细说明单线程的问题。 -->
