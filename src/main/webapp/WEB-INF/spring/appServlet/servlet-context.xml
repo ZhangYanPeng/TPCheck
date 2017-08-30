@@ -19,11 +19,12 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/**" location="/admin/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="prefix" value="/" />
+		<beans:property name="suffix" value=".html" />
 	</beans:bean>
 	
 	<context:component-scan base-package="cn.com.tpri.tpcheck" />
@@ -50,7 +51,7 @@
 		<beans:property name="dataSource" ref="myDataSource" />
 		<beans:property name="packagesToScan">
 			<beans:array>
-				<beans:value>cn.edu.xjtu.evaluation</beans:value>
+				<beans:value>cn.com.tpri.tpcheck</beans:value>
 			</beans:array>
 		</beans:property>
 		<beans:property name="hibernateProperties">

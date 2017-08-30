@@ -1,7 +1,5 @@
 package cn.com.tpri.tpcheck.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,6 +25,10 @@ public class Account {
 	private String department;
 	private String position;
 
+
+	// all authorities 0xFFFFFFFF
+	private int authority;
+
 	public Company getCompany() {
 		return company;
 	}
@@ -34,10 +36,6 @@ public class Account {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-	// all authorities 0xFFFFFFFF
-	private int authority;
-	private long permission_date;
 
 	public long getId() {
 		return id;
@@ -85,14 +83,6 @@ public class Account {
 
 	public void setAuthority(int authority) {
 		this.authority = authority;
-	}
-
-	public long getPermission_date() {
-		return permission_date;
-	}
-
-	public void setPermission_date(long permission_date) {
-		this.permission_date = permission_date;
 	}
 
 }
