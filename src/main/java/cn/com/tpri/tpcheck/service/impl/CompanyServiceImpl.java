@@ -1,5 +1,7 @@
 package cn.com.tpri.tpcheck.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +76,13 @@ public class CompanyServiceImpl implements ICompanyService {
 			return 0;
 		}
 		return 1;
+	}
+
+	@Override
+	@Transactional
+	public List<Company> list() {
+		// TODO Auto-generated method stub
+		return companyDAO.getListByHQL("from Company", null);
 	}
 
 }

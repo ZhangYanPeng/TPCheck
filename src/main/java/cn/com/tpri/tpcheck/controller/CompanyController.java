@@ -3,6 +3,7 @@ package cn.com.tpri.tpcheck.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,5 +59,10 @@ public class CompanyController {
 	@RequestMapping(value = "/delete_company")
 	public @ResponseBody int deleteCompany(String id){
 		return companyService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/getAllCompany")
+	public @ResponseBody List<Company> getAllCompany(){
+		return companyService.list();
 	}
 }

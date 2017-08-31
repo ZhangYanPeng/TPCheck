@@ -24,7 +24,8 @@ public class Account {
 
 	private String department;
 	private String position;
-
+	
+	private int state;
 
 	// all authorities 0xFFFFFFFF
 	private int authority;
@@ -84,5 +85,14 @@ public class Account {
 	public void setAuthority(int authority) {
 		this.authority = authority;
 	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+	
 
 }
