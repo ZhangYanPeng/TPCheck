@@ -19,6 +19,7 @@ public class Record {
 	
 	private String record;
 	private Date date;
+	
 	public long getId() {
 		return id;
 	}

@@ -3,13 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>管理员管理</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<link rel="stylesheet" href="./css/jqpagination.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script src="./js/jquery.jqpagination.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<link rel="stylesheet" href="../css/jqpagination.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.jqpagination.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="js/init.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="../js/init.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var page_num = 1;
 	var total_num = 0;
@@ -23,7 +23,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./company/list_company",
+			url : "list_admin",
 			data : {
 				page : p
 			},
@@ -39,34 +39,39 @@
 				$("#page_num").val(p);
 
 				var tab_title = "<tr>"
-					+ "<td width='366px' class='tdColor tdC'>序号</td>"
-					+ "<td width='830px' class='tdColor'>用户名</td>"
-					+ "<td width='430px' class='tdColor'>操作</td>"
+					+ "<td width='66px' class='tdColor tdC'>序号</td>"
+					+ "<td width='730px' class='tdColor'>用户名</td>"
+					+ "<td width='730px' class='tdColor'>密码</td>"
+					+ "<td width='130px' class='tdColor'>操作</td>"
 					+ "	</tr>";
-				$("#companylist").html(tab_title);
+				$("#adminlist").html(tab_title);
 				
 				$.each(data.results,function(index, value) {
 					var td_id = $('<td></td>').append(
 							value.id);
-					var td_n = $('<td></td>').append(
-							value.name);
-					var a_edit = $('<a></a>').attr('href',"company_edit.html?id=" + value.id);
-					a_edit.append("<img class='operation' src='img/update.png'></a>");
+					var td_un = $('<td></td>').append(
+							value.username);
+					var td_pd = $('<td></td>').append(
+							value.password);
+					var a_edit = $('<a></a>').attr('href',"admin_edit.html?id=" + value.id);
+					a_edit.append("<img class='operation' src='../img/update.png'></a>");
 					var td_op = $('<td></td>').append(a_edit)
-						.append("<img class='operation delban' src='img/delete.png' onclick='javascript:removeCompany("
+						.append("<img class='operation delban' src='../img/delete.png' onclick='javascript:removeAdmin("
 							+ value.id
 							+ ");' /></td>");
 					var tr = $('<tr></tr>').attr(
 							'height', "40px");
-					tr.append(td_id).append(td_n).append(td_op);
-					$("#companylist").append(tr);
+					tr.append(td_id).append(td_un)
+							.append(td_pd)
+							.append(td_op);
+					$("#adminlist").append(tr);
 				});
 			}
 		});
 	}
 
-	function removeCompany(cid) {
-		if (cid == '1') {
+	function removeAdmin(aid) {
+		if (aid == '1') {
 			alert("超级管理员无法删除！");
 			return;
 		}
@@ -75,9 +80,9 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./company/delete_company",
+			url : "delete_admin",
 			data : {
-				id : cid
+				id : aid
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -127,7 +132,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;管理员管理
 			</div>
 		</div>
 
@@ -137,15 +142,15 @@
 
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="companylist" border="1" cellspacing="0" cellpadding="0">
+					<table id="adminlist" border="1" cellspacing="0" cellpadding="0">
 					</table>
 				</div>
 				
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<a href="company_edit.html?id=-1"><button class="userbtn"
-									disabled="disabled">新增单位</button></a>
+							<a href="admin_edit.html?id=-1"><button class="userbtn"
+									disabled="disabled">新增管理员</button></a>
 						</div>
 					</form>
 				</div>

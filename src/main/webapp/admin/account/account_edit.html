@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>编辑用户</title>
-<link rel="stylesheet" type="text/css" href="css/css.css" />
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var aid = getQueryString("id");
 	
@@ -17,7 +17,7 @@
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "./account/load_account",
+				url : "load_account",
 				data : {
 					id : aid
 				},
@@ -33,6 +33,7 @@
 					$("#company").val(data.company.id);
 					$("#position").val(data.position);
 					$("#id").val(data.id);
+					$("#authority").val(data.authority);
 				}
 			});
 		}else{
@@ -50,7 +51,7 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./company/getAllCompany",
+			url : "getAllCompany",
 			data : {},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -69,7 +70,7 @@
 	
 	function save(){
 		if($("#company").val()=='-1'){
-			alert("请选择公司!");
+			alert("请选择单位!");
 			return;
 		}
 			
@@ -78,14 +79,15 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "./account/edit_account",
+			url : "edit_account",
 			data : {
 				id : $("#id").val(),
 				username : $("#username").val(),
 				password : $("#password").val(),
 				department : $("#department").val(),
 				company : $("#company").val(),
-				position : $("#position").val()
+				position : $("#position").val(),
+				authority : $("#authority").val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -95,6 +97,8 @@
 			success : function(data) {
 				if( data==1 )
 					alert("更改成功！");
+				else if( data == -2)
+					alert("填写信息有误，请检查");
 				else
 					alert("操作失败，请重试");
 			}
@@ -106,7 +110,7 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
 					href="#">用户管理</a>&nbsp;-</span>&nbsp;用户编辑
 			</div>
 		</div>
@@ -127,7 +131,7 @@
 							type="text" class="input3" />
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;公司：&nbsp;&nbsp;<select id="company" ></select>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位：<select class="input3" id="company" ></select>
 					</div>
 					<div class="bbD">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部门：<input id="department"
@@ -135,6 +139,10 @@
 					</div>
 					<div class="bbD">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;职位：<input id="position"
+							type="text" class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权限：<input id="authority"
 							type="text" class="input3" />
 					</div>
 					<div class="bbD">

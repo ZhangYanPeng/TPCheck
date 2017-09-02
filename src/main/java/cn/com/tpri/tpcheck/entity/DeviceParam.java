@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,11 +25,16 @@ public class DeviceParam {
 	
 	private String name;
 	private String description;
+	private int authority;
+	
+	@JsonIgnore
+	@ManyToOne
+	private DeviceType deviceType;
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "device_param_id" )
-	private Set<DeviceCheckItem> deviceCheckItems;
+	@JoinColumn( name = "deviceParam_id" )
+	private Set<DeviceInfo> deviceInfos;
 
 	public long getId() {
 		return id;
@@ -54,12 +60,28 @@ public class DeviceParam {
 		this.description = description;
 	}
 
-	public Set<DeviceCheckItem> getDeviceCheckItems() {
-		return deviceCheckItems;
+	public int getAuthority() {
+		return authority;
 	}
 
-	public void setDeviceCheckItems(Set<DeviceCheckItem> deviceCheckItems) {
-		this.deviceCheckItems = deviceCheckItems;
+	public void setAuthority(int authority) {
+		this.authority = authority;
+	}
+
+	public DeviceType getDeviceType() {
+		return deviceType;
+	}
+
+	public void setDeviceType(DeviceType deviceType) {
+		this.deviceType = deviceType;
+	}
+
+	public Set<DeviceInfo> getDeviceInfos() {
+		return deviceInfos;
+	}
+
+	public void setDeviceInfos(Set<DeviceInfo> deviceInfos) {
+		this.deviceInfos = deviceInfos;
 	}
 	
 	

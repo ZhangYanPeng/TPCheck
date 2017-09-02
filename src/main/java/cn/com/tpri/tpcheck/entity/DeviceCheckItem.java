@@ -23,18 +23,15 @@ public class DeviceCheckItem {
 	private long id;
 	
 	private String description;
-	
-	@ManyToOne
-	private DeviceParam deviceParams;
-	
-	@ManyToOne
-	private DeviceType deviceType;
+	private int type;
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "device_check_item_id" )
-	private Set<DeviceInfo> deviceInfos;
+	@JoinColumn( name = "deviceCheckItem_id" )
+	private Set<DeviceCheckRecord> DeviceCheckItems;
 	
+	@ManyToOne
+	private DeviceType deviceType;
 
 	public long getId() {
 		return id;
@@ -52,14 +49,6 @@ public class DeviceCheckItem {
 		this.description = description;
 	}
 
-	public DeviceParam getDeviceParams() {
-		return deviceParams;
-	}
-
-	public void setDeviceParams(DeviceParam deviceParams) {
-		this.deviceParams = deviceParams;
-	}
-
 	public DeviceType getDeviceType() {
 		return deviceType;
 	}
@@ -68,12 +57,21 @@ public class DeviceCheckItem {
 		this.deviceType = deviceType;
 	}
 
-	public Set<DeviceInfo> getDeviceInfos() {
-		return deviceInfos;
+	public int getType() {
+		return type;
 	}
 
-	public void setDeviceInfos(Set<DeviceInfo> deviceInfos) {
-		this.deviceInfos = deviceInfos;
+	public void setType(int type) {
+		this.type = type;
 	}
+
+	public Set<DeviceCheckRecord> getDeviceCheckItems() {
+		return DeviceCheckItems;
+	}
+
+	public void setDeviceCheckItems(Set<DeviceCheckRecord> deviceCheckItems) {
+		DeviceCheckItems = deviceCheckItems;
+	}
+
 	
 }

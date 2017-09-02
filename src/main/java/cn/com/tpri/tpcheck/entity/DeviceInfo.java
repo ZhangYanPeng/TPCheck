@@ -19,7 +19,7 @@ public class DeviceInfo {
 	private String value;
 	
 	@ManyToOne
-	private DeviceCheckItem deviceCheckItem;
+	private DeviceParam deviceParam;
 	
 	@ManyToOne
 	private Device device;
@@ -40,14 +40,6 @@ public class DeviceInfo {
 		this.value = value;
 	}
 
-	public DeviceCheckItem getDeviceCheckItem() {
-		return deviceCheckItem;
-	}
-
-	public void setDeviceCheckItem(DeviceCheckItem deviceCheckItem) {
-		this.deviceCheckItem = deviceCheckItem;
-	}
-
 	public Device getDevice() {
 		return device;
 	}
@@ -55,6 +47,13 @@ public class DeviceInfo {
 	public void setDevice(Device device) {
 		this.device = device;
 	}
-	
+
+	public DeviceParam getDeviceParam() {
+		return deviceParam;
+	}
+
+	public void setDeviceParam(DeviceParam deviceParam) {
+		this.deviceParam = deviceParam;
+	}
 	
 }

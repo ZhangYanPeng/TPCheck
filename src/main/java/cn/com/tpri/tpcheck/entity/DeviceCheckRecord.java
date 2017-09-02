@@ -24,6 +24,9 @@ public class DeviceCheckRecord {
 	
 	@ManyToOne
 	private Device device;
+	
+	@ManyToOne
+	private DeviceCheckRecord deviceCheckRecord;
 
 	public long getId() {
 		return id;
@@ -64,6 +67,13 @@ public class DeviceCheckRecord {
 	public void setError(String error) {
 		this.error = error;
 	}
-	
+
+	public DeviceCheckRecord getDeviceCheckRecord() {
+		return deviceCheckRecord;
+	}
+
+	public void setDeviceCheckRecord(DeviceCheckRecord deviceCheckRecord) {
+		this.deviceCheckRecord = deviceCheckRecord;
+	}
 	
 }

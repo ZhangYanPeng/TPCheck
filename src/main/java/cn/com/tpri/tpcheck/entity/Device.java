@@ -30,9 +30,12 @@ public class Device {
 	private District district;
 	
 	@ManyToOne
+	private Company company;
+	
+	@ManyToOne
 	private DeviceType deviceType;
 	
-	@OneToMany( fetch = FetchType.LAZY )
+	@OneToMany( fetch = FetchType.EAGER )
 	@JoinColumn( name = "device_id" )
 	private List<DeviceInfo> deviceInfos;
 	
@@ -95,8 +98,14 @@ public class Device {
 	public void setDeviceCheckRecords(List<DeviceCheckRecord> deviceCheckRecords) {
 		this.deviceCheckRecords = deviceCheckRecords;
 	}
-	
-	
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 	
 	
 }
