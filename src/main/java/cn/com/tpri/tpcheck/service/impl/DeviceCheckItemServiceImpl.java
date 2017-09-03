@@ -7,32 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
-import cn.com.tpri.tpcheck.entity.DeviceInfo;
-import cn.com.tpri.tpcheck.entity.DeviceParam;
-import cn.com.tpri.tpcheck.service.IDeviceParamService;
+import cn.com.tpri.tpcheck.dao.impl.DeviceCheckItemDAOImpl;
+import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
+import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
+import cn.com.tpri.tpcheck.service.IDeviceCheckItemService;
 
 @Service
-public class DeviceParamServiceImpl implements IDeviceParamService {
-
+public class DeviceCheckItemServiceImpl implements IDeviceCheckItemService {
 	@Autowired
-	DeviceParamDAOImpl deviceParamDAO;
+	DeviceCheckItemDAOImpl deviceCheckItemDAO;
 	
 	@Override
 	@Transactional
-	public List<DeviceParam> list(long tid) {
+	public List<DeviceCheckItem> list(long tid) {
 		// TODO Auto-generated method stub
-		String hql = "from DeviceParam where deviceType.id = ?";
+		String hql = "from DeviceCheckItem where deviceType.id = ?";
 		Object[] values = {tid};
-		return deviceParamDAO.getListByHQL(hql, tid);
+		return deviceCheckItemDAO.getListByHQL(hql, tid);
 	}
 
 	@Override
 	@Transactional
-	public int add(DeviceParam dParam) {
+	public int add(DeviceCheckItem dci) {
 		// TODO Auto-generated method stub
 		try {
-			deviceParamDAO.save(dParam);
+			deviceCheckItemDAO.save(dci);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -45,11 +44,11 @@ public class DeviceParamServiceImpl implements IDeviceParamService {
 	public int delete(long id) {
 		// TODO Auto-generated method stub
 		try {
-			Set<DeviceInfo> di = deviceParamDAO.get(id).getDeviceInfos();
-			if( di != null && di.size()>0 ){
+			Set<DeviceCheckRecord> dr = deviceCheckItemDAO.get(id).getDeviceCheckRecords();
+			if( dr != null && dr.size()>0 ){
 				return -1;
 			}
-			deviceParamDAO.deleteById(id);
+			deviceCheckItemDAO.deleteById(id);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -59,10 +58,10 @@ public class DeviceParamServiceImpl implements IDeviceParamService {
 
 	@Override
 	@Transactional
-	public int edit(DeviceParam dParam) {
+	public int edit(DeviceCheckItem dci) {
 		// TODO Auto-generated method stub
 		try {
-			deviceParamDAO.update(dParam);
+			deviceCheckItemDAO.update(dci);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -72,9 +71,9 @@ public class DeviceParamServiceImpl implements IDeviceParamService {
 
 	@Override
 	@Transactional
-	public DeviceParam load(long id) {
+	public DeviceCheckItem load(long id) {
 		// TODO Auto-generated method stub
-		return deviceParamDAO.get(id);
+		return deviceCheckItemDAO.get(id);
 	}
 
 }

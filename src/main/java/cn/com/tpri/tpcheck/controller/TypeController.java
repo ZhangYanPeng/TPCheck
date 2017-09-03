@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.tpri.tpcheck.entity.BaseType;
+import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
 import cn.com.tpri.tpcheck.service.IBaseTypeService;
+import cn.com.tpri.tpcheck.service.IDeviceCheckItemService;
 import cn.com.tpri.tpcheck.service.IDeviceParamService;
 import cn.com.tpri.tpcheck.service.IDeviceTypeService;
 
@@ -24,7 +26,8 @@ public class TypeController {
 	IDeviceTypeService deviceTypeService;
 	@Autowired
 	IBaseTypeService baseTypeService;
-	
+	@Autowired
+	IDeviceCheckItemService deviceCheckItemService;
 	
 	@RequestMapping(value = "/list_base_type")
 	public @ResponseBody List<BaseType> listBaseType(){
@@ -81,4 +84,52 @@ public class TypeController {
 			return deviceTypeService.edit(deviceType);
 		}
 	}
+	
+	@RequestMapping(value = "/list_param")
+	public @ResponseBody List<DeviceParam> listParam(String id){
+		return deviceParamService.list(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/edit_param")
+	public @ResponseBody int editParam(String id, String name, String description, String authority){
+		DeviceParam param = deviceParamService.load(Long.valueOf(id));
+		param.setName(name);
+		param.setDescription(description);
+		param.setAuthority(Integer.valueOf(authority));
+		return deviceParamService.edit(param);
+	}
+	
+	@RequestMapping(value = "/load_param")
+	public @ResponseBody DeviceParam loadParam(String id){
+		return deviceParamService.load(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/delete_param")
+	public @ResponseBody int deleteParam(String id){
+		return deviceParamService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/list_check_item")
+	public @ResponseBody List<DeviceCheckItem> listCheckItem(String id){
+		return deviceCheckItemService.list(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/load_check_item")
+	public @ResponseBody DeviceCheckItem loadCheckItem(String id){
+		return deviceCheckItemService.load(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/delete_check_item")
+	public @ResponseBody int deleteCheckItem(String id){
+		return deviceCheckItemService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/edit_check_item")
+	public @ResponseBody int editCheckItem(String id, String description, String type){
+		DeviceCheckItem checkitem = deviceCheckItemService.load(Long.valueOf(id));
+		checkitem.setDescription(description);
+		checkitem.setType(Integer.valueOf(type));
+		return deviceCheckItemService.edit(checkitem);
+	}
 }
+

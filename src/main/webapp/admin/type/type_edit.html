@@ -10,6 +10,10 @@
 	var tid = getQueryString("id");
 	
 	$(document).ready(function() {
+		init();
+	});
+	
+	function init(){
 		loadType();
 		if (tid != "-1") {
 			$.ajax({
@@ -30,12 +34,14 @@
 					$("#id").val(data.id);
 					$("#name").val(data.name);
 					$("#baseType").val(data.baseType.id);
+					loadParam();
+					loadCheckItem();
 				}
 			});
 		}else{
 			$("#id").val(tid);
 		}
-	});
+	}
 	
 	function loadType(){
 		$.ajax({
@@ -93,6 +99,105 @@
 			}
 		});
 	}
+	
+	function loadParam(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "list_param",
+			data : {
+				id : tid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				var title = $('<td></td>').attr('width','350px').attr('class','tdColor').append('属性');
+				$('#paramlist').html($('<tr></tr>').append(title));
+				$.each(data,function(index, value) {
+					var img_del = $("<img></img>").attr('onclick','javascript:removeParam('+value.id+');').attr('class','operation').attr('src','../img/delete.png');
+					var td = $('<td></td>').append(value.name).append(img_del);
+					$('#paramlist').append($('<tr></tr>').attr('height','40px').append(td));
+				});
+			}
+		});
+	}
+	
+	function loadCheckItem(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "list_check_item",
+			data : {
+				id : tid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				var title = $('<td></td>').attr('width','350px').attr('class','tdColor').append('检查项');
+				$('#checkitemlist').html($('<tr></tr>').append(title));
+				$.each(data,function(index, value) {
+					var img_del = $("<img></img>").attr('onclick','javascript:removeCheckItem('+value.id+');').attr('class','operation').attr('src','../img/delete.png');
+					var td = $('<td></td>').append(value.description).append(img_del);
+					$('#checkitemlist').append($('<tr></tr>').attr('height','40px').append(td));
+				});
+			}
+		});
+	}
+	
+	function removeParam(pid){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "delete_param",
+			data : {id : pid},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				if(data == -1)
+					alert('有设备包含该属性，不能删除!')
+				else
+					init();
+			}
+		});
+	}
+	
+	function removeCheckItem(cid){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "delete_check_item",
+			data : {id : cid},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				if(data == -1)
+					alert('有记录包含该属性，不能删除!')
+				else
+					init();
+			}
+		});
+	}
+	
 </script>
 </head>
 <body>
@@ -119,9 +224,27 @@
 							type="text" class="input3" />
 					</div>
 					<div class="bbD">
+						<table border="0" cellspacing="0" cellpadding="0" frame="void">
+							<tr >
+								<td style="border: 0;vertical-align: top;" >
+									<div class="conShow">
+										<table id="paramlist" border="1" cellspacing="0" cellpadding="0" >
+										</table>
+									</div>
+								</td>
+								<td style="border: 0;vertical-align: top;">
+									<div class="conShow">
+										<table id="checkitemlist" border="1" cellspacing="0" cellpadding="0" >
+										</table>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="bbD">
 						<p class="bbDP">
 							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>
-							<a class="btn_ok btn_no" href="admin.html">取消</a>
+							<a class="btn_ok btn_no" href="type.html">返回</a>
 						</p>
 					</div>
 				</div>

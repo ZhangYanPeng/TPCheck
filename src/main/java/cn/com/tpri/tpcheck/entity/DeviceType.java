@@ -31,7 +31,7 @@ public class DeviceType {
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "deviceType_id" )
 	private Set<Device> devices;
-	
+
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "deviceType_id" )

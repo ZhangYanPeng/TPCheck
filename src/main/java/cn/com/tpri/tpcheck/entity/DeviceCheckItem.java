@@ -28,7 +28,7 @@ public class DeviceCheckItem {
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "deviceCheckItem_id" )
-	private Set<DeviceCheckRecord> DeviceCheckItems;
+	private Set<DeviceCheckRecord> deviceCheckRecords;
 	
 	@ManyToOne
 	private DeviceType deviceType;
@@ -65,12 +65,12 @@ public class DeviceCheckItem {
 		this.type = type;
 	}
 
-	public Set<DeviceCheckRecord> getDeviceCheckItems() {
-		return DeviceCheckItems;
+	public Set<DeviceCheckRecord> getDeviceCheckRecords() {
+		return deviceCheckRecords;
 	}
 
-	public void setDeviceCheckItems(Set<DeviceCheckRecord> deviceCheckItems) {
-		DeviceCheckItems = deviceCheckItems;
+	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
+		this.deviceCheckRecords = deviceCheckRecords;
 	}
 
 	

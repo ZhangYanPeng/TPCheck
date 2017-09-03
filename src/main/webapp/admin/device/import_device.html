@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑检查项</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		loadCompany();
+		loadBaseType();
+	});
+	
+	function loadCompany(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "../account/getAllCompany",
+			data : {
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				var op_de = $('<option></option>').attr('value','-1').append("--------请选择单位--------");
+				$('#company').html(op_de);
+				$.each(data,function(index, value) {
+					var op = $('<option></option>').attr('value',value.id).append(value.name);
+					$('#company').append(op);
+				});
+			}
+		});
+	}
+	
+	function loadBaseType(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "../type/list_base_type",
+			data : {
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				var op_de = $('<option></option>').attr('value','-1').append("-------请选择基础类型-------");
+				$('#baseType').html(op_de);
+				$.each(data,function(index, value) {
+					var op = $('<option></option>').attr('value',value.id).append(value.name);
+					$('#baseType').append(op);
+				});
+			}
+		});
+	}
+	
+	function loadType(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "../type/list_type",
+			data : {
+				baseType : $('#baseType').val()
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+			},
+			success : function(data) {
+				var op_de = $('<option></option>').attr('value','-1').append("-------请选择设备类型-------");
+				$('#type').html(op_de);
+				$.each(data,function(index, value) {
+					var op = $('<option></option>').attr('value',value.id).append(value.name);
+					$('#type').append(op);
+				});
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;设备管理
+			</div>
+		</div>
+		<div class="page ">
+			<!-- 会员注册页面样式 -->
+			<div class="banneradd bor">
+				<div class="baTopNo">
+					<span>导入设备信息</span>
+				</div>
+				<div class="baBody">
+					<input id="id" type="hidden" class="input3" />
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位：<select id="company" class="input3" ></select>
+					</div>
+					<div class="bbD">
+						基础类型：<select id="baseType" class="input3" onchange="javascript:loadType();"></select>
+					</div>
+					<div class="bbD">
+						设备类型：<select id="type" class="input3" ></select>
+					</div>
+					<div class="bbD">
+						<p class="bbDP">
+							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>
+							<a class="btn_ok btn_no" href="param.html">返回</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 会员注册页面样式end -->
+		</div>
+	</div>
+</body>
+</html>
