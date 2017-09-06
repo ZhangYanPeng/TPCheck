@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>单位管理</title>
+<title>部门管理</title>
 <link rel="stylesheet" type="text/css" href="../css/css.css" />
 <link rel="stylesheet" href="../css/jqpagination.css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
@@ -14,8 +14,35 @@
 	var page_num = 1;
 	var total_num = 0;
 	$(document).ready(function(){
+		loadCompany();
 		list(1);
 	});
+	
+	function loadCompany(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "getAllCompany",
+			data : {
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				var op_de = $('<option></option>').attr('selected','selected').attr('value','-1').append("--------请选择单位--------");
+				$('#company').html(op_de);
+				$.each(data,function(index, value) {
+					var op = $('<option></option>').attr('value',value.id).append(value.name);
+					$('#company').append(op);
+				});
+			}
+		});
+	}
 	
 	function list(p) {
 		$.ajax({
@@ -23,9 +50,10 @@
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "list_company",
+			url : "list_department",
 			data : {
-				page : p
+				page : p ,
+				company: $("#company").val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -40,7 +68,7 @@
 
 				var tab_title = "<tr>"
 					+ "<td width='366px' class='tdColor tdC'>序号</td>"
-					+ "<td width='830px' class='tdColor'>单位名</td>"
+					+ "<td width='830px' class='tdColor'>用户名</td>"
 					+ "<td width='430px' class='tdColor'>操作</td>"
 					+ "	</tr>";
 				$("#companylist").html(tab_title);
@@ -123,13 +151,20 @@
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
-				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;单位管理
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;部门管理
 			</div>
 		</div>
 
 		<div class="page">
 			<!-- user页面样式 -->
 			<div class="connoisseur">
+			
+				<div class="conform">
+					<form>
+						<div class="cfD">
+							<select id="company" onchange="javascript:list(1);" class="userinput"></select>
+					</form>
+				</div>
 
 				<!-- user 表格 显示 -->
 				<div class="conShow">
@@ -140,8 +175,8 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<a href="company_edit.html?id=-1"><button class="userbtn"
-									disabled="disabled">新增单位</button></a>
+							<a href="department_edit.html?id=-1"><button class="userbtn"
+									disabled="disabled">新增部门</button></a>
 						</div>
 					</form>
 				</div>

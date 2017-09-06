@@ -1,11 +1,17 @@
 package cn.com.tpri.tpcheck.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -19,24 +25,20 @@ public class Account {
 	private String username;
 	private String password;
 
+	@JsonIgnore
+	@OneToMany( fetch = FetchType.LAZY )
+	@JoinColumn( name = "account_id" )
+	private Set<Authority> authorities;
+	
 	@ManyToOne
-	private Company company;
+	private Department department;
 
-	private String department;
 	private String position;
 	
 	private int state;
 
 	// all authorities 0xFFFFFFFF
 	private int authority;
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
 
 	public long getId() {
 		return id;
@@ -62,14 +64,6 @@ public class Account {
 		this.password = password;
 	}
 
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
 	public String getPosition() {
 		return position;
 	}
@@ -93,6 +87,22 @@ public class Account {
 	public void setState(int state) {
 		this.state = state;
 	}
-	
 
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+	
+	
 }

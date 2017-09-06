@@ -25,19 +25,15 @@ public class Company {
 	
 	private String location;
 	private String description;
+	private String logo;
 	
 	private long permission_date;
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "company_id" )
-	private Set<Account> accounts;
+	private Set<Department> departments;
 	
-	@JsonIgnore
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "company_id" )
-	private Set<District> districts;
-
 	public long getId() {
 		return id;
 	}
@@ -78,20 +74,20 @@ public class Company {
 		this.permission_date = permission_date;
 	}
 
-	public Set<Account> getAccounts() {
-		return accounts;
+	public String getLogo() {
+		return logo;
 	}
 
-	public void setAccounts(Set<Account> accounts) {
-		this.accounts = accounts;
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
-	public Set<District> getDistricts() {
-		return districts;
+	public Set<Department> getDepartments() {
+		return departments;
 	}
 
-	public void setDistricts(Set<District> districts) {
-		this.districts = districts;
+	public void setDepartments(Set<Department> departments) {
+		this.departments = departments;
 	}
 	
 	

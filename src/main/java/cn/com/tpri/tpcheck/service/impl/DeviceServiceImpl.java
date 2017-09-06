@@ -6,41 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.com.tpri.tpcheck.dao.impl.CompanyDAOImpl;
-import cn.com.tpri.tpcheck.entity.Company;
-import cn.com.tpri.tpcheck.service.ICompanyService;
+import cn.com.tpri.tpcheck.dao.impl.DeviceDAOImpl;
+import cn.com.tpri.tpcheck.entity.Device;
+import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.support.Constants;
 import cn.com.tpri.tpcheck.support.PageResults;
 
 @Service
-public class CompanyServiceImpl implements ICompanyService {
-
-	@Autowired
-	CompanyDAOImpl companyDAO;
+public class DeviceServiceImpl implements IDeviceService{
 	
+	@Autowired
+	DeviceDAOImpl deviceDAO;
+
 	@Override
 	@Transactional
-	public PageResults<Company> getByPage(int page) {
+	public int importDevice(List<Device> lDevice) {
 		// TODO Auto-generated method stub
-		String hql = "from Company";
-		String countHql = "select count(*) from Company";
-		Object[] values = {};
-		return companyDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		return 0;
 	}
 
 	@Override
 	@Transactional
-	public Company load(long id) {
+	public Device load(long id) {
 		// TODO Auto-generated method stub
-		return companyDAO.get(id);
+		return deviceDAO.get(id);
 	}
 
 	@Override
 	@Transactional
-	public int add(Company company) {
+	public int add(Device device) {
 		// TODO Auto-generated method stub
 		try {
-			companyDAO.save(company);
+			deviceDAO.save(device);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -50,10 +47,10 @@ public class CompanyServiceImpl implements ICompanyService {
 
 	@Override
 	@Transactional
-	public int edit(Company company) {
+	public int delete(long device) {
 		// TODO Auto-generated method stub
 		try {
-			companyDAO.update(company);
+			deviceDAO.deleteById(device);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -63,14 +60,10 @@ public class CompanyServiceImpl implements ICompanyService {
 
 	@Override
 	@Transactional
-	public int delete(Long id) {
+	public int edit(Device device) {
 		// TODO Auto-generated method stub
 		try {
-			Company company = companyDAO.get(id);
-			if( company.getDepartments().size() >0 ){
-				return -1;
-			}
-			companyDAO.deleteById(id);
+			deviceDAO.update(device);;
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -80,9 +73,12 @@ public class CompanyServiceImpl implements ICompanyService {
 
 	@Override
 	@Transactional
-	public List<Company> list() {
+	public PageResults<Device> list(int page, long cid, long btid) {
 		// TODO Auto-generated method stub
-		return companyDAO.getListByHQL("from Company", null);
+		String hql = "from Device where company.id = ? and deviceType.baseType.id = ?";
+		String countHql = "select count(*) from Device where company.id = ? and deviceType.baseType.id = ?";
+		Object[] values = {cid, btid};
+		return deviceDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 
 }

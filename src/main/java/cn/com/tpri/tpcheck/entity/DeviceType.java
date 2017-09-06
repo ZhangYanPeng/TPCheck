@@ -90,5 +90,4 @@ public class DeviceType {
 		this.baseType = baseType;
 	}
 	
-	
 }

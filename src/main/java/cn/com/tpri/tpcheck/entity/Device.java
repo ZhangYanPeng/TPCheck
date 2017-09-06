@@ -25,12 +25,8 @@ public class Device {
 	private String name;
 	private String description;
 	
-	@JsonIgnore
 	@ManyToOne
-	private District district;
-	
-	@ManyToOne
-	private Company company;
+	private SuperDevice superDevice;
 	
 	@ManyToOne
 	private DeviceType deviceType;
@@ -67,14 +63,6 @@ public class Device {
 		this.description = description;
 	}
 
-	public District getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(District district) {
-		this.district = district;
-	}
-
 	public DeviceType getDeviceType() {
 		return deviceType;
 	}
@@ -99,12 +87,12 @@ public class Device {
 		this.deviceCheckRecords = deviceCheckRecords;
 	}
 
-	public Company getCompany() {
-		return company;
+	public SuperDevice getSuperDevice() {
+		return superDevice;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setSuperDevice(SuperDevice superDevice) {
+		this.superDevice = superDevice;
 	}
 	
 	

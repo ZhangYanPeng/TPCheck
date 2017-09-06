@@ -15,22 +15,22 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table( name = "t_district" )
-public class District {
+@Table( name = "t_super_device" )
+public class SuperDevice {
 	@Id
-	@GeneratedValue(generator = "district_generator")
-	@GenericGenerator(name = "district_generator", strategy = "increment")
+	@GeneratedValue(generator = "super_device_generator")
+	@GenericGenerator(name = "super_device_generator", strategy = "increment")
 	private long id;
 	
 	private String name;
+	private String description;
 	
-	@JsonIgnore
 	@ManyToOne
-	private Company company;
+	private Department department;
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "district_id" )
+	@JoinColumn( name = "device_id" )
 	private Set<Device> devices;
 
 	public long getId() {
@@ -49,12 +49,12 @@ public class District {
 		this.name = name;
 	}
 
-	public Company getCompany() {
-		return company;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Set<Device> getDevices() {
@@ -64,5 +64,14 @@ public class District {
 	public void setDevices(Set<Device> devices) {
 		this.devices = devices;
 	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	
 	
 }

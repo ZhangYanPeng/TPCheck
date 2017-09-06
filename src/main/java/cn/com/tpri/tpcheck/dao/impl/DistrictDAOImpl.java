@@ -2,9 +2,9 @@ package cn.com.tpri.tpcheck.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import cn.com.tpri.tpcheck.entity.District;
+import cn.com.tpri.tpcheck.entity.SuperDevice;
 
 @Repository
-public class DistrictDAOImpl extends BaseDAOImpl<District, Long> {
+public class DistrictDAOImpl extends BaseDAOImpl<SuperDevice, Long> {
 
 }
