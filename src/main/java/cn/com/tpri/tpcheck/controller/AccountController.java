@@ -115,8 +115,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/list_account")
-	public @ResponseBody PageResults<Account> listAccount(String page, String company) {
-		return accountService.list(Integer.valueOf(page), company);
+	public @ResponseBody PageResults<Account> listAccount(String page,String department) {
+		return accountService.list(Integer.valueOf(page), Long.valueOf(department));
 	}
 
 	@RequestMapping(value = "/active")
@@ -138,7 +138,7 @@ public class AccountController {
 
 	@RequestMapping(value = "/edit_account")
 	public @ResponseBody int editAccount(String id, String username, String password, String department,
-			String position, String company, String authority) {
+			String position, String authority) {
 		try{
 			Account account;
 			Long aid = Long.valueOf(id);
@@ -149,7 +149,8 @@ public class AccountController {
 				account.setPosition(position);
 				account.setState(1);
 				account.setAuthority(Integer.valueOf(authority));
-				Company com = companyService.load(Long.valueOf(company));
+				Department dep = departmentService.load(Long.valueOf(department));
+				account.setDepartment(dep);
 				return accountService.add(account);
 			}else{
 				account = accountService.load(aid);
@@ -157,7 +158,8 @@ public class AccountController {
 				account.setPassword(password);
 				account.setPosition(position);
 				account.setAuthority(Integer.valueOf(authority));
-				Company com = companyService.load(Long.valueOf(company));
+				Department dep = departmentService.load(Long.valueOf(department));
+				account.setDepartment(dep);
 				return accountService.edit(account);
 			}
 		}catch (Exception e) {
