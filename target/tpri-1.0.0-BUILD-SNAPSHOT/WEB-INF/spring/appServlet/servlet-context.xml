@@ -7,8 +7,8 @@
 	xmlns:p="http://www.springframework.org/schema/p" 
 	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -19,14 +19,15 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/**" location="/admin/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="prefix" value="/" />
+		<beans:property name="suffix" value=".html" />
 	</beans:bean>
 	
-	<context:component-scan base-package="cn.com.tpri" />
+	<context:component-scan base-package="cn.com.tpri.tpcheck" />
 	<!-- 定时器 -->
 	<task:annotation-driven scheduler="myScheduler" />
 	<!-- 推荐配置线程池，若不配置多任务下会有问题。后面会详细说明单线程的问题。 -->
@@ -50,7 +51,7 @@
 		<beans:property name="dataSource" ref="myDataSource" />
 		<beans:property name="packagesToScan">
 			<beans:array>
-				<beans:value>cn.edu.xjtu.evaluation</beans:value>
+				<beans:value>cn.com.tpri.tpcheck</beans:value>
 			</beans:array>
 		</beans:property>
 		<beans:property name="hibernateProperties">
