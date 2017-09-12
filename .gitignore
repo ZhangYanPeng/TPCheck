@@ -45,3 +45,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+target/tpri-1.0.0-BUILD-SNAPSHOT.war
+target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+target/m2e-wtp/web-resources/META-INF/maven/cn.com/tpri/pom.properties
+target/maven-archiver/pom.properties
+target/tpri-1.0.0-BUILD-SNAPSHOT.war
+target/tpri-1.0.0-BUILD-SNAPSHOT/WEB-INF/classes/cn/com/tpri/tpcheck/controller/DeviceController.class
+target/tpri-1.0.0-BUILD-SNAPSHOT/WEB-INF/classes/cn/com/tpri/tpcheck/support/DealExcel.class
