@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑设备</title>
+<link rel="stylesheet" type="text/css" href="../css/css.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+	var did = getQueryString("id");
+	
+	$(document).ready(function() {
+		$('#id').val(did);
+		loadParams(did);
+		loadInfos(did);
+	});
+	
+	function loadParams(did){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "load_params",
+			data : {
+				id : did
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$("#params").html("");
+				$.each(data,function(index, value) {
+					var td_p = $("<td></td>").append(value.name);
+					var in_p = $("<input></input>").attr('id',value.id).attr('type','text').attr('class','input3');
+					var td_i = $("<td></td>").append(in_p);
+					var tr_p = $("<tr></tr>").append(td_p).append(td_i);
+					$("#params").append(tr_p);
+				});
+			}
+		});
+	}
+	
+	function loadInfos(did){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "load_infos",
+			data : {
+				id : did
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				$.each(data,function(index, value) {
+					$("#"+value.deviceParam.id).val(value.value);
+				});
+			}
+		});
+	}
+	
+</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+					href="#">设备管理</a>&nbsp;-</span>&nbsp;设备编辑
+			</div>
+		</div>
+		<div class="page ">
+			<!-- 会员注册页面样式 -->
+			<div class="banneradd bor">
+				<div class="baTopNo">
+					<span>设备编辑</span>
+				</div>
+				<div class="baBody">
+					<form >
+						<input id="id" type="hidden" class="input3" />
+						<div class="bbD">
+							<table id="params" cellpadding="0" border="0" frame="void" rules="none">
+							</table>
+						</div>
+						<div class="bbD">
+							<p class="bbDP">
+								<button class="btn_ok btn_yes" type="submit" href="#" onclick="javascript:save();">提交</button>
+								<a class="btn_ok btn_no" href="account.html">返回</a>
+							</p>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- 会员注册页面样式end -->
+		</div>
+	</div>
+</body>
+</html>

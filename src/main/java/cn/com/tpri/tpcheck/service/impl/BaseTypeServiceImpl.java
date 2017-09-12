@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.BaseTypeDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceTypeDAOImpl;
 import cn.com.tpri.tpcheck.entity.BaseType;
+import cn.com.tpri.tpcheck.entity.DeviceType;
 import cn.com.tpri.tpcheck.service.IBaseTypeService;
 
 @Service
@@ -15,6 +17,8 @@ public class BaseTypeServiceImpl implements IBaseTypeService {
 
 	@Autowired
 	BaseTypeDAOImpl baseTypeDAO;
+	@Autowired
+	DeviceTypeDAOImpl deviceTypeDAO;
 	
 	@Override
 	@Transactional
@@ -22,6 +26,10 @@ public class BaseTypeServiceImpl implements IBaseTypeService {
 		// TODO Auto-generated method stub
 		try {
 			baseTypeDAO.save(baseType);
+			DeviceType dt = new DeviceType();
+			dt.setName("父类");
+			dt.setBaseType(baseType);
+			deviceTypeDAO.save(dt);
 			return 1;
 		} catch (Exception e) {
 			// TODO: handle exception
