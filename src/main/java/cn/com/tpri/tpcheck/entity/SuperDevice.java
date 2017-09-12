@@ -30,7 +30,7 @@ public class SuperDevice {
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "device_id" )
+	@JoinColumn( name = "superDevice_id" )
 	private Set<Device> devices;
 
 	public long getId() {

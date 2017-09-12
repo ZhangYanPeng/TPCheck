@@ -1,13 +1,24 @@
 package cn.com.tpri.tpcheck.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.com.tpri.tpcheck.dao.impl.BaseTypeDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DepartmentDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceInfoDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceTypeDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
 import cn.com.tpri.tpcheck.entity.Device;
+import cn.com.tpri.tpcheck.entity.DeviceInfo;
+import cn.com.tpri.tpcheck.entity.DeviceParam;
+import cn.com.tpri.tpcheck.entity.DeviceType;
+import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.support.Constants;
 import cn.com.tpri.tpcheck.support.PageResults;
@@ -17,6 +28,19 @@ public class DeviceServiceImpl implements IDeviceService{
 	
 	@Autowired
 	DeviceDAOImpl deviceDAO;
+	@Autowired
+	DepartmentDAOImpl departmentDAO;
+	@Autowired
+	DeviceParamDAOImpl deviceParamDAO;
+	@Autowired
+	DeviceTypeDAOImpl deviceTypeDAO;
+	@Autowired
+	DeviceInfoDAOImpl deviceInfoDAO;
+	@Autowired
+	SuperDeviceDAOImpl superDeviceDAO;
+	@Autowired
+	BaseTypeDAOImpl baseTypeDAO;
+
 
 	@Override
 	@Transactional
@@ -50,7 +74,30 @@ public class DeviceServiceImpl implements IDeviceService{
 	public int delete(long device) {
 		// TODO Auto-generated method stub
 		try {
-			deviceDAO.deleteById(device);
+			Device d = deviceDAO.get(device);
+			if(d.getSupOrSub()==0){
+				if( d.getSuperDevice().getDevices().size()>1 )
+					return -1;
+				if( d.getDeviceCheckRecords() != null && d.getDeviceCheckRecords().size() >0)
+					return -1;
+				else{
+					long sdid = d.getSuperDevice().getId();
+					for(DeviceInfo di : d.getDeviceInfos()){
+						deviceInfoDAO.delete(di);
+					}
+					deviceDAO.deleteById(device);
+					superDeviceDAO.deleteById(sdid);
+				}
+			}else{
+				if( d.getDeviceCheckRecords() != null && d.getDeviceCheckRecords().size() >0)
+					return -1;
+				else{
+					for(DeviceInfo di : d.getDeviceInfos()){
+						deviceInfoDAO.delete(di);
+					}
+					deviceDAO.deleteById(device);
+				}
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
@@ -73,12 +120,169 @@ public class DeviceServiceImpl implements IDeviceService{
 
 	@Override
 	@Transactional
-	public PageResults<Device> list(int page, long cid, long btid) {
+	public PageResults<Device> list(int page, long did, long btid) {
 		// TODO Auto-generated method stub
-		String hql = "from Device where company.id = ? and deviceType.baseType.id = ?";
-		String countHql = "select count(*) from Device where company.id = ? and deviceType.baseType.id = ?";
-		Object[] values = {cid, btid};
+		String hql = "from Device where superDevice.department.id = ? and deviceType.baseType.id = ?";
+		String countHql = "select count(*) from Device where superDevice.department.id = ? and deviceType.baseType.id = ?";
+		Object[] values = {did, btid};
 		return deviceDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+	}
+
+	@Override
+	@Transactional
+	public int loadInSuperDevice(List<List> info, long did, long btid) {
+		// TODO Auto-generated method stub
+		int sum = 0;
+		List<String> pList = info.get(0);
+		List<String> pDesList = info.get(1);
+		List<DeviceParam> paramList = new ArrayList<DeviceParam>();
+		Object[] vals = {btid, "父类"};
+		DeviceType dt = deviceTypeDAO.getByHQL("from DeviceType where baseType.id = ? and name = ?",vals);
+		for(int i=1; i<pList.size(); i++){
+			String hql = "from DeviceParam where deviceType.id = ? and name = ? and description = ?";
+			Object[] values = { dt.getId(), pList.get(i), pDesList.get(i)};
+			DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
+			if(dp == null){
+				dp = new DeviceParam();
+				dp.setAuthority(0);
+				dp.setDescription(pDesList.get(i));
+				dp.setName(pList.get(i));
+				dp.setDeviceType(dt);
+				dp.setPos(-1);
+				deviceParamDAO.save(dp);
+			}
+			paramList.add(dp);
+		}
+		for(int i=2; i<info.size();i++){
+			List<String> dinfo = info.get(i);
+			Object[] vs = {dinfo.get(0), did};
+			SuperDevice sd = superDeviceDAO.getByHQL("from superDevice where name = ? and department.id", vs);
+			if(sd != null){
+				continue;
+			}
+			sd = new SuperDevice();
+			sd.setName(dinfo.get(0));
+			sd.setDepartment(departmentDAO.load(did));
+			superDeviceDAO.saveOrUpdate(sd);
+			Device d = new Device();
+			d.setName(dinfo.get(0));
+			d.setDeviceType(dt);
+			d.setSupOrSub(0);
+			d.setSuperDevice(sd);
+			deviceDAO.save(d);
+			for( int j=1; j < dinfo.size(); j++){
+				DeviceParam dp = paramList.get(j-1);
+				if(dp.getPos()>0){
+					d.setParam(dp.getPos(), dinfo.get(j));
+					deviceDAO.update(d);
+				}else{
+					DeviceInfo di = new DeviceInfo();
+					di.setDevice(d);
+					di.setDeviceParam(dp);
+					di.setValue(dinfo.get(j));
+					deviceInfoDAO.save(di);
+				}
+			}
+			sum++;
+		}
+		return sum;
+	}
+
+	@Override
+	@Transactional
+	public int loadInSubDevice(List<List> info, Long did, Long btid) {
+		// TODO Auto-generated method stub
+		int sum=0;
+		for(int j=2; j<info.size();j++){
+			List<String> dinfo = info.get(j);
+			List<String> pList = info.get(0);
+			List<String> pDesList = info.get(1);
+			List<DeviceParam> paramList = new ArrayList<DeviceParam>();
+			Object[] vals = {btid, dinfo.get(2)};
+			if(dinfo.get(0).equals("") || dinfo.get(1).equals(""))
+				continue;
+			DeviceType dt = deviceTypeDAO.getByHQL("from DeviceType where baseType.id = ? and name = ?",vals);
+			if(dt == null){
+				dt = new DeviceType();
+				dt.setName(dinfo.get(2));
+				dt.setBaseType(baseTypeDAO.load(btid));
+				deviceTypeDAO.save(dt);
+			}
+			
+			Object[] vas = {dinfo.get(1) , dinfo.get(0), did};
+			Device d = deviceDAO.getByHQL("from Device where name = ? and superDevice.name = ? and department.id = ?", vas);
+			if(d != null){
+				continue;
+			}
+			
+			d = new Device();
+			d.setName(dinfo.get(1));
+			d.setDeviceType(dt);
+			d.setSupOrSub(1);
+			Object[] vs ={dinfo.get(0), did};
+			SuperDevice sd = superDeviceDAO.getByHQL("from SuperDevice where name = ? and department.id = ?", vs);
+			d.setSuperDevice(sd);
+			deviceDAO.save(d);
+			for(int i=3; i<pList.size(); i++){
+				String hql = "from DeviceParam where deviceType.id = ? and name = ? and description = ?";
+				Object[] values = { dt.getId(), pList.get(i), pDesList.get(i)};
+				DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
+				if(dp == null){
+					dp = new DeviceParam();
+					dp.setAuthority(0);
+					dp.setDescription(pDesList.get(i));
+					dp.setName(pList.get(i));
+					dp.setDeviceType(dt);
+					dp.setPos(-1);
+					deviceParamDAO.save(dp);
+				}
+				if(dp.getPos()>0){
+					d.setParam(dp.getPos(), dinfo.get(i));
+					deviceDAO.update(d);
+				}else{
+					DeviceInfo di = new DeviceInfo();
+					di.setDevice(d);
+					di.setDeviceParam(dp);
+					di.setValue(dinfo.get(i));
+					deviceInfoDAO.save(di);
+				}
+			}
+			sum++;
+		}
+		
+		return sum;
+	}
+
+	@Override
+	@Transactional
+	public List<DeviceParam> loadParams(long id) {
+		// TODO Auto-generated method stub
+		Device d = deviceDAO.get(id);
+		String hql = "from DeviceParam where deviceType.id = ?";
+		Object[] values = {d.getDeviceType().getId()};
+		return deviceParamDAO.getListByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public List<DeviceInfo> loadInfos(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from DeviceInfo where device.id = ?";
+		Object[] values = {id};
+		List<DeviceInfo> diList = deviceInfoDAO.getListByHQL(hql, values);
+		{
+			Device d = deviceDAO.get(id);
+			String hqlt = "from DeviceParam where deviceType.id = ? and pos > 0";
+			Object[] tvalues = {d.getDeviceType().getId()};
+			List<DeviceParam> dpList = deviceParamDAO.getListByHQL(hqlt, tvalues);
+			for(DeviceParam dp : dpList){
+				DeviceInfo di = new DeviceInfo();
+				di.setDeviceParam(dp);
+				di.setValue(d.getParams()[dp.getPos()-1]);
+				diList.add(di);
+			}
+		}
+		return diList;
 	}
 
 }

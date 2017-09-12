@@ -1,6 +1,7 @@
 package cn.com.tpri.tpcheck.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +25,7 @@ public class Device {
 
 	private String name;
 	private String description;
+	private int supOrSub;
 
 	@ManyToOne
 	private SuperDevice superDevice;
@@ -31,13 +33,15 @@ public class Device {
 	@ManyToOne
 	private DeviceType deviceType;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "device_id")
-	private List<DeviceInfo> deviceInfos;
-
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "device_id")
-	private List<DeviceCheckRecord> deviceCheckRecords;
+	private Set<DeviceInfo> deviceInfos;
+
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "device_id")
+	private Set<DeviceCheckRecord> deviceCheckRecords;
 
 	private String param1;
 	private String param2;
@@ -102,19 +106,19 @@ public class Device {
 		this.deviceType = deviceType;
 	}
 
-	public List<DeviceInfo> getDeviceInfos() {
+	public Set<DeviceInfo> getDeviceInfos() {
 		return deviceInfos;
 	}
 
-	public void setDeviceInfos(List<DeviceInfo> deviceInfos) {
+	public void setDeviceInfos(Set<DeviceInfo> deviceInfos) {
 		this.deviceInfos = deviceInfos;
 	}
 
-	public List<DeviceCheckRecord> getDeviceCheckRecords() {
+	public Set<DeviceCheckRecord> getDeviceCheckRecords() {
 		return deviceCheckRecords;
 	}
 
-	public void setDeviceCheckRecords(List<DeviceCheckRecord> deviceCheckRecords) {
+	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
 		this.deviceCheckRecords = deviceCheckRecords;
 	}
 
@@ -466,5 +470,13 @@ public class Device {
 			param30 = v;
 			break;
 		}
+	}
+
+	public int getSupOrSub() {
+		return supOrSub;
+	}
+
+	public void setSupOrSub(int supOrSub) {
+		this.supOrSub = supOrSub;
 	}
 }
