@@ -1,11 +1,15 @@
 package cn.com.tpri.tpcheck.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -26,7 +30,11 @@ public class DeviceCheckRecord {
 	private Device device;
 	
 	@ManyToOne
-	private DeviceCheckRecord deviceCheckRecord;
+	private DeviceCheckItem deviceCheckItem;
+	
+	@OneToMany( fetch = FetchType.EAGER )
+	@JoinColumn( name = "deviceCheckItem_id" )
+	private Set<Picture> pictures;
 
 	public long getId() {
 		return id;
@@ -68,12 +76,22 @@ public class DeviceCheckRecord {
 		this.error = error;
 	}
 
-	public DeviceCheckRecord getDeviceCheckRecord() {
-		return deviceCheckRecord;
+	public DeviceCheckItem getDeviceCheckItem() {
+		return deviceCheckItem;
 	}
 
-	public void setDeviceCheckRecord(DeviceCheckRecord deviceCheckRecord) {
-		this.deviceCheckRecord = deviceCheckRecord;
+	public void setDeviceCheckItem(DeviceCheckItem deviceCheckItem) {
+		this.deviceCheckItem = deviceCheckItem;
 	}
+
+	public Set<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<Picture> pictures) {
+		this.pictures = pictures;
+	}
+	
+	
 	
 }

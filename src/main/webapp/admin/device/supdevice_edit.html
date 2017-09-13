@@ -5,6 +5,7 @@
 <title>编辑设备</title>
 <link rel="stylesheet" type="text/css" href="../css/css.css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var did = getQueryString("id");
@@ -35,7 +36,7 @@
 				$("#params").html("");
 				$.each(data,function(index, value) {
 					var td_p = $("<td></td>").append(value.name);
-					var in_p = $("<input></input>").attr('id',value.id).attr('type','text').attr('class','input3');
+					var in_p = $("<input></input>").attr('id',value.id).attr('name',value.id).attr('type','text').attr('class','input3');
 					var td_i = $("<td></td>").append(in_p);
 					var tr_p = $("<tr></tr>").append(td_p).append(td_i);
 					$("#params").append(tr_p);
@@ -68,6 +69,54 @@
 		});
 	}
 	
+	function save(){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "edit_device",
+			data : $("#paramform").serialize(),
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				console.log(e);
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				alert("修改完成！");
+			}
+		});
+	}
+	
+	function upload(){
+		if( $("#picture").val() =="" || $("#picname").val() ==""){
+			alert("请选择图片及填写名称！");
+			return;
+		}
+		$.ajaxFileUpload({
+			type : 'post',
+			url : 'upload_pic', //用于文件上传的服务器端请求地址
+			secureuri : false, //是否需要安全协议，一般设置为false
+			fileElementId : 'file', //文件上传域的ID
+			data : {
+				id : did,
+				picname : $("#picname").val()
+			},//要传到后台的参数，没有可以不写  
+			async : false,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(data) //服务器成功响应处理函数
+			{
+			},
+			error : function(data, status, e)//服务器响应失败处理函数
+			{
+				console.log(data,status,e);
+			}
+		});
+	}
+	
 </script>
 </head>
 <body>
@@ -85,19 +134,23 @@
 					<span>设备编辑</span>
 				</div>
 				<div class="baBody">
-					<form >
-						<input id="id" type="hidden" class="input3" />
+					<form id="paramform">
+						<input id="id" name="id" type="hidden" class="input3" />
 						<div class="bbD">
 							<table id="params" cellpadding="0" border="0" frame="void" rules="none">
 							</table>
 						</div>
-						<div class="bbD">
-							<p class="bbDP">
-								<button class="btn_ok btn_yes" type="submit" href="#" onclick="javascript:save();">提交</button>
-								<a class="btn_ok btn_no" href="account.html">返回</a>
-							</p>
-						</div>
 					</form>
+					<div class="bbD">
+						<input type="text" name="picname" id="picname" class="input3" placeholder="请输入图片名称"  />	<input type="file" name="picture" id="picture" class="input3"/>
+						<a href="javascript:upload();">上传图片</a>
+					</div>
+					<div class="bbD">
+						<p class="bbDP">
+							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>
+							<a class="btn_ok btn_no" href="device.html">返回</a>
+						</p>
+					</div>
 				</div>
 			</div>
 

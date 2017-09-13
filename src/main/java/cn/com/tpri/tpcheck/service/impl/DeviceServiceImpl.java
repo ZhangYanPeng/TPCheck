@@ -2,6 +2,8 @@ package cn.com.tpri.tpcheck.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -283,6 +285,38 @@ public class DeviceServiceImpl implements IDeviceService{
 			}
 		}
 		return diList;
+	}
+
+	@Override
+	@Transactional
+	public void update(Map param) {
+		// TODO Auto-generated method stub
+		long did = Long.valueOf((String) param.get("id"));
+		Device d = deviceDAO.get(did);
+		Set<DeviceParam> params = d.getDeviceType().getDeviceParams();
+		for(DeviceParam dp : params) {
+			String value = (String) param.get(""+dp.getId());
+			if(dp.getPos()>0) {
+				d.setParam(dp.getPos(), value);
+				deviceDAO.update(d);
+			}else {
+				String hql = "from DeviceInfo where device.id =? and deviceParam.id = ?";
+				Object[] vas = {did, dp.getId()};
+				DeviceInfo di = deviceInfoDAO.getByHQL(hql, vas);
+				if(di == null) {
+					if(value != null && value !="") {
+						di = new DeviceInfo();
+						di.setDevice(d);
+						di.setDeviceParam(dp);
+						di.setValue(value);
+						deviceInfoDAO.save(di);
+					}
+				}else {
+					di.setValue(value);
+					deviceInfoDAO.update(di);
+				}
+			}
+		}
 	}
 
 }
