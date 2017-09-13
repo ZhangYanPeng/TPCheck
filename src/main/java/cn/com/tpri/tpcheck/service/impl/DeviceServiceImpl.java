@@ -156,7 +156,7 @@ public class DeviceServiceImpl implements IDeviceService{
 		for(int i=2; i<info.size();i++){
 			List<String> dinfo = info.get(i);
 			Object[] vs = {dinfo.get(0), did};
-			SuperDevice sd = superDeviceDAO.getByHQL("from superDevice where name = ? and department.id", vs);
+			SuperDevice sd = superDeviceDAO.getByHQL("from superDevice where name = ? and department.id = ?", vs);
 			if(sd != null){
 				continue;
 			}
