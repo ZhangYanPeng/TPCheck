@@ -33,7 +33,8 @@ public class SuperDevice {
 	@JoinColumn( name = "superDevice_id" )
 	private Set<Device> devices;
 	
-	@OneToMany( fetch = FetchType.EAGER )
+	@JsonIgnore
+	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "superDevice_id" )
 	private Set<Picture> pictures;
 

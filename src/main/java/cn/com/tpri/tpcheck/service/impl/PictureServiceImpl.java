@@ -1,6 +1,7 @@
 package cn.com.tpri.tpcheck.service.impl;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,15 @@ public class PictureServiceImpl implements IPictureService{
 			e.printStackTrace();
 			return -1;
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<Picture> getSupPic(long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Picture where superDevice.id = ?";
+		Object[] values = {id};
+		return pictureDAO.getListByHQL(hqlString, values);
 	}
 
 }

@@ -33,7 +33,7 @@ public class DeviceCheckRecord {
 	private DeviceCheckItem deviceCheckItem;
 	
 	@OneToMany( fetch = FetchType.EAGER )
-	@JoinColumn( name = "deviceCheckItem_id" )
+	@JoinColumn( name = "deviceCheckRecord_id" )
 	private Set<Picture> pictures;
 
 	public long getId() {

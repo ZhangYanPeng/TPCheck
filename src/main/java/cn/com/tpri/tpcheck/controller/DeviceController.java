@@ -98,10 +98,20 @@ public class DeviceController {
 		pic.setSuperDevice(d.getSuperDevice());
 		pic.setName(picname);
 		String originalFilename = picture.getOriginalFilename();
-		String genePath = request.getSession().getServletContext().getRealPath("/upload/devices_file/");
-		pic.setSrc("/upload/supdevice/"+originalFilename);
+		String genePath = request.getSession().getServletContext().getRealPath("/upload/supdevice/");
+		pic.setSrc(request.getContextPath()+"/upload/supdevice/"+originalFilename);
 		pic.setPath(genePath+originalFilename);
 		pictureService.save(pic, picture);
 		return 0;
+	}
+	
+	@RequestMapping(value = "/load_sup_pic")
+	public @ResponseBody List<Picture> loadSupPic(String id){
+		return pictureService.getSupPic(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/remove_pic")
+	public @ResponseBody int removePic(String id){
+		return pictureService.delete(Long.valueOf(id));
 	}
 }

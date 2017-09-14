@@ -109,6 +109,15 @@ public class TypeController {
 		return deviceParamService.delete(Long.valueOf(id));
 	}
 	
+	@RequestMapping(value = "/add_check_item")
+	public @ResponseBody int addCheckItem(String tid, String ct, String description){
+		DeviceCheckItem dci = new DeviceCheckItem();
+		dci.setDescription(description);
+		dci.setType(Integer.valueOf(ct));
+		dci.setDeviceType(deviceTypeService.load(Long.valueOf(tid)));
+		return deviceCheckItemService.add(dci);
+	}
+	
 	@RequestMapping(value = "/list_check_item")
 	public @ResponseBody List<DeviceCheckItem> listCheckItem(String id){
 		return deviceCheckItemService.list(Long.valueOf(id));
