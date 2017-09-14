@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -27,12 +28,16 @@ public class DeviceCheckRecord {
 	private String error;
 	
 	@ManyToOne
+	private Account account;
+	
+	@ManyToOne
 	private Device device;
 	
 	@ManyToOne
 	private DeviceCheckItem deviceCheckItem;
 	
-	@OneToMany( fetch = FetchType.EAGER )
+	@JsonIgnore
+	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "deviceCheckRecord_id" )
 	private Set<Picture> pictures;
 
@@ -91,7 +96,14 @@ public class DeviceCheckRecord {
 	public void setPictures(Set<Picture> pictures) {
 		this.pictures = pictures;
 	}
-	
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 	
 	
 }

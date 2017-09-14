@@ -56,4 +56,13 @@ public class PictureServiceImpl implements IPictureService{
 		return pictureDAO.getListByHQL(hqlString, values);
 	}
 
+	@Override
+	@Transactional
+	public List<Picture> getRecPic(long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Picture where deviceCheckRecord.id = ?";
+		Object[] values = {id};
+		return pictureDAO.getListByHQL(hqlString, values);
+	}
+
 }

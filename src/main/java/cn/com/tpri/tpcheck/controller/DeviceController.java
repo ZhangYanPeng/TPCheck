@@ -19,9 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.tpri.tpcheck.entity.Admin;
 import cn.com.tpri.tpcheck.entity.Device;
+import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.Picture;
+import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.support.DealExcel;
@@ -35,6 +37,8 @@ public class DeviceController {
 	IDeviceService deviceService;
 	@Autowired
 	IPictureService pictureService;
+	@Autowired
+	IDeviceCheckRecordService deviceCheckRecordService;
 
 	@RequestMapping(value = "/upload_devices")
 	public @ResponseBody int uploadDevices(@RequestParam String type, @RequestParam String btid, @RequestParam String did, @RequestParam MultipartFile devices, HttpServletRequest request) {
@@ -113,5 +117,15 @@ public class DeviceController {
 	@RequestMapping(value = "/remove_pic")
 	public @ResponseBody int removePic(String id){
 		return pictureService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/list_check_record")
+	public @ResponseBody PageResults<DeviceCheckRecord> listCheckRecord(String page, String did, String btid, String device){
+		return deviceCheckRecordService.list(device, Integer.valueOf(page), Long.valueOf(did), Long.valueOf(btid));
+	}
+	
+	@RequestMapping(value = "/load_rec_pic")
+	public @ResponseBody List<Picture> loadRecPic(String id){
+		return pictureService.getRecPic(Long.valueOf(id));
 	}
 }

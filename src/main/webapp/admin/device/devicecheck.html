@@ -72,18 +72,21 @@
 	}
 	
 	function list(p){
-		if( $('#department').val() == -1 || $('#baseType').val()==-1 )
+		if( $('#department').val() == -1 || $('#baseType').val()==-1 ){
+			alert("请选择部门和设备类型");
 			return;
+		}
 		$.ajax({
 			sync : false,
 			cache : false,
 			type : 'POST',
 			crossDomain : true,
-			url : "list_device",
+			url : "list_check_record",
 			data : {
 				page : p,
 				did : $('#department').val(),
-				btid : $('#baseType').val()
+				btid : $('#baseType').val(),
+				device : $('#device').val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -98,41 +101,61 @@
 
 				var tab_title = "<tr>"
 					+ "<td width='66px' class='tdColor tdC'>序号</td>"
-					+ "<td width='300px' class='tdColor'>单位</td>"
-					+ "<td width='300px' class='tdColor'>部门</td>"
-					+ "<td width='200px' class='tdColor'>类型</td>"
-					+ "<td width='400px' class='tdColor'>设备名</td>"
-					+ "<td width='330px' class='tdColor'>操作</td>"
+					+ "<td width='200px' class='tdColor'>设备编号</td>"
+					+ "<td width='200px' class='tdColor'>记录用户</td>"
+					+ "<td width='200px' class='tdColor'>日期</td>"
+					+ "<td width='200px' class='tdColor'>检查项</td>"
+					+ "<td width='400px' class='tdColor'>附加信息</td>"
 					+ "	</tr>";
-				$("#devicelist").html(tab_title);
+				$("#checkrecordlist").html(tab_title);
 				
 				$.each(data.results,function(index, value) {
-					var td_id = $('<td></td>').append(
-							value.id);
-					var td_cn = $('<td></td>').append(
-							value.superDevice.department.company.name);
-					var td_dn= $('<td></td>').append(
-							value.superDevice.department.name);
-					var td_dl= $('<td></td>');
-					if(value.supOrSub==0)
-						td_dl.append("基础");
-					else
-						td_dl.append("附属");
-					var td_n= $('<td></td>').append(value.name);
-					var a_edit = $('<a></a>').attr('href',"javascript:edit("+value.supOrSub+ ","+ value.id+");");
-					a_edit.append("<img class='operation' src='../img/update.png'></a>");
-					var a_del = $('<a></a>').attr('href',"javascript:del(" + value.id+");");
-					a_del.append("<img class='operation' src='../img/delete.png'></a>");
-					var td_op = $('<td></td>').append(a_edit).append(a_del);
+					var td_id = $('<td></td>').append(value.id);
+					var td_no = $('<td></td>').append(value.device.name);
+					var td_un = $('<td></td>').append(value.account.username);
+					var td_da = $('<td></td>').append(getTimeStr(value.date));
+					var td_re = $('<td></td>').append(value.deviceCheckItem.description);
+					var td_info = $('<td></td>');
+					if(value.deviceCheckItem.type%2 == 1){
+						td_info.append(value.record);
+					}else{
+						td_info.append("");
+					}
+					if(value.deviceCheckItem.type>1){
+						td_info.append("<br/>");
+						$.ajax({
+							sync : true,
+							cache : false,
+							type : 'POST',
+							crossDomain : true,
+							url : "load_rec_pic",
+							data : {
+								id : value.id
+							},
+							dataType : "json",
+							contentType : "application/x-www-form-urlencoded; charset=utf-8",
+							error : function(e) {
+								console.log(e);
+								alert("网络错误，请重试");
+							},
+							success : function(data) {
+								$.each(data,function(ind,val){
+									var img = $("<img></img>").attr('src',val.src).attr("height",'40px');
+									var a_img = $("<a></a>").attr('href',val.src).attr('target',"_blank").append(img);
+									td_info.append(a_img);
+								});
+							}
+						});
+					}
 					var tr = $('<tr></tr>').attr(
 							'height', "40px");
 					tr.append(td_id)
-							.append(td_cn)
-							.append(td_dn)
-							.append(td_dl)
-							.append(td_n)
-							.append(td_op);
-					$("#devicelist").append(tr);
+							.append(td_no)
+							.append(td_un)
+							.append(td_da)
+							.append(td_re)
+							.append(td_info);
+					$("#checkrecordlist").append(tr);
 				});
 			}
 		});
@@ -150,7 +173,6 @@
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			error : function(e) {
-				console.log(e);
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
@@ -243,15 +265,20 @@
 					<form>
 						<div class="cfD">
 							<select class="userinput" id="company" onchange="javascript:loadDepartment();"> </select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<select class="userinput" id="department" onchange="javascript:list(1);"><option selected="selected" value='-1'>---------请先选择单位---------</option> </select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<select class="userinput" id="baseType" onchange="javascript:list(1);"><option selected="selected" value='-1'></option> </select>
+							<select class="userinput" id="department"  ><option selected="selected" value='-1'>---------请先选择单位---------</option> </select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+							<select class="userinput" id="baseType"  ><option selected="selected" value='-1'></option> </select>
+						</div>
+						
+						<div class="cfD">
+							&nbsp;&nbsp;&nbsp;<input class="userinput" id="device" placeholder="请输入查找设备编号" />
+							<a href="javascript:list(1);"><button class="userbtn" disabled="disabled">搜索</button></a>
 						</div>
 					</form>
 				</div>
 
 				<!-- user 表格 显示 -->
 				<div class="conShow">
-					<table id="devicelist" border="1" cellspacing="0" cellpadding="0">
+					<table id="checkrecordlist" border="1" cellspacing="0" cellpadding="0">
 					</table>
 				</div>
 				

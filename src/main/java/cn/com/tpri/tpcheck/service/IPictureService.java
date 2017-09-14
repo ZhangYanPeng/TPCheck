@@ -10,4 +10,5 @@ public interface IPictureService {
 	int save(Picture picture, MultipartFile pic);
 	int delete(long id);
 	List<Picture> getSupPic(long id);
+	List<Picture> getRecPic(long id);
 }

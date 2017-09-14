@@ -30,6 +30,11 @@ public class Account {
 	@JoinColumn( name = "account_id" )
 	private Set<Authority> authorities;
 	
+	@JsonIgnore
+	@OneToMany( fetch = FetchType.LAZY )
+	@JoinColumn( name = "account_id" )
+	private Set<DeviceCheckRecord> deviceCheckRecords;
+	
 	@ManyToOne
 	private Department department;
 
@@ -102,6 +107,14 @@ public class Account {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public Set<DeviceCheckRecord> getDeviceCheckRecords() {
+		return deviceCheckRecords;
+	}
+
+	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
+		this.deviceCheckRecords = deviceCheckRecords;
 	}
 	
 	
