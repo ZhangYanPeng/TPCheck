@@ -10,4 +10,5 @@ public interface IAccountService {
 	PageResults<Account> list(int page, long department);
 	int edit(Account account);
 	Account load(long id);
+	Account login(String username, String password);
 }

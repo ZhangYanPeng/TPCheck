@@ -97,4 +97,13 @@ public class AccountServiceImpl implements IAccountService {
 		return accountDAO.get(id);
 	}
 
+	@Override
+	@Transactional
+	public Account login(String username, String password) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Account where username = ? and password = ?";
+		Object[] values = {username, password};
+		return accountDAO.getByHQL(hqlString, values);
+	}
+
 }
