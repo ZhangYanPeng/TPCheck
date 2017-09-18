@@ -36,8 +36,10 @@
 				$("#pics").html("");
 				$.each(data,function(index, value) {
 					var img_pic = $("<img></img>").attr('src',value.src).attr('height','100px');
-					var td_pic = $("<td></td>").append(img_pic);
-					var td_n = $("<td></td>").append(value.name).attr('width',"300px");
+					var a_img = $("<a></a>").attr('href',value.src).attr('target',"_blank").append(img_pic);
+					var td_pic = $("<td></td>").append(a_img);
+					var a_pic = $("<a></a>").attr('href',value.src).attr('target',"_blank").append(value.name);
+					var td_n = $("<td></td>").append(a_pic).attr('width',"300px");
 					var td_op = $("<td></td>").attr('width',"100px").append("<img class='operation delban' src='../img/delete.png' onclick='javascript:removePic("
 							+ value.id
 							+ ");' />");
