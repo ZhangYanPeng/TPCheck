@@ -12,7 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @Entity
 @Table( name = "t_super_device" )
@@ -85,6 +88,5 @@ public class SuperDevice {
 	public void setPictures(Set<Picture> pictures) {
 		this.pictures = pictures;
 	}
-	
 	
 }

@@ -6,4 +6,5 @@ import cn.com.tpri.tpcheck.entity.SuperDevice;
 
 public interface ISuperDeviceService {
 	List<SuperDevice> list(long did);
+	SuperDevice getAllInformation(long id,String type);
 }

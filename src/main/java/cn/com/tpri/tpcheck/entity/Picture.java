@@ -1,5 +1,7 @@
 package cn.com.tpri.tpcheck.entity;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table(name="t_picture")

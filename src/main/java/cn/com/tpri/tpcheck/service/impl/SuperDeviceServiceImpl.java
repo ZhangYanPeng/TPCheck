@@ -1,7 +1,11 @@
 package cn.com.tpri.tpcheck.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,13 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 		String hqlString = "from SuperDevice where department.id = ?";
 		Object[] values = {did};
 		return superDeviceDAO.getListByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public SuperDevice getAllInformation(long id, String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

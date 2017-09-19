@@ -1,5 +1,6 @@
 package cn.com.tpri.tpcheck.entity;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "t_device")
@@ -479,4 +481,5 @@ public class Device {
 	public void setSupOrSub(int supOrSub) {
 		this.supOrSub = supOrSub;
 	}
+
 }
