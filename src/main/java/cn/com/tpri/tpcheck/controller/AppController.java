@@ -3,6 +3,9 @@ package cn.com.tpri.tpcheck.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.json.JSONArray;
@@ -16,6 +19,7 @@ import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
+import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
 @Controller
 @RequestMapping(value="/app")
@@ -44,17 +48,14 @@ public class AppController {
 	
 	
 	@RequestMapping(value = "/loadCheckDevice")
-	public @ResponseBody List<SuperDevice> loadCheckDevice(String devices, String type){
-		List<SuperDevice> lSupDev= new ArrayList<SuperDevice>();
-		System.out.println(devices);
-		JSONArray jd = new JSONArray(devices);
-		//支吊架
-		for(Object d : jd){
+	public @ResponseBody List<SuperDeviceStore> loadCheckDevice(String devices, String type){
+		List<SuperDeviceStore> lSupDev = new ArrayList<SuperDeviceStore>();
+		JSONArray ja = new JSONArray(devices);
+		for(Object d : ja){
 			long id = Long.valueOf((String)d);
-			SuperDevice sd = superDeviceService.getAllInformation(id,type);
+			SuperDeviceStore sd = superDeviceService.getAllInformation(id,type);
 			lSupDev.add(sd);
 		}
 		return lSupDev;
-		
 	}
 }

@@ -88,5 +88,5 @@ public class SuperDevice {
 	public void setPictures(Set<Picture> pictures) {
 		this.pictures = pictures;
 	}
-	
+
 }

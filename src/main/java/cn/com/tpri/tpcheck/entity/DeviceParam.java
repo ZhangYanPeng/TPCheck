@@ -1,5 +1,6 @@
 package cn.com.tpri.tpcheck.entity;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table( name = "t_device_param" )
@@ -25,7 +27,6 @@ public class DeviceParam {
 	private String name;
 	private String description;
 	private int authority;
-	private int pos;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -84,12 +85,14 @@ public class DeviceParam {
 		this.deviceInfos = deviceInfos;
 	}
 
-	public int getPos() {
-		return pos;
-	}
-
-	public void setPos(int pos) {
-		this.pos = pos;
+	public JSONObject toJSON() {
+		// TODO Auto-generated method stub
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("id", id);
+		jsonObj.put("name", name);
+		jsonObj.put("description", description);
+		jsonObj.put("authority", authority);
+		return jsonObj;
 	}
 	
 	

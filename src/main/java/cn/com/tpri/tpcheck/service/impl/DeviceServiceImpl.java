@@ -150,7 +150,6 @@ public class DeviceServiceImpl implements IDeviceService{
 				dp.setDescription(pDesList.get(i));
 				dp.setName(pList.get(i));
 				dp.setDeviceType(dt);
-				dp.setPos(-1);
 				deviceParamDAO.save(dp);
 			}
 			paramList.add(dp);
@@ -174,16 +173,11 @@ public class DeviceServiceImpl implements IDeviceService{
 			deviceDAO.save(d);
 			for( int j=1; j < dinfo.size(); j++){
 				DeviceParam dp = paramList.get(j-1);
-				if(dp.getPos()>0){
-					d.setParam(dp.getPos(), dinfo.get(j));
-					deviceDAO.update(d);
-				}else{
-					DeviceInfo di = new DeviceInfo();
-					di.setDevice(d);
-					di.setDeviceParam(dp);
-					di.setValue(dinfo.get(j));
-					deviceInfoDAO.save(di);
-				}
+				DeviceInfo di = new DeviceInfo();
+				di.setDevice(d);
+				di.setDeviceParam(dp);
+				di.setValue(dinfo.get(j));
+				deviceInfoDAO.save(di);
 			}
 			sum++;
 		}
@@ -235,19 +229,13 @@ public class DeviceServiceImpl implements IDeviceService{
 					dp.setDescription(pDesList.get(i));
 					dp.setName(pList.get(i));
 					dp.setDeviceType(dt);
-					dp.setPos(-1);
 					deviceParamDAO.save(dp);
 				}
-				if(dp.getPos()>0){
-					d.setParam(dp.getPos(), dinfo.get(i));
-					deviceDAO.update(d);
-				}else{
-					DeviceInfo di = new DeviceInfo();
-					di.setDevice(d);
-					di.setDeviceParam(dp);
-					di.setValue(dinfo.get(i));
-					deviceInfoDAO.save(di);
-				}
+				DeviceInfo di = new DeviceInfo();
+				di.setDevice(d);
+				di.setDeviceParam(dp);
+				di.setValue(dinfo.get(i));
+				deviceInfoDAO.save(di);
 			}
 			sum++;
 		}
@@ -272,18 +260,6 @@ public class DeviceServiceImpl implements IDeviceService{
 		String hql = "from DeviceInfo where device.id = ?";
 		Object[] values = {id};
 		List<DeviceInfo> diList = deviceInfoDAO.getListByHQL(hql, values);
-		{
-			Device d = deviceDAO.get(id);
-			String hqlt = "from DeviceParam where deviceType.id = ? and pos > 0";
-			Object[] tvalues = {d.getDeviceType().getId()};
-			List<DeviceParam> dpList = deviceParamDAO.getListByHQL(hqlt, tvalues);
-			for(DeviceParam dp : dpList){
-				DeviceInfo di = new DeviceInfo();
-				di.setDeviceParam(dp);
-				di.setValue(d.getParams()[dp.getPos()-1]);
-				diList.add(di);
-			}
-		}
 		return diList;
 	}
 
@@ -296,25 +272,20 @@ public class DeviceServiceImpl implements IDeviceService{
 		Set<DeviceParam> params = d.getDeviceType().getDeviceParams();
 		for(DeviceParam dp : params) {
 			String value = (String) param.get(""+dp.getId());
-			if(dp.getPos()>0) {
-				d.setParam(dp.getPos(), value);
-				deviceDAO.update(d);
-			}else {
-				String hql = "from DeviceInfo where device.id =? and deviceParam.id = ?";
-				Object[] vas = {did, dp.getId()};
-				DeviceInfo di = deviceInfoDAO.getByHQL(hql, vas);
-				if(di == null) {
-					if(value != null && value !="") {
-						di = new DeviceInfo();
-						di.setDevice(d);
-						di.setDeviceParam(dp);
-						di.setValue(value);
-						deviceInfoDAO.save(di);
-					}
-				}else {
+			String hql = "from DeviceInfo where device.id =? and deviceParam.id = ?";
+			Object[] vas = {did, dp.getId()};
+			DeviceInfo di = deviceInfoDAO.getByHQL(hql, vas);
+			if(di == null) {
+				if(value != null && value !="") {
+					di = new DeviceInfo();
+					di.setDevice(d);
+					di.setDeviceParam(dp);
 					di.setValue(value);
-					deviceInfoDAO.update(di);
+					deviceInfoDAO.save(di);
 				}
+			}else {
+				di.setValue(value);
+				deviceInfoDAO.update(di);
 			}
 		}
 	}

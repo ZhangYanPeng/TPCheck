@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table( name = "t_device_info" )
@@ -54,6 +55,15 @@ public class DeviceInfo {
 
 	public void setDeviceParam(DeviceParam deviceParam) {
 		this.deviceParam = deviceParam;
+	}
+
+	public JSONObject toJSON() {
+		// TODO Auto-generated method stub
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("id", id);
+		jsonObj.put("value", value);
+		jsonObj.put("deviceParam",deviceParam.toJSON());
+		return jsonObj;
 	}
 	
 }

@@ -76,5 +76,15 @@ public class Picture {
 	public void setSrc(String src) {
 		this.src = src;
 	}
+
+	public JSONObject toJSON() {
+		// TODO Auto-generated method stub
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("id", id);
+		jsonObj.put("name", name);
+		jsonObj.put("path", path);
+		jsonObj.put("src", src);
+		return jsonObj;
+	}
 	
 }

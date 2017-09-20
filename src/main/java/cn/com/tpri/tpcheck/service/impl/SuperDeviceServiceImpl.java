@@ -8,6 +8,7 @@ import java.util.Set;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
+import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
 @Service
 public class SuperDeviceServiceImpl implements ISuperDeviceService {
@@ -37,23 +39,10 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 
 	@Override
 	@Transactional
-	public SuperDevice getAllInformation(long id, String type) {
+	public SuperDeviceStore getAllInformation(long id, String type) {
 		// TODO Auto-generated method stub
 		SuperDevice sd = superDeviceDAO.get(id);
-		Set<Device> ds = new HashSet<Device>();
-		for(Device d : sd.getDevices()) {
-			d.setDeviceCheckRecords(null);
-			if( d.getSupOrSub()==1 && !d.getDeviceType().getName().equals(type) )
-				continue;
-			DeviceType dt = d.getDeviceType();
-			for( DeviceParam dp : dt.getDeviceParams()) {
-				if(dp.getPos()>0) {
-					DeviceInfo di = new DeviceInfo();
-					di.set
-				}
-			}
-		}
-		return sd;
+		return new SuperDeviceStore(sd,type);
 	}
 
 }

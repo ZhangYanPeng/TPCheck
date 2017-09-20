@@ -1,5 +1,6 @@
 package cn.com.tpri.tpcheck.entity;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "t_account")
@@ -116,6 +118,5 @@ public class Account {
 	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
 		this.deviceCheckRecords = deviceCheckRecords;
 	}
-	
 	
 }

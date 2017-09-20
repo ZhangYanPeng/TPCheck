@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.json.JSONObject;
 
 @Entity
 @Table( name = "t_device_check_item" )
@@ -72,6 +73,4 @@ public class DeviceCheckItem {
 	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
 		this.deviceCheckRecords = deviceCheckRecords;
 	}
-
-	
 }

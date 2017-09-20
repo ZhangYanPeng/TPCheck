@@ -2,9 +2,12 @@ package cn.com.tpri.tpcheck.service;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import cn.com.tpri.tpcheck.entity.SuperDevice;
+import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
 public interface ISuperDeviceService {
 	List<SuperDevice> list(long did);
-	SuperDevice getAllInformation(long id,String type);
+	SuperDeviceStore getAllInformation(long id,String type);
 }
