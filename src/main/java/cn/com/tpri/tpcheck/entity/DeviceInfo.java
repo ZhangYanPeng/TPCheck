@@ -57,13 +57,4 @@ public class DeviceInfo {
 		this.deviceParam = deviceParam;
 	}
 
-	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("id", id);
-		jsonObj.put("value", value);
-		jsonObj.put("deviceParam",deviceParam.toJSON());
-		return jsonObj;
-	}
-	
 }

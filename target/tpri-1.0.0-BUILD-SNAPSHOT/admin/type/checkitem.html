@@ -133,6 +133,37 @@
 			}
 		});
 	}
+	
+	function add(){
+		if ( $("#type").val() == -1 ){
+			alert("请选择设备类型");
+			return;
+		}
+		if ( $("#description").val() == "" || $("#type").val() == -1){
+			alert("请补充完整信息");
+			return;
+		}
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "add_check_item",
+			data : {
+				tid : $("#type").val(),
+				ct : $("#checktype").val(),
+				description : $("#description").val()
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				list(1);
+			}
+		});
+	}
 </script>
 </head>
 
@@ -153,6 +184,17 @@
 						<div class="cfD">
 							<select id="baseType" class="userinput" onchange="javascript:loadType();"></select>
 							<select id="type" class="userinput" onchange="list();" ><option selected="selected" value="-1">--------请先选择基础类型--------</option></select>
+							<br/>
+							<br/>
+							<select id="checktype" class="userinput">
+								<option value="-1" selected="selected">--------请选择检查项类型--------</option>
+								<option value="0" >无额外输入</option>
+								<option value="1" >文字</option>
+								<option value="2" >图片</option>
+								<option value="3" >图文</option>
+							</select>
+							-&nbsp;&nbsp;<input class="userinput" type="text" placeholder="请输入检查项内容" id="description" />
+							<a href="javascript:add();"><button class="userbtn" disabled="disabled">新增</button></a>
 						</div>
 					</form>
 				</div>

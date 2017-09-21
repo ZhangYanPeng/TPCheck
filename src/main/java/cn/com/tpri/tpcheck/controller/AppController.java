@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
+import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
@@ -29,6 +31,8 @@ public class AppController {
 	IAccountService accountService;
 	@Autowired
 	ISuperDeviceService superDeviceService;
+	@Autowired
+	IDeviceService deviceService;
 	
 	@RequestMapping(value = "/login")
 	public @ResponseBody Account login(String username, String password){
@@ -57,5 +61,10 @@ public class AppController {
 			lSupDev.add(sd);
 		}
 		return lSupDev;
+	}
+	
+	@RequestMapping(value = "/loadDeviceInfo")
+	public @ResponseBody List<DeviceInfo> loadDeviceInfo(String id){
+		return deviceService.loadInfos(Long.valueOf(id));
 	}
 }

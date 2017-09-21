@@ -11,6 +11,7 @@ $(document).ready(function(){
 	var storage = window.localStorage;
 	var admin = JSON.parse(storage["info"]);
 	$('#admin_name').html('欢迎, '+admin.username);
+	$('#resetPWD').attr('href',"../admin/admin_edit.html?id="+admin.id);
 });
 
 function logout(){
@@ -32,7 +33,7 @@ function logout(){
 			<p class="p1" id="admin_name">
 			</p>
 			<p class="p2">
-				<a href="#" class="resetPWD">重置密码</a>&nbsp;&nbsp;<a
+				<a id="resetPWD" target="main" class="resetPWD">重置密码</a>&nbsp;&nbsp;<a
 					href="javascript:logout();" class="goOut">退出</a>
 			</p>
 		</div>

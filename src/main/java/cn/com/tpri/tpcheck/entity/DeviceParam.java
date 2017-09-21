@@ -1,6 +1,5 @@
 package cn.com.tpri.tpcheck.entity;
 
-import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -85,15 +84,4 @@ public class DeviceParam {
 		this.deviceInfos = deviceInfos;
 	}
 
-	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("id", id);
-		jsonObj.put("name", name);
-		jsonObj.put("description", description);
-		jsonObj.put("authority", authority);
-		return jsonObj;
-	}
-	
-	
 }

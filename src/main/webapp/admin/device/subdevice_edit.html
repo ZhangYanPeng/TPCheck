@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="../css/css.css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script src="../js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="../js/qrcode.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var did = getQueryString("id");
@@ -32,6 +33,9 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
+
+				new QRCode(document.getElementById("qrcode"), JSON.stringify({id : did}));
+				
 				$("#params").html("");
 				$.each(data,function(index, value) {
 					var td_p = $("<td></td>").append(value.name);
@@ -119,6 +123,9 @@
 							</table>
 						</div>
 					</div>
+					
+					<div id="qrcode"></div>
+
 					<div class="bbD">
 						<p class="bbDP">
 							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>

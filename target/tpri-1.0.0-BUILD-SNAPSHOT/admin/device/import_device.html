@@ -105,7 +105,7 @@
 			data : {
 				did : $('#department').val(),
 				btid : $('#baseType').val(),
-				type : $('#type').val()
+				type : $('#level').val()
 			},//要传到后台的参数，没有可以不写  
 			async : false,
 			dataType : 'json',
@@ -113,7 +113,10 @@
 			contentType : false,
 			success : function(data) //服务器成功响应处理函数
 			{
-				
+				if(data>=0)
+					alert("本次一共导入"+data+"条数据！");
+				else
+					alert("导入文件有误，请仔细核对!");
 			},
 			error : function(data, status, e)//服务器响应失败处理函数
 			{
@@ -159,7 +162,7 @@
 					</div>
 					
 					<div class="bbD">
-						导入文件：<input type='file' id='file' name='devices' class='input3' />
+						导入文件：<input type='file' style="width: 600px;" id='file' name='devices' class='input3' />
 					</div>
 					
 					<div class="bbD">
