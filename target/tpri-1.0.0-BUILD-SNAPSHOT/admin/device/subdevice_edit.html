@@ -34,7 +34,7 @@
 			},
 			success : function(data) {
 
-				new QRCode(document.getElementById("qrcode"), did+";"+JSON.stringify(data));
+				new QRCode(document.getElementById("qrcode"), JSON.stringify({id : did}));
 				
 				$("#params").html("");
 				$.each(data,function(index, value) {

@@ -161,7 +161,7 @@ public class DeviceServiceImpl implements IDeviceService{
 		for(int i=2; i<info.size();i++){
 			List<String> dinfo = info.get(i);
 			Object[] vs = {dinfo.get(0), did};
-			SuperDevice sd = superDeviceDAO.getByHQL("from superDevice where name = ? and department.id = ?", vs);
+			SuperDevice sd = superDeviceDAO.getByHQL("from SuperDevice where name = ? and department.id = ?", vs);
 			if(sd != null){
 				continue;
 			}
@@ -210,7 +210,7 @@ public class DeviceServiceImpl implements IDeviceService{
 			}
 			
 			Object[] vas = {dinfo.get(1) , dinfo.get(0), did};
-			Device d = deviceDAO.getByHQL("from Device where name = ? and superDevice.name = ? and department.id = ?", vas);
+			Device d = deviceDAO.getByHQL("from Device where name = ? and superDevice.name = ? and superDevice.department.id = ?", vas);
 			if(d != null){
 				continue;
 			}

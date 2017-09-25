@@ -48,7 +48,7 @@ public class DeviceController {
 			String originalFilename = devices.getOriginalFilename();
 			String genePath = request.getSession().getServletContext().getRealPath("/upload/devices_file/");
 			FileUtils.copyInputStreamToFile(devices.getInputStream(), new File(genePath,originalFilename));
-			List<List> info = DealExcel.loadIn(genePath+originalFilename);
+			List<List> info = DealExcel.loadIn(genePath+"/"+originalFilename);
 			if(type.equals("0")){
 				return deviceService.loadInSuperDevice(info, Long.valueOf(did), Long.valueOf(btid));
 			}
@@ -104,7 +104,7 @@ public class DeviceController {
 		String originalFilename = picture.getOriginalFilename();
 		String genePath = request.getSession().getServletContext().getRealPath("/upload/supdevice/");
 		pic.setSrc(request.getContextPath()+"/upload/supdevice/"+originalFilename);
-		pic.setPath(genePath+originalFilename);
+		pic.setPath(genePath+"/"+originalFilename);
 		pictureService.save(pic, picture);
 		return 0;
 	}
