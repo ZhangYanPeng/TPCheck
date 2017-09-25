@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
@@ -66,5 +67,10 @@ public class AppController {
 	@RequestMapping(value = "/loadDeviceInfo")
 	public @ResponseBody List<DeviceInfo> loadDeviceInfo(String id){
 		return deviceService.loadInfos(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/loadCheckItem")
+	public @ResponseBody List<DeviceCheckItem> loadCheckItem(String id){
+		return deviceService.loadCheckItems(Long.valueOf(id));
 	}
 }

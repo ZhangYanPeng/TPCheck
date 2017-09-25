@@ -11,12 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.BaseTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DepartmentDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceCheckItemDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceInfoDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
 import cn.com.tpri.tpcheck.entity.Device;
+import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
@@ -42,6 +44,8 @@ public class DeviceServiceImpl implements IDeviceService{
 	SuperDeviceDAOImpl superDeviceDAO;
 	@Autowired
 	BaseTypeDAOImpl baseTypeDAO;
+	@Autowired
+	DeviceCheckItemDAOImpl deviceCheckItemDAO;
 
 
 	@Override
@@ -288,6 +292,16 @@ public class DeviceServiceImpl implements IDeviceService{
 				deviceInfoDAO.update(di);
 			}
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<DeviceCheckItem> loadCheckItems(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from DeviceCheckItem where deviceType.id = ?";
+		Object[] values = {deviceDAO.get(id).getDeviceType().getId()};
+		List<DeviceCheckItem> dciList = deviceCheckItemDAO.getListByHQL(hql, values);
+		return dciList;
 	}
 
 }

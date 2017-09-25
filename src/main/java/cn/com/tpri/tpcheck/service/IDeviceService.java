@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.tpri.tpcheck.entity.Device;
+import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.support.PageResults;
@@ -20,4 +21,5 @@ public interface IDeviceService {
 	List<DeviceParam> loadParams(long id);
 	List<DeviceInfo> loadInfos(long id);
 	void update(Map param);
+	List<DeviceCheckItem> loadCheckItems(long id);
 }
