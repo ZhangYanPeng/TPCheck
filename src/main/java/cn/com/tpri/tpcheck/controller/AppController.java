@@ -13,14 +13,19 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
+import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
+import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
@@ -34,6 +39,8 @@ public class AppController {
 	ISuperDeviceService superDeviceService;
 	@Autowired
 	IDeviceService deviceService;
+	@Autowired
+	IPictureService pictureService;
 	
 	@RequestMapping(value = "/login")
 	public @ResponseBody Account login(String username, String password){
@@ -72,5 +79,17 @@ public class AppController {
 	@RequestMapping(value = "/loadCheckItem")
 	public @ResponseBody List<DeviceCheckItem> loadCheckItem(String id){
 		return deviceService.loadCheckItems(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/uploadRecPic")
+	public @ResponseBody int uploadRecPic(@RequestParam MultipartFile file, HttpServletRequest request){
+		Picture pic = new Picture();
+		String originalFilename = file.getOriginalFilename();
+		pic.setName("");
+		String genePath = request.getSession().getServletContext().getRealPath("/upload/record_pic/");
+		pic.setSrc(request.getContextPath()+"/upload/record_pic/"+originalFilename);
+		pic.setPath(genePath+"/"+originalFilename);
+		pictureService.save(pic, file);
+		return 0;
 	}
 }
