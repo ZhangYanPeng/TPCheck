@@ -65,4 +65,20 @@ public class PictureServiceImpl implements IPictureService{
 		return pictureDAO.getListByHQL(hqlString, values);
 	}
 
+	@Override
+	@Transactional
+	public Picture loadByName(String name) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Picture where name = ?";
+		Object[] values = {name};
+		return pictureDAO.getByHQL(hqlString, values);
+	}
+
+	@Override
+	@Transactional
+	public void update(Picture pic) {
+		// TODO Auto-generated method stub
+		pictureDAO.update(pic);
+	}
+
 }

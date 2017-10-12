@@ -1,5 +1,6 @@
 package cn.com.tpri.tpcheck.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,13 @@ public class DeviceCheckRecordServiceImpl implements IDeviceCheckRecordService{
 	@Transactional
 	public int add(DeviceCheckRecord dcr) {
 		// TODO Auto-generated method stub
-		return 0;
+		try {
+			deviceCheckRecordDAO.save(dcr);
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return 0;
+		}
 	}
 
 	@Override
@@ -40,6 +47,15 @@ public class DeviceCheckRecordServiceImpl implements IDeviceCheckRecordService{
 	public List<DeviceCheckRecord> getall(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public DeviceCheckRecord find(long aid, long did, Date date) {
+		// TODO Auto-generated method stub
+		String hql = "from DeviceCheckRecord where account.id = ? and device.id = ? and date = ?";
+		Object[] values = {aid, did, date};
+		return deviceCheckRecordDAO.getByHQL(hql, values);
 	}
 
 }
