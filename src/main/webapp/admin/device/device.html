@@ -98,10 +98,11 @@
 
 				var tab_title = "<tr>"
 					+ "<td width='66px' class='tdColor tdC'>序号</td>"
-					+ "<td width='300px' class='tdColor'>单位</td>"
-					+ "<td width='300px' class='tdColor'>部门</td>"
-					+ "<td width='200px' class='tdColor'>类型</td>"
-					+ "<td width='400px' class='tdColor'>设备名</td>"
+					+ "<td width='200px' class='tdColor'>单位</td>"
+					+ "<td width='200px' class='tdColor'>部门</td>"
+					+ "<td width='100px' class='tdColor'>类型</td>"
+					+ "<td width='300px' class='tdColor'>父类设备</td>"
+					+ "<td width='300px' class='tdColor'>设备名</td>"
 					+ "<td width='330px' class='tdColor'>操作</td>"
 					+ "	</tr>";
 				$("#devicelist").html(tab_title);
@@ -114,10 +115,15 @@
 					var td_dn= $('<td></td>').append(
 							value.superDevice.department.name);
 					var td_dl= $('<td></td>');
-					if(value.supOrSub==0)
+					var td_sup = $('<td></td>');
+					if(value.supOrSub==0){
 						td_dl.append("基础");
-					else
+						td_sup.append("无");
+					}
+					else{
 						td_dl.append("附属");
+						td_sup.append(value.superDevice.name);
+					}
 					var td_n= $('<td></td>').append(value.name);
 					var a_edit = $('<a></a>').attr('href',"javascript:edit("+value.supOrSub+ ","+ value.id+");");
 					a_edit.append("<img class='operation' src='../img/update.png'></a>");
@@ -130,6 +136,7 @@
 							.append(td_cn)
 							.append(td_dn)
 							.append(td_dl)
+							.append(td_sup)
 							.append(td_n)
 							.append(td_op);
 					$("#devicelist").append(tr);

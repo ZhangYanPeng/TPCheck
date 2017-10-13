@@ -33,7 +33,7 @@ public class SuperDeviceStore {
 		for(Device d : sd.getDevices()){
 			if(d.getSupOrSub() == 0)
 				this.self = new DeviceStore(d);
-			else if(d.getDeviceType().getBaseType().getName().equals(type)){
+			else if(d.getDeviceType().getBaseType().getId()==Integer.valueOf(type)){
 				this.devices.add(new DeviceStore(d));
 			}
 		}
