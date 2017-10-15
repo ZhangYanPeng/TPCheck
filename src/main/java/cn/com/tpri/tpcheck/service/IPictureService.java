@@ -12,5 +12,5 @@ public interface IPictureService {
 	List<Picture> getSupPic(long id);
 	List<Picture> getRecPic(long id);
 	Picture loadByName(String name);
-	void update(Picture pic);
+	void updateInfo(Picture pic);
 }

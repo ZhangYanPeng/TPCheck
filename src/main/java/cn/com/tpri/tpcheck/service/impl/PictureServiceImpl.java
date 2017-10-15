@@ -76,9 +76,9 @@ public class PictureServiceImpl implements IPictureService{
 
 	@Override
 	@Transactional
-	public void update(Picture pic) {
+	public void updateInfo(Picture pic) {
 		// TODO Auto-generated method stub
-		pictureDAO.update(pic);
+		pictureDAO.saveOrUpdate(pic);
 	}
 
 }

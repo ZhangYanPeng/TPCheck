@@ -133,14 +133,13 @@ public class AppController {
 		
 		int re = deviceCheckRecordService.add(record);
 		record = deviceCheckRecordService.find(jb.getLong("aid"),jb.getLong("did"),date);
-		
 		try{
 			if(jb.getString("pics") != null && jb.getString("pics") != "" ){
 				String[] pics = jb.getString("pics").split(";");
 				for (int i=1; i<pics.length;i++){
 					Picture pic = pictureService.loadByName(pics[i]);
 					pic.setDeviceCheckRecord(record);
-					pictureService.update(pic);
+					pictureService.updateInfo(pic);
 				}
 			}
 		}catch(Exception e){
