@@ -42,6 +42,7 @@ import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.service.impl.DeviceCheckItemServiceImpl;
+import cn.com.tpri.tpcheck.store.DeviceStore;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
 @Controller
@@ -91,8 +92,8 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = "/loadDeviceInfo")
-	public @ResponseBody List<DeviceInfo> loadDeviceInfo(String id){
-		return deviceService.loadInfos(Long.valueOf(id));
+	public @ResponseBody DeviceStore loadDeviceInfo(String id){
+		return deviceService.loadDeviceInfos(Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadCheckItem")
@@ -130,6 +131,7 @@ public class AppController {
 		}
 			
 		record.setRecord(jb.getString("content"));
+		record.setImgStr(jb.getString("pics"));
 		
 		int re = deviceCheckRecordService.add(record);
 		record = deviceCheckRecordService.find(jb.getLong("aid"),jb.getLong("did"),date);
@@ -138,8 +140,10 @@ public class AppController {
 				String[] pics = jb.getString("pics").split(";");
 				for (int i=1; i<pics.length;i++){
 					Picture pic = pictureService.loadByName(pics[i]);
-					pic.setDeviceCheckRecord(record);
-					pictureService.updateInfo(pic);
+					if(pic != null){
+						pic.setDeviceCheckRecord(record);
+						pictureService.updateInfo(pic);
+					}
 				}
 			}
 		}catch(Exception e){
@@ -147,4 +151,13 @@ public class AppController {
 		}
 		return re;
 	}
+	
+	@RequestMapping(value = "/modifyPassword")
+	public @ResponseBody Account modifyPassword(String id, String pwd){
+		Account account = accountService.load(Long.valueOf(id));
+		account.setPassword(pwd);
+		accountService.edit(account);
+		return accountService.load(Long.valueOf(id));
+	}
+		
 }

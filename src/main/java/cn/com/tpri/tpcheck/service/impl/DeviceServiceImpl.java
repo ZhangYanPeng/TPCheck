@@ -24,6 +24,7 @@ import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IDeviceService;
+import cn.com.tpri.tpcheck.store.DeviceStore;
 import cn.com.tpri.tpcheck.support.Constants;
 import cn.com.tpri.tpcheck.support.PageResults;
 
@@ -259,12 +260,19 @@ public class DeviceServiceImpl implements IDeviceService{
 
 	@Override
 	@Transactional
+	public DeviceStore loadDeviceInfos(long id) {
+		// TODO Auto-generated method stub
+		Device d = deviceDAO.get(id);
+		return new DeviceStore(d);
+	}
+	
+	@Override
+	@Transactional
 	public List<DeviceInfo> loadInfos(long id) {
 		// TODO Auto-generated method stub
 		String hql = "from DeviceInfo where device.id = ?";
 		Object[] values = {id};
-		List<DeviceInfo> diList = deviceInfoDAO.getListByHQL(hql, values);
-		return diList;
+		return deviceInfoDAO.getListByHQL(hql, values);
 	}
 
 	@Override

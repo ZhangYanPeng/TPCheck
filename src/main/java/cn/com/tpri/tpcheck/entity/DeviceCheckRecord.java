@@ -27,6 +27,7 @@ public class DeviceCheckRecord {
 	private String record;
 	private Date date;
 	private String error;
+	private String imgStr;
 	
 	@ManyToOne
 	private Account account;
@@ -105,4 +106,14 @@ public class DeviceCheckRecord {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+
+	public String getImgStr() {
+		return imgStr;
+	}
+
+	public void setImgStr(String imgStr) {
+		this.imgStr = imgStr;
+	}
+	
+	
 }

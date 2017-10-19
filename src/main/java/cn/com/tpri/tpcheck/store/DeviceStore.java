@@ -2,12 +2,9 @@ package cn.com.tpri.tpcheck.store;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
+import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceType;
 
@@ -22,6 +19,7 @@ public class DeviceStore {
 	private DeviceType deviceType;
 	private List<DeviceCheckItem> deviceCheckItems;
 	private List<DeviceInfo> deviceInfos;
+	private List<RecordStore> deviceCheckRecords;
 
 	public DeviceStore(Device d) {
 		// TODO Auto-generated constructor stub
@@ -37,6 +35,10 @@ public class DeviceStore {
 		deviceInfos = new ArrayList<DeviceInfo>();
 		for(DeviceInfo di :  d.getDeviceInfos()){
 			deviceInfos.add(di);
+		}
+		deviceCheckRecords = new ArrayList<RecordStore>();
+		for(DeviceCheckRecord dcr :  d.getDeviceCheckRecords()){
+			deviceCheckRecords.add(new RecordStore(dcr));
 		}
 	}
 
@@ -94,6 +96,14 @@ public class DeviceStore {
 
 	public void setDeviceInfos(List<DeviceInfo> deviceInfos) {
 		this.deviceInfos = deviceInfos;
+	}
+
+	public List<RecordStore> getDeviceCheckRecords() {
+		return deviceCheckRecords;
+	}
+
+	public void setDeviceCheckRecords(List<RecordStore> deviceCheckRecords) {
+		this.deviceCheckRecords = deviceCheckRecords;
 	}
 
 	

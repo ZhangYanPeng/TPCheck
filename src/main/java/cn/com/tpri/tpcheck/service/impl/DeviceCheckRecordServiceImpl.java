@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.DeviceCheckRecordDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.PictureDAOImpl;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
+import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.support.Constants;
 import cn.com.tpri.tpcheck.support.PageResults;
@@ -18,6 +20,8 @@ public class DeviceCheckRecordServiceImpl implements IDeviceCheckRecordService{
 
 	@Autowired
 	DeviceCheckRecordDAOImpl deviceCheckRecordDAO;
+	@Autowired
+	PictureDAOImpl pictureDAO;
 	
 	@Override
 	@Transactional
@@ -39,6 +43,19 @@ public class DeviceCheckRecordServiceImpl implements IDeviceCheckRecordService{
 		String hql = "from DeviceCheckRecord where device.name like ? and device.superDevice.department.id = ? and device.deviceType.baseType.id = ? order by date desc";
 		String countHql = "select count(*) from DeviceCheckRecord where device.name like ? and device.superDevice.department.id = ? and device.deviceType.baseType.id = ?";
 		Object[] values = {"%%"+device+"%%",did,btid};
+		PageResults<DeviceCheckRecord> pr = deviceCheckRecordDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
+		for( DeviceCheckRecord dcr : pr.getResults()){
+			if(dcr.getPictures() == null || dcr.getPictures().size() == 0 && dcr.getImgStr() != null && !dcr.getImgStr().equals("") ){
+				String[] pics = dcr.getImgStr().split(";");
+				for (int i=1; i<pics.length;i++){
+					String hqlString = "from Picture where name = ?";
+					Object[] val = {pics[i]};
+					Picture pic = pictureDAO.getByHQL(hqlString, val);
+					pic.setDeviceCheckRecord(dcr);
+					pictureDAO.update(pic);
+				}
+			}
+		}
 		return deviceCheckRecordDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 
