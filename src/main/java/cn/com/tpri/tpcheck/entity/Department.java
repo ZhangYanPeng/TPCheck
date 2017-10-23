@@ -29,12 +29,7 @@ public class Department {
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "department_id" )
-	private Set<Account> accounts;
-	
-	@JsonIgnore
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "department_id" )
+	@JoinColumn( name = "account_id" )
 	private Set<Authority> authorities;
 	
 	@JsonIgnore
@@ -56,14 +51,6 @@ public class Department {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Set<Account> getAccounts() {
-		return accounts;
-	}
-
-	public void setAccounts(Set<Account> accounts) {
-		this.accounts = accounts;
 	}
 
 	public Set<SuperDevice> getSuperDevices() {

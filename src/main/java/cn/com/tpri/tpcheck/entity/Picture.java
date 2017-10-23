@@ -22,7 +22,7 @@ public class Picture {
 	private String src;
 	
 	@ManyToOne
-	private SuperDevice superDevice;
+	private Device device;
 	
 	@ManyToOne
 	private DeviceCheckRecord deviceCheckRecord;
@@ -51,14 +51,6 @@ public class Picture {
 		this.path = path;
 	}
 
-	public SuperDevice getSuperDevice() {
-		return superDevice;
-	}
-
-	public void setSuperDevice(SuperDevice superDevice) {
-		this.superDevice = superDevice;
-	}
-
 	public DeviceCheckRecord getDeviceCheckRecord() {
 		return deviceCheckRecord;
 	}
@@ -73,6 +65,14 @@ public class Picture {
 
 	public void setSrc(String src) {
 		this.src = src;
+	}
+	
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 
 	public JSONObject toJSON() {

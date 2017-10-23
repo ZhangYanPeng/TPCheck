@@ -48,7 +48,12 @@ public class DealExcel {
 		for (Row row : sheet) {
 			List<String> r = new ArrayList();
 			for( Cell cell : row){
-				r.add(getCellCotent(cell));
+				String cc = getCellCotent(cell);
+				if (cc == null){
+					r.add("");
+				}else{
+					r.add(cc);
+				}
 			}
 			info.add(r);
 		}

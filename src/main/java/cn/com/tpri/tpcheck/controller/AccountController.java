@@ -146,7 +146,7 @@ public class AccountController {
 				account = new Account();
 				account.setUsername(username);
 				account.setPassword(password);
-				account.setPosition(position);
+				account.setPosition(Integer.valueOf(position));
 				account.setState(1);
 				account.setAuthority(Integer.valueOf(authority));
 				Department dep = departmentService.load(Long.valueOf(department));
@@ -156,7 +156,7 @@ public class AccountController {
 				account = accountService.load(aid);
 				account.setUsername(username);
 				account.setPassword(password);
-				account.setPosition(position);
+				account.setPosition(Integer.valueOf(position));
 				account.setAuthority(Integer.valueOf(authority));
 				Department dep = departmentService.load(Long.valueOf(department));
 				account.setDepartment(dep);

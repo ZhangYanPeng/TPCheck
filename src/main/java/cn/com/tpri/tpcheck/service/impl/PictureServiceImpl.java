@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.com.tpri.tpcheck.dao.impl.DeviceDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.PictureDAOImpl;
+import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.service.IPictureService;
 
@@ -17,6 +19,8 @@ import cn.com.tpri.tpcheck.service.IPictureService;
 public class PictureServiceImpl implements IPictureService{
 	@Autowired
 	PictureDAOImpl pictureDAO;
+	@Autowired
+	DeviceDAOImpl deviceDAO;
 
 	@Override
 	@Transactional
@@ -51,8 +55,9 @@ public class PictureServiceImpl implements IPictureService{
 	@Transactional
 	public List<Picture> getSupPic(long id) {
 		// TODO Auto-generated method stub
+		Device dev = deviceDAO.get(id);
 		String hqlString = "from Picture where superDevice.id = ?";
-		Object[] values = {id};
+		Object[] values = {dev.getSuperDevice().getId()};
 		return pictureDAO.getListByHQL(hqlString, values);
 	}
 

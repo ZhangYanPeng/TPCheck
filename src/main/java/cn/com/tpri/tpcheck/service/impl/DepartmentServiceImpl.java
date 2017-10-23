@@ -77,11 +77,8 @@ public class DepartmentServiceImpl implements IDepartmentService{
 	public int delete(Long id) {
 		// TODO Auto-generated method stub
 		try {
-			Set<Account> lda = departmentDAO.get(id).getAccounts();
 			Set<SuperDevice> lds = departmentDAO.get(id).getSuperDevices();
-			if(lda != null && lda.size()>1 )
-				return -1;
-			if(lds != null && lda.size()>1 )
+			if(lds != null && lds.size()>1 )
 				return -1;
 			departmentDAO.deleteById(id);
 		} catch (Exception e) {

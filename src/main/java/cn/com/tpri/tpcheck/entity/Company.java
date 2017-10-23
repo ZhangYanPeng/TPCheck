@@ -34,8 +34,21 @@ public class Company {
 	@JoinColumn( name = "company_id" )
 	private Set<Department> departments;
 	
+	@JsonIgnore
+	@OneToMany( fetch = FetchType.LAZY )
+	@JoinColumn( name = "department_id" )
+	private Set<Account> accounts;
+	
 	public long getId() {
 		return id;
+	}
+
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
 	}
 
 	public void setId(long id) {

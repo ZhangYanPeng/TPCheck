@@ -17,14 +17,8 @@ public class Authority {
 	@GenericGenerator(name = "authority_generator", strategy = "increment")
 	private long id;
 	
-	@ManyToOne
 	private Account account;
-	
-	@ManyToOne
 	private Department department;
-	
-	@ManyToOne
-	private BaseType baseType;
 
 	public long getId() {
 		return id;
@@ -50,13 +44,4 @@ public class Authority {
 		this.department = department;
 	}
 
-	public BaseType getBaseType() {
-		return baseType;
-	}
-
-	public void setBaseType(BaseType baseType) {
-		this.baseType = baseType;
-	}
-	
-	
 }

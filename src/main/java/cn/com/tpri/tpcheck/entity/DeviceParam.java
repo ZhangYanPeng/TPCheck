@@ -25,7 +25,7 @@ public class DeviceParam {
 	
 	private String name;
 	private String description;
-	private int authority;
+	private int level;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -59,13 +59,13 @@ public class DeviceParam {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public int getAuthority() {
-		return authority;
+	
+	public int getLevel() {
+		return level;
 	}
 
-	public void setAuthority(int authority) {
-		this.authority = authority;
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public DeviceType getDeviceType() {

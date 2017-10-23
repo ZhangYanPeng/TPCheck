@@ -146,13 +146,13 @@ public class DeviceServiceImpl implements IDeviceService{
 		Object[] vals = {btid, "父类"};
 		DeviceType dt = deviceTypeDAO.getByHQL("from DeviceType where baseType.id = ? and name = ?",vals);
 		for(int i=1; i<pList.size(); i++){
-			String hql = "from DeviceParam where deviceType.id = ? and name = ? and description = ?";
+			String hql = "from DeviceParam where deviceType.id = ? and name = ?";
 			Object[] values = { dt.getId(), pList.get(i), pDesList.get(i)};
 			DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 			if(dp == null){
 				dp = new DeviceParam();
-				dp.setAuthority(0);
-				dp.setDescription(pDesList.get(i));
+				dp.setLevel(Integer.valueOf(pDesList.get(i).split("@")[1]));
+				dp.setDescription(pDesList.get(i).split("@")[0]);
 				dp.setName(pList.get(i));
 				dp.setDeviceType(dt);
 				deviceParamDAO.save(dp);
@@ -230,8 +230,8 @@ public class DeviceServiceImpl implements IDeviceService{
 				DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 				if(dp == null){
 					dp = new DeviceParam();
-					dp.setAuthority(0);
-					dp.setDescription(pDesList.get(i));
+					dp.setLevel(Integer.valueOf(pDesList.get(i).split("@")[1]));
+					dp.setDescription(pDesList.get(i).split("@")[0]);
 					dp.setName(pList.get(i));
 					dp.setDeviceType(dt);
 					deviceParamDAO.save(dp);

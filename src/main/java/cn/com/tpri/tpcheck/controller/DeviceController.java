@@ -99,7 +99,7 @@ public class DeviceController {
 	public @ResponseBody int uploadPic(@RequestParam String id, @RequestParam String picname, @RequestParam MultipartFile picture, HttpServletRequest request){
 		Picture pic = new Picture();
 		Device d = deviceService.load(Long.valueOf(id));
-		pic.setSuperDevice(d.getSuperDevice());
+		pic.setDevice(d);
 		pic.setName(picname);
 		String originalFilename = picture.getOriginalFilename();
 		String genePath = request.getSession().getServletContext().getRealPath("/upload/supdevice/");
