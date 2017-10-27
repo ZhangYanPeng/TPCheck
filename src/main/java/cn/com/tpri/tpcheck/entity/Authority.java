@@ -17,7 +17,10 @@ public class Authority {
 	@GenericGenerator(name = "authority_generator", strategy = "increment")
 	private long id;
 	
+	@ManyToOne
 	private Account account;
+	
+	@ManyToOne
 	private Department department;
 
 	public long getId() {

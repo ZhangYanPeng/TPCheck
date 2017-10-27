@@ -7,7 +7,7 @@ public interface IAccountService {
 	int add(Account account);
 	int frozen(Account account);
 	int active(Account account);
-	PageResults<Account> list(int page, long department);
+	PageResults<Account> list(int page, long company);
 	int edit(Account account);
 	Account load(long id);
 	Account login(String username, String password);

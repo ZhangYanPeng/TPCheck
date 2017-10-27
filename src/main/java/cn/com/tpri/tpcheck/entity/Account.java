@@ -36,7 +36,7 @@ public class Account {
 	private Set<DeviceCheckRecord> deviceCheckRecords;
 	
 	@ManyToOne
-	private Department department;
+	private Company company;
 
 	private int position;
 	
@@ -93,12 +93,12 @@ public class Account {
 		this.state = state;
 	}
 
-	public Department getDepartment() {
-		return department;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public Set<Authority> getAuthorities() {

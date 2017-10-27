@@ -36,7 +36,7 @@ public class Company {
 	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "department_id" )
+	@JoinColumn( name = "company_id" )
 	private Set<Account> accounts;
 	
 	public long getId() {

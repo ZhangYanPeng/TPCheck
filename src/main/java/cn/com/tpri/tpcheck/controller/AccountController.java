@@ -115,8 +115,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/list_account")
-	public @ResponseBody PageResults<Account> listAccount(String page,String department) {
-		return accountService.list(Integer.valueOf(page), Long.valueOf(department));
+	public @ResponseBody PageResults<Account> listAccount(String page,String company) {
+		return accountService.list(Integer.valueOf(page), Long.valueOf(company));
 	}
 
 	@RequestMapping(value = "/active")

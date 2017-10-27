@@ -61,12 +61,12 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	@Transactional
-	public PageResults<Account> list(int page,long department) {
+	public PageResults<Account> list(int page,long company) {
 		// TODO Auto-generated method stub
-		if(department>=0){
-			String hql = "from Account where department.id = ?";
-			String countHql = "select count(*) from Account where department.id = ?";
-			Object[] values = {department};
+		if(company>=0){
+			String hql = "from Account where company.id = ?";
+			String countHql = "select count(*) from Account where company.id = ?";
+			Object[] values = {company};
 			return accountDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 		}
 		else{
