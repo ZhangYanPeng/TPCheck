@@ -58,7 +58,7 @@
 					var td_un = $('<td></td>').append(
 							value.username);
 					var td_com= $('<td></td>').append(
-							value.department.company.name);
+							value.company.name);
 					var a_state = $('<a></a>');
 					if(value.state == -1){
 						td_un.append("   (*账户已冻结)");
@@ -76,7 +76,6 @@
 							'height', "40px");
 					tr.append(td_id)
 							.append(td_com)
-							.append(td_dep)
 							.append(td_un)
 							.append(td_op);
 					$("#accountlist").append(tr);

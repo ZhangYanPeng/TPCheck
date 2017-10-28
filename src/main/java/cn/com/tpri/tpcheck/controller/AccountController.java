@@ -3,6 +3,7 @@ package cn.com.tpri.tpcheck.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.Authority;
 import cn.com.tpri.tpcheck.entity.Company;
 import cn.com.tpri.tpcheck.entity.Department;
 import cn.com.tpri.tpcheck.service.IAccountService;
+import cn.com.tpri.tpcheck.service.IAuthorityService;
 import cn.com.tpri.tpcheck.service.ICompanyService;
 import cn.com.tpri.tpcheck.service.IDepartmentService;
 import cn.com.tpri.tpcheck.support.PageResults;
@@ -28,6 +31,8 @@ public class AccountController {
 	ICompanyService companyService;
 	@Autowired
 	IDepartmentService departmentService;
+	@Autowired
+	IAuthorityService authorityService;
 
 	@RequestMapping(value = "/list_company")
 	public @ResponseBody PageResults<Company> listCompany(String page){
@@ -135,10 +140,16 @@ public class AccountController {
 	public @ResponseBody Account loadAccount(String id) {
 		return accountService.load(Long.valueOf(id));
 	}
+	
+	@RequestMapping(value = "/load_authority")
+	public @ResponseBody List<Authority> loadAuthority(String id) {
+		return authorityService.loadByAccount(Long.valueOf(id));
+	}
 
 	@RequestMapping(value = "/edit_account")
-	public @ResponseBody int editAccount(String id, String username, String password, String department,
-			String position, String authority) {
+	public @ResponseBody int editAccount(String id, String username, String password, String company,
+			String position, String[] authority) {
+		System.out.println(authority);
 		try{
 			Account account;
 			Long aid = Long.valueOf(id);
@@ -147,23 +158,37 @@ public class AccountController {
 				account.setUsername(username);
 				account.setPassword(password);
 				account.setPosition(Integer.valueOf(position));
+				account.setCompany(companyService.load(Long.valueOf(company)));
 				account.setState(1);
-				account.setAuthority(Integer.valueOf(authority));
-				Department dep = departmentService.load(Long.valueOf(department));
-				account.setDepartment(dep);
-				return accountService.add(account);
+				int r = accountService.add(account);
+				account = accountService.login(username, password);
+				for( String auth : authority) {
+					Authority a = new Authority();
+					a.setDepartment(departmentService.load(Long.valueOf(auth)));
+					a.setAccount(account);
+					authorityService.add(a);
+				}
+				return r;
 			}else{
 				account = accountService.load(aid);
 				account.setUsername(username);
 				account.setPassword(password);
 				account.setPosition(Integer.valueOf(position));
-				account.setAuthority(Integer.valueOf(authority));
-				Department dep = departmentService.load(Long.valueOf(department));
-				account.setDepartment(dep);
+				account.setCompany(companyService.load(Long.valueOf(company)));
+				for(Authority auth :authorityService.loadByAccount(account.getId())) {
+					authorityService.delete(auth);
+				}
+				for( String auth : authority) {
+					Authority a = new Authority();
+					a.setDepartment(departmentService.load(Long.valueOf(auth)));
+					a.setAccount(account);
+					authorityService.add(a);
+				}
 				return accountService.edit(account);
 			}
 		}catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			return -2;
 		}
 	}

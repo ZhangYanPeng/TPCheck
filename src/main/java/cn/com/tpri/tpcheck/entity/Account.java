@@ -10,18 +10,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "t_account")
+@Table(name = "t_account",
+	uniqueConstraints = {@UniqueConstraint(columnNames={"username"})})
 public class Account {
 	@Id
 	@GeneratedValue(generator = "account_generator")
 	@GenericGenerator(name = "account_generator", strategy = "increment")
 	private long id;
-
+	
 	private String username;
 	private String password;
 
@@ -42,11 +44,16 @@ public class Account {
 	
 	private int state;
 
-	// all authorities 0xFFFFFFFF
-	private int authority;
-
 	public long getId() {
 		return id;
+	}
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
 	}
 
 	public void setId(long id) {
@@ -76,15 +83,7 @@ public class Account {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-
-	public int getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(int authority) {
-		this.authority = authority;
-	}
-
+	
 	public int getState() {
 		return state;
 	}
@@ -100,15 +99,7 @@ public class Account {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
-
+	
 	public Set<DeviceCheckRecord> getDeviceCheckRecords() {
 		return deviceCheckRecords;
 	}

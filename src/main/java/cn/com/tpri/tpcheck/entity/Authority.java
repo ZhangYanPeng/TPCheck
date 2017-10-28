@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -17,6 +18,7 @@ public class Authority {
 	@GenericGenerator(name = "authority_generator", strategy = "increment")
 	private long id;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Account account;
 	

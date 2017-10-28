@@ -24,7 +24,7 @@ public class AccountServiceImpl implements IAccountService {
 			accountDAO.save(account);
 		} catch (Exception e) {
 			// TODO: handle exception
-			return 0;
+			return -2;
 		}
 		return 1;
 	}

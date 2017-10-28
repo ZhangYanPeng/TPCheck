@@ -4,11 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table( name = "t_admin")
+@Table( name = "t_admin",
+uniqueConstraints = {@UniqueConstraint(columnNames={"username"})})
 public class Admin {
 	@Id
 	@GeneratedValue(generator = "admingenerator")

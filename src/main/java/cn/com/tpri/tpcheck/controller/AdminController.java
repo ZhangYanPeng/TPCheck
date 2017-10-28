@@ -40,16 +40,21 @@ public class AdminController {
 	
 	@RequestMapping(value = "/edit_admin")
 	public @ResponseBody int editAdmin(String id, String username, String password){
-		long aid = Long.valueOf(id);
-		Admin admin = new Admin();
-		admin.setUsername(username);
-		admin.setPassword(password);
-		if( aid == (long)-1 ){
-			return adminService.add(admin);
-		}
-		else{
-			admin.setId(aid);
-			return adminService.edit(admin);
+		try {
+			long aid = Long.valueOf(id);
+			Admin admin = new Admin();
+			admin.setUsername(username);
+			admin.setPassword(password);
+			if( aid == (long)-1 ){
+				return adminService.add(admin);
+			}
+			else{
+				admin.setId(aid);
+				return adminService.edit(admin);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			return -2;
 		}
 	}
 	

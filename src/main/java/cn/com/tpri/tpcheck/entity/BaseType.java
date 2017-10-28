@@ -28,11 +28,6 @@ public class BaseType {
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "baseType_id" )
-	private Set<Authority> authorities;
-	
-	@JsonIgnore
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "baseType_id" )
 	private Set<DeviceType> deviceTypes;
 
 	public long getId() {
@@ -58,14 +53,5 @@ public class BaseType {
 	public void setDeviceTypes(Set<DeviceType> deviceTypes) {
 		this.deviceTypes = deviceTypes;
 	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
-	
 	
 }

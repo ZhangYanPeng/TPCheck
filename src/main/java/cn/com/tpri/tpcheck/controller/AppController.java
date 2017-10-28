@@ -75,7 +75,7 @@ public class AppController {
 	@RequestMapping(value = "/loadSupDevices")
 	public @ResponseBody List<SuperDevice> loadSupDevices(String id){
 		Account account =  accountService.load(Long.valueOf(id));
-		return superDeviceService.list(account.getDepartment().getId());
+		return ;
 	}
 	
 	
