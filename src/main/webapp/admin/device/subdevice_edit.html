@@ -33,9 +33,6 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-
-				new QRCode(document.getElementById("qrcode"), JSON.stringify({id : did}));
-				
 				$("#params").html("");
 				$.each(data,function(index, value) {
 					var td_p = $("<td></td>").append(value.name);
@@ -65,9 +62,16 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
+				var qr_con = new Array();
+				qr_con.push('id',did);
+				
 				$.each(data,function(index, value) {
 					$("#"+value.deviceParam.id).val(value.value);
+					if(value.deviceParam.inQR==1)
+						qr_con.push(value.deviceParam.name,value.value);
 				});
+
+				new QRCode(document.getElementById("qrcode"), JSON.stringify(qr_con));
 			}
 		});
 	}

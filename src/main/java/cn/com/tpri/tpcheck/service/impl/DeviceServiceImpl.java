@@ -147,7 +147,7 @@ public class DeviceServiceImpl implements IDeviceService{
 		DeviceType dt = deviceTypeDAO.getByHQL("from DeviceType where baseType.id = ? and name = ?",vals);
 		for(int i=1; i<pList.size(); i++){
 			String hql = "from DeviceParam where deviceType.id = ? and name = ?";
-			Object[] values = { dt.getId(), pList.get(i), pDesList.get(i)};
+			Object[] values = { dt.getId(), pList.get(i)};
 			DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 			if(dp == null){
 				dp = new DeviceParam();
@@ -225,8 +225,8 @@ public class DeviceServiceImpl implements IDeviceService{
 			d.setSuperDevice(sd);
 			deviceDAO.save(d);
 			for(int i=3; i<pList.size(); i++){
-				String hql = "from DeviceParam where deviceType.id = ? and name = ? and description = ?";
-				Object[] values = { dt.getId(), pList.get(i), pDesList.get(i)};
+				String hql = "from DeviceParam where deviceType.id = ? and name = ?";
+				Object[] values = { dt.getId(), pList.get(i)};
 				DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 				if(dp == null){
 					dp = new DeviceParam();
@@ -253,7 +253,7 @@ public class DeviceServiceImpl implements IDeviceService{
 	public List<DeviceParam> loadParams(long id) {
 		// TODO Auto-generated method stub
 		Device d = deviceDAO.get(id);
-		String hql = "from DeviceParam where deviceType.id = ?";
+		String hql = "from DeviceParam where deviceType.id = ? order by  level asc, id asc";
 		Object[] values = {d.getDeviceType().getId()};
 		return deviceParamDAO.getListByHQL(hql, values);
 	}

@@ -56,7 +56,7 @@ public class PictureServiceImpl implements IPictureService{
 	public List<Picture> getSupPic(long id) {
 		// TODO Auto-generated method stub
 		Device dev = deviceDAO.get(id);
-		String hqlString = "from Picture where superDevice.id = ?";
+		String hqlString = "from Picture where device.id = ?";
 		Object[] values = {dev.getSuperDevice().getId()};
 		return pictureDAO.getListByHQL(hqlString, values);
 	}

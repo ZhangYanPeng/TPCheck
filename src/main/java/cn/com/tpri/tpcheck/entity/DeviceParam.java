@@ -26,6 +26,7 @@ public class DeviceParam {
 	private String name;
 	private String description;
 	private int level;
+	private int inQR;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -84,4 +85,13 @@ public class DeviceParam {
 		this.deviceInfos = deviceInfos;
 	}
 
+	public int getInQR() {
+		return inQR;
+	}
+
+	public void setInQR(int inQR) {
+		this.inQR = inQR;
+	}
+
+	
 }

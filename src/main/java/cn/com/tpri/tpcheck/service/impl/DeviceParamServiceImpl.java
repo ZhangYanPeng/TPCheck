@@ -32,6 +32,7 @@ public class DeviceParamServiceImpl implements IDeviceParamService {
 	public int add(DeviceParam dParam) {
 		// TODO Auto-generated method stub
 		try {
+			dParam.setInQR(0);
 			deviceParamDAO.save(dParam);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -75,6 +76,21 @@ public class DeviceParamServiceImpl implements IDeviceParamService {
 	public DeviceParam load(long id) {
 		// TODO Auto-generated method stub
 		return deviceParamDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public int inQR(long id, int state) {
+		// TODO Auto-generated method stub
+		try {
+			DeviceParam dp = deviceParamDAO.get(id);
+			dp.setInQR(state);
+			deviceParamDAO.update(dp);
+		} catch (Exception e) {
+			// TODO: handle exception
+			return 0;
+		}
+		return 1;
 	}
 
 }

@@ -10,4 +10,5 @@ public interface IDeviceParamService {
 	int delete(long id);
 	int edit(DeviceParam dParam);
 	DeviceParam load(long id);
+	int inQR(long id, int state);
 }

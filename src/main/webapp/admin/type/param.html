@@ -86,14 +86,20 @@
 			},
 			success : function(data) {
 				var tab_title = "<tr>"
-					+ "<td width='366px' class='tdColor tdC'>序号</td>"
+					+ "<td width='150px' class='tdColor tdC'>序号</td>"
+					+ "<td width='200px' class='tdColor tdC'>包含于二维码</td>"
 					+ "<td width='830px' class='tdColor'>设备属性名</td>"
 					+ "<td width='430px' class='tdColor'>操作</td>"
 					+ "	</tr>";
 				$("#paramlist").html(tab_title);
 				$.each(data,function(index, value) {
-					var td_id = $('<td></td>').append(
-							value.id);
+					var td_id = $('<td></td>').append(value.id);
+					var inp_check = $("<input type='checkbox' id='"+value.id+"' onclick='javascript:inQR("+value.id+")'></input>");
+					if( value.inQR ==1 )
+						inp_check.prop('checked',true);
+					else
+						inp_check.prop('checked',false);
+					var td_check =  $('<td></td>').append(inp_check);
 					var a_edit = $('<a></a>').attr('href',"param_edit.html?id="+value.id);
 					a_edit.append("<img class='operation' src='../img/update.png'></a>");
 					var td_n = $('<td></td>').append(value.name);
@@ -104,10 +110,43 @@
 							+ ");' /></td>");
 					var tr = $('<tr></tr>').attr(
 							'height', "40px");
-					tr.append(td_id).append(td_n)
+					tr.append(td_id).append(td_check).append(td_n)
 							.append(td_op);
 					$("#paramlist").append(tr);
 				});
+			}
+		});
+	}
+	
+	function inQR(pid){
+		console.log('#'+pid);
+		console.log($('#'+pid).prop('checked'));
+		if($('#'+pid).prop('checked'))
+			cs=1;
+		else
+			cs=0;
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "inQR",
+			data : {
+				id : pid,
+				state : cs
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded; charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				if(data ==0){
+					if(cs ==1)
+						$('#'+pid).prop("checked",false);
+					else
+						$('#'+pid).prop("checked",true);
+				}
 			}
 		});
 	}

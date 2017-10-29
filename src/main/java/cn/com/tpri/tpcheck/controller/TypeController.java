@@ -140,5 +140,10 @@ public class TypeController {
 		checkitem.setType(Integer.valueOf(type));
 		return deviceCheckItemService.edit(checkitem);
 	}
+	
+	@RequestMapping(value = "/inQR")
+	public @ResponseBody int inQR(String id, String state){
+		return deviceParamService.inQR(Long.valueOf(id) , Integer.valueOf(state));
+	}
 }
 
