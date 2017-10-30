@@ -26,6 +26,7 @@ public class Device {
 	private String name;
 	private String description;
 	private int supOrSub;
+	private int pic_num;
 
 	@ManyToOne
 	private SuperDevice superDevice;
@@ -37,6 +38,11 @@ public class Device {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "device_id")
 	private Set<DeviceInfo> deviceInfos;
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "device_id")
+	private Set<Picture> pictures;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
@@ -106,4 +112,22 @@ public class Device {
 	public void setSupOrSub(int supOrSub) {
 		this.supOrSub = supOrSub;
 	}
+
+	public Set<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(Set<Picture> pictures) {
+		this.pictures = pictures;
+	}
+
+	public int getPic_num() {
+		return pic_num;
+	}
+
+	public void setPic_num(int pic_num) {
+		this.pic_num = pic_num;
+	}
+	
+	
 }

@@ -19,9 +19,9 @@
 	});
 	
 	function list(p) {
-		var dep = -1;
-		if($('#department').val() != null){
-			dep = $('#department').val();
+		var com = -1;
+		if($('#company').val() != null){
+			com = $('#company').val();
 		}
 		$.ajax({
 			sync : false,
@@ -31,7 +31,7 @@
 			url : "list_account",
 			data : {
 				page : p,
-				department : dep
+				company : com
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -47,7 +47,6 @@
 				var tab_title = "<tr>"
 					+ "<td width='66px' class='tdColor tdC'>序号</td>"
 					+ "<td width='330px' class='tdColor'>单位</td>"
-					+ "<td width='330px' class='tdColor'>部门</td>"
 					+ "<td width='430px' class='tdColor'>用户名</td>"
 					+ "<td width='330px' class='tdColor'>操作</td>"
 					+ "	</tr>";
@@ -58,10 +57,8 @@
 							value.id);
 					var td_un = $('<td></td>').append(
 							value.username);
-					var td_dep= $('<td></td>').append(
-							value.department.name);
 					var td_com= $('<td></td>').append(
-							value.department.company.name);
+							value.company.name);
 					var a_state = $('<a></a>');
 					if(value.state == -1){
 						td_un.append("   (*账户已冻结)");
@@ -79,7 +76,6 @@
 							'height', "40px");
 					tr.append(td_id)
 							.append(td_com)
-							.append(td_dep)
 							.append(td_un)
 							.append(td_op);
 					$("#accountlist").append(tr);
@@ -164,33 +160,6 @@
 			}
 		});
 	}
-	
-	function loadDepartment(){
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "getAllDepartment",
-			data : {
-				company : $('#company').val()
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded; charset=utf-8",
-			error : function(e) {
-				console.log(e);
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				var op_de = $('<option></option>').attr('selected','selected').attr('value','-1').append("----------请选择部门----------");
-				$('#department').html(op_de);
-				$.each(data,function(index, value) {
-					var op = $('<option></option>').attr('value',value.id).append(value.name);
-					$('#department').append(op);
-				});
-			}
-		});
-	}
 </script>
 </head>
 
@@ -209,8 +178,7 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<select class="userinput" id="company" onchange="javascript:loadDepartment();"> </select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-							<select class="userinput" id="department" onchange="javascript:list(1);"><option selected="selected" value='-1'>---------请先选择单位---------</option> </select>
+							<select class="userinput" id="company" onchange="javascript:list(1);"> </select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
 						</div>
 					</form>
 				</div>

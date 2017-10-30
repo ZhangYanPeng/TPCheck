@@ -19,7 +19,7 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/upload/supdevice/**" location="/upload/supdevice/" />
+	<resources mapping="/upload/device/**" location="/upload/device/" />
 	<resources mapping="/upload/record_pic/**" location="/upload/record_pic/" />
 	<resources mapping="/**" location="/admin/" />
 

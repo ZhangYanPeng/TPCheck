@@ -53,11 +53,11 @@ public class PictureServiceImpl implements IPictureService{
 
 	@Override
 	@Transactional
-	public List<Picture> getSupPic(long id) {
+	public List<Picture> getDevPic(long id) {
 		// TODO Auto-generated method stub
 		Device dev = deviceDAO.get(id);
 		String hqlString = "from Picture where device.id = ?";
-		Object[] values = {dev.getSuperDevice().getId()};
+		Object[] values = {dev.getId()};
 		return pictureDAO.getListByHQL(hqlString, values);
 	}
 

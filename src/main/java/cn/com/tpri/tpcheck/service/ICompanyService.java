@@ -12,5 +12,6 @@ public interface ICompanyService {
 	public int edit(Company company);
 	public int delete(Long id);
 	public List<Company> list();
+	public int createQR(long id, String basePath);
 
 }
