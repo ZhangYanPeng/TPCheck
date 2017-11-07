@@ -61,8 +61,10 @@
 			success : function(data) {
 				if( data==1 )
 					alert("更改成功！");
+				if(data ==-2 )
+					alert("用户名已存在！请更换");
 				else
-					alert("操作失败，请重试");
+					alert("网络错误，请重试");
 			}
 		});
 	}

@@ -49,7 +49,7 @@
 					var td_id = $('<td></td>').append(
 							value.id);
 					var td_n = $('<td></td>').append(
-							value.name);
+							value.name).append("&nbsp;&nbsp;&nbsp;&nbsp;").append("<a href='javascript:createQR("+value.id+")'>生成二维码</a>");
 					var a_edit = $('<a></a>').attr('href',"company_edit.html?id=" + value.id);
 					a_edit.append("<img class='operation' src='../img/update.png'></a>");
 					var td_op = $('<td></td>').append(a_edit)
@@ -61,6 +61,31 @@
 					tr.append(td_id).append(td_n).append(td_op);
 					$("#companylist").append(tr);
 				});
+			}
+		});
+	}
+	
+	function createQR(cid){
+		$.ajax({
+			sync : false,
+			cache : false,
+			type : 'POST',
+			crossDomain : true,
+			url : "create_QR",
+			data : {
+				id : cid
+			},
+			dataType : "json",
+			contentType : "application/x-www-form-urlencoded;charset=utf-8",
+			error : function(e) {
+				alert("网络错误，请重试");
+			},
+			success : function(data) {
+				
+				if(data==1)
+					alert("生成成功，请到服务器指定目录寻找生成文件");
+				else
+					alert("生成失败");
 			}
 		});
 	}

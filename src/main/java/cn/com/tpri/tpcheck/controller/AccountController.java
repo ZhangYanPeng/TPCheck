@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +74,11 @@ public class AccountController {
 	@RequestMapping(value = "/delete_company")
 	public @ResponseBody int deleteCompany(String id){
 		return companyService.delete(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/create_QR")
+	public @ResponseBody int createQR(String id, HttpServletRequest request){
+		return companyService.createQR(Long.valueOf(id), request.getSession().getServletContext().getRealPath("/QR/"));
 	}
 	
 	@RequestMapping(value = "/getAllCompany")

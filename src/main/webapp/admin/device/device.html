@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../css/jqpagination.css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script src="../js/jquery.jqpagination.js"></script>
+<script src="../js/ajaxfileupload.js"></script>
 <!-- <script type="text/javascript" src="js/page.js" ></script> -->
 <script type="text/javascript" src="../js/init.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
@@ -98,12 +99,12 @@
 
 				var tab_title = "<tr>"
 					+ "<td width='66px' class='tdColor tdC'>序号</td>"
-					+ "<td width='200px' class='tdColor'>单位</td>"
-					+ "<td width='200px' class='tdColor'>部门</td>"
+					+ "<td width='150px' class='tdColor'>单位</td>"
+					+ "<td width='150px' class='tdColor'>部门</td>"
 					+ "<td width='100px' class='tdColor'>类型</td>"
-					+ "<td width='300px' class='tdColor'>父类设备</td>"
-					+ "<td width='300px' class='tdColor'>设备名</td>"
-					+ "<td width='330px' class='tdColor'>操作</td>"
+					+ "<td width='250px' class='tdColor'>父类设备</td>"
+					+ "<td width='250px' class='tdColor'>设备名</td>"
+					+ "<td width='530px' class='tdColor'>操作</td>"
 					+ "	</tr>";
 				$("#devicelist").html(tab_title);
 				
@@ -129,7 +130,33 @@
 					a_edit.append("<img class='operation' src='../img/update.png'></a>");
 					var a_del = $('<a></a>').attr('href',"javascript:del(" + value.id+");");
 					a_del.append("<img class='operation' src='../img/delete.png'></a>");
-					var td_op = $('<td></td>').append(a_edit).append(a_del);
+					var td_op = $('<td></td>');
+					$.ajax({
+						async : false,
+						cache : false,
+						type : 'POST',
+						crossDomain : true,
+						url : "load_dev_pic",
+						data : {
+							id : value.id
+						},
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded; charset=utf-8",
+						error : function(e) {
+							alert("网络错误，请重试");
+						},
+						success : function(data) {
+							if(data.length==0){
+								var in_pic = $("<input type='file' name='pic"+value.id+"' id='pic"+value.id+"'/>");
+								var a_pic = $("<a href='javascript:upload("+value.id+");' ></a>").append("上传");
+								td_op.append(in_pic).append(a_pic);
+							}
+							else{
+								td_op.append("已有图片      ");
+							}
+						}
+					});
+					td_op.append(a_edit).append(a_del);
 					var tr = $('<tr></tr>').attr(
 							'height', "40px");
 					tr.append(td_id)
@@ -141,6 +168,36 @@
 							.append(td_op);
 					$("#devicelist").append(tr);
 				});
+			}
+		});
+	}
+	
+	function upload(did){
+		if( $("#pic"+did).val() =="" ){
+			alert("请选择图片");
+			return;
+		}
+		$("#pic"+did).attr('name','picture').attr('id','picture');
+		$.ajaxFileUpload({
+			type : 'post',
+			url : 'upload_pic', //用于文件上传的服务器端请求地址
+			secureuri : false, //是否需要安全协议，一般设置为false
+			fileElementId : 'picture', //文件上传域的ID
+			data : {
+				id : did,
+				picname : 'none'
+			},//要传到后台的参数，没有可以不写  
+			async : false,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(data) //服务器成功响应处理函数
+			{
+				list(page_num); 
+			},
+			error : function(data, status, e)//服务器响应失败处理函数
+			{
+				console.log(data,status,e);
 			}
 		});
 	}

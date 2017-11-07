@@ -35,11 +35,6 @@ public class SuperDevice {
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "superDevice_id" )
 	private Set<Device> devices;
-	
-	@JsonIgnore
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "superDevice_id" )
-	private Set<Picture> pictures;
 
 	public long getId() {
 		return id;
@@ -79,14 +74,6 @@ public class SuperDevice {
 
 	public void setDepartment(Department department) {
 		this.department = department;
-	}
-
-	public Set<Picture> getPictures() {
-		return pictures;
-	}
-
-	public void setPictures(Set<Picture> pictures) {
-		this.pictures = pictures;
 	}
 
 }
