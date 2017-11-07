@@ -86,4 +86,13 @@ public class PictureServiceImpl implements IPictureService{
 		pictureDAO.saveOrUpdate(pic);
 	}
 
+	@Override
+	@Transactional
+	public List<Picture> loadBlogPic(long id) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Picture where blog.id = ?";
+		Object[] values = {id};
+		return pictureDAO.getListByHQL(hqlString, values);
+	}
+
 }

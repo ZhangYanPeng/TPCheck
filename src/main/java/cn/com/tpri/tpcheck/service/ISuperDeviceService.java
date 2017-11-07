@@ -10,4 +10,5 @@ import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 public interface ISuperDeviceService {
 	List<SuperDevice> list(long did);
 	SuperDeviceStore getAllInformation(long id,String type);
+	List<SuperDevice> listByAccount(long id);
 }

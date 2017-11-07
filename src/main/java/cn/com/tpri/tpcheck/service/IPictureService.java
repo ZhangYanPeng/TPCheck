@@ -13,4 +13,5 @@ public interface IPictureService {
 	List<Picture> getRecPic(long id);
 	Picture loadByName(String name);
 	void updateInfo(Picture pic);
+	List<Picture> loadBlogPic(long id);
 }

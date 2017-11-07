@@ -1,26 +1,18 @@
 package cn.com.tpri.tpcheck.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.JsonSerializer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,12 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.tpri.tpcheck.entity.Account;
-import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
-import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.Picture;
-import cn.com.tpri.tpcheck.entity.Record;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
 import cn.com.tpri.tpcheck.service.IDeviceCheckItemService;
@@ -41,7 +30,6 @@ import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
-import cn.com.tpri.tpcheck.service.impl.DeviceCheckItemServiceImpl;
 import cn.com.tpri.tpcheck.store.DeviceStore;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
@@ -74,8 +62,7 @@ public class AppController {
 	
 	@RequestMapping(value = "/loadSupDevices")
 	public @ResponseBody List<SuperDevice> loadSupDevices(String id){
-		Account account =  accountService.load(Long.valueOf(id));
-		return ;
+		return superDeviceService.listByAccount(Long.valueOf(id));
 	}
 	
 	

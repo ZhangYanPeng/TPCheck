@@ -26,6 +26,9 @@ public class Picture {
 	
 	@ManyToOne
 	private DeviceCheckRecord deviceCheckRecord;
+	
+	@ManyToOne
+	private Blog blog;
 
 	public long getId() {
 		return id;
@@ -83,6 +86,14 @@ public class Picture {
 		jsonObj.put("path", path);
 		jsonObj.put("src", src);
 		return jsonObj;
+	}
+
+	public Blog getBlog() {
+		return blog;
+	}
+
+	public void setBlog(Blog blog) {
+		this.blog = blog;
 	}
 	
 }

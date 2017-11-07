@@ -1,23 +1,14 @@
 package cn.com.tpri.tpcheck.service.impl;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.com.tpri.tpcheck.dao.impl.AccountDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
-import cn.com.tpri.tpcheck.entity.Device;
-import cn.com.tpri.tpcheck.entity.DeviceInfo;
-import cn.com.tpri.tpcheck.entity.DeviceParam;
-import cn.com.tpri.tpcheck.entity.DeviceType;
+import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
@@ -27,6 +18,8 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 
 	@Autowired
 	SuperDeviceDAOImpl superDeviceDAO; 
+	@Autowired
+	AccountDAOImpl accountDAO;
 	
 	@Override
 	@Transactional
@@ -43,6 +36,16 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 		// TODO Auto-generated method stub
 		SuperDevice sd = superDeviceDAO.get(id);
 		return new SuperDeviceStore(sd,type);
+	}
+
+	@Override
+	@Transactional
+	public List<SuperDevice> listByAccount(long id) {
+		// TODO Auto-generated method stub
+		Account account = accountDAO.get(id);
+		String hql = "from SuperDevice where department.company.id = ?";
+		Object[] values = {account.getCompany().getId()};
+		return superDeviceDAO.getListByHQL(hql, values);
 	}
 
 }
