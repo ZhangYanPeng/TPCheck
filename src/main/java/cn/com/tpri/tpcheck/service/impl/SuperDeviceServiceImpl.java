@@ -1,5 +1,6 @@
 package cn.com.tpri.tpcheck.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.AccountDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.AuthorityDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.Authority;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
@@ -20,6 +23,8 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 	SuperDeviceDAOImpl superDeviceDAO; 
 	@Autowired
 	AccountDAOImpl accountDAO;
+	@Autowired
+	AuthorityDAOImpl authorityDAO;
 	
 	@Override
 	@Transactional
@@ -43,9 +48,17 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 	public List<SuperDevice> listByAccount(long id) {
 		// TODO Auto-generated method stub
 		Account account = accountDAO.get(id);
-		String hql = "from SuperDevice where department.company.id = ?";
-		Object[] values = {account.getCompany().getId()};
-		return superDeviceDAO.getListByHQL(hql, values);
+		String ahql = "from Authoriy where account.id = ?";
+		Object[] aval = {id};
+		List<Authority> la = authorityDAO.getListByHQL(ahql, aval);
+		List<SuperDevice> lsd = new ArrayList<SuperDevice>();
+		for(Authority auth : la){
+			String sdhql = "from SuperDevice where department.id = ?";
+			Object[] sdval = {auth.getDepartment().getId()};
+			lsd.addAll(superDeviceDAO.getListByHQL(sdhql, sdval));
+		}
+		return lsd;
+		
 	}
 
 }
