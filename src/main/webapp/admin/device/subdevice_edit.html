@@ -63,16 +63,15 @@
 				alert("网络错误，请重试");
 			},
 			success : function(data) {
-				var qr_con = new Array();
-				qr_con.push('id',did);
+				var qr_con = "";
+				qr_con = qr_con+"id:"+did+";";
 				
 				$.each(data,function(index, value) {
 					$("#"+value.deviceParam.id).val(value.value);
 					if(value.deviceParam.inQR==1)
-						qr_con.push(value.deviceParam.name,value.value);
+						qr_con = qr_con + value.deviceParam.name +":"+value.value+";";
 				});
-
-				new QRCode(document.getElementById("qrcode"), JSON.stringify(qr_con));
+				new QRCode(document.getElementById("qrcode"), qr_con);
 			}
 		});
 	}

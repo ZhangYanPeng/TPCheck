@@ -1,6 +1,7 @@
 package cn.com.tpri.tpcheck.store;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
@@ -36,6 +37,7 @@ public class DeviceStore {
 		for(DeviceInfo di :  d.getDeviceInfos()){
 			deviceInfos.add(di);
 		}
+		Collections.sort(deviceInfos);
 		deviceCheckRecords = new ArrayList<RecordStore>();
 		for(DeviceCheckRecord dcr :  d.getDeviceCheckRecords()){
 			deviceCheckRecords.add(new RecordStore(dcr));

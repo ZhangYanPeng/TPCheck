@@ -28,7 +28,7 @@
 				success : function(data) {
 					$("#name").val(data.name);
 					$("#description").val(data.description);
-					$("#authority").val(data.authority);
+					$("#level").val(data.level);
 					$("#id").val(data.id);
 				}
 			});
@@ -48,7 +48,7 @@
 				id : $("#id").val(),
 				name : $("#name").val(),
 				description : $("#description").val(),
-				authority : $("#authority").val()
+				authority : $("#level").val()
 			},
 			dataType : "json",
 			contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -88,7 +88,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;描述：<input id="description" type="text" class="input3" />
 					</div>
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权限：<input id="authority" type="text" class="input3" />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级别：<input id="level" type="text" class="input3" />
 					</div>
 					<div class="bbD">
 						<p class="bbDP">
