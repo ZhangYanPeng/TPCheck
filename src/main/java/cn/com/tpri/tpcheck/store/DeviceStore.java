@@ -16,6 +16,7 @@ public class DeviceStore {
 	private String name;
 	private String description;
 	private int supOrSub;
+	private long supDevId;
 
 	private DeviceType deviceType;
 	private List<DeviceCheckItem> deviceCheckItems;
@@ -29,6 +30,11 @@ public class DeviceStore {
 		this.description = d.getDescription();
 		this.supOrSub = d.getSupOrSub();
 		this.deviceType = d.getDeviceType();
+		for(Device dev : d.getSuperDevice().getDevices()){
+			if( dev.getSupOrSub()==0){
+				this.supDevId = dev.getId();
+			}
+		}
 		deviceCheckItems = new ArrayList<DeviceCheckItem>();
 		for(DeviceCheckItem dci :  d.getDeviceType().getDeviceCheckItems()){
 			deviceCheckItems.add(dci);
@@ -42,6 +48,14 @@ public class DeviceStore {
 		for(DeviceCheckRecord dcr :  d.getDeviceCheckRecords()){
 			deviceCheckRecords.add(new RecordStore(dcr));
 		}
+	}
+
+	public long getSupDevId() {
+		return supDevId;
+	}
+
+	public void setSupDevId(long supDevId) {
+		this.supDevId = supDevId;
 	}
 
 	public long getId() {

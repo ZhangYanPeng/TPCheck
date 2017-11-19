@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.Picture;
 
@@ -14,8 +15,11 @@ public class RecordStore {
 	private String date;
 	private String deviceCheckItem;
 	private List<String> pictures;
+	private long account;
+	private long device;
 	
 	public RecordStore(DeviceCheckRecord dcr){
+		this.id = dcr.getId();
 		this.record = dcr.getRecord();
 		this.date = dcr.getDate().toGMTString();
 		if( dcr.getDeviceCheckItem() != null )
@@ -26,6 +30,8 @@ public class RecordStore {
 		for(Picture pic : dcr.getPictures()){
 			pictures.add(pic.getSrc());
 		}
+		this.account = dcr.getAccount().getId();
+		this.device = dcr.getDevice().getId();
 	}
 
 	public long getId() {
@@ -68,4 +74,21 @@ public class RecordStore {
 		this.pictures = pictures;
 	}
 
+	public long getAccount() {
+		return account;
+	}
+
+	public void setAccount(long account) {
+		this.account = account;
+	}
+
+	public long getDevice() {
+		return device;
+	}
+
+	public void setDevice(long device) {
+		this.device = device;
+	}
+
+	
 }

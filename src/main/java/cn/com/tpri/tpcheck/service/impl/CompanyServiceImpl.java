@@ -125,19 +125,19 @@ public class CompanyServiceImpl implements ICompanyService {
 					for(Device d : sd.getDevices()){
 						String picName = picSDName + d.getName() +".jpg";
 						String pressText = picSDName + d.getName();
-						Map content = new HashMap();
-						content.put("id", d.getId());
+						String content = "";
+						content += "id:"+ d.getId() + ";";
 						String hql = "from DeviceParam where deviceType.id = ? and inQR = 1 order by  level asc, id asc";
 						Object[] values = {d.getDeviceType().getId()};
 						List<DeviceParam>paramList = deviceParamDAO.getListByHQL(hql, values);
 						for(DeviceParam dp : paramList){
 							for(DeviceInfo di : d.getDeviceInfos()){
 								if(dp.getId() == di.getDeviceParam().getId()){
-									content.put(dp.getName(), di.getValue());
+									content += dp.getName() + ":"+ di.getValue() + ";";
 								}
 							}
 						}
-						MatrixToImageWriter.create(pressText,(new JSONObject(content)).toString(), path, picName, tmpPath);
+						MatrixToImageWriter.create(pressText,content, path, picName, tmpPath);
 					}
 				}
 			}

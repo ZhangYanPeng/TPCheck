@@ -22,6 +22,7 @@ import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
+import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.store.DeviceStore;
@@ -310,6 +311,28 @@ public class DeviceServiceImpl implements IDeviceService{
 		Object[] values = {deviceDAO.get(id).getDeviceType().getId()};
 		List<DeviceCheckItem> dciList = deviceCheckItemDAO.getListByHQL(hql, values);
 		return dciList;
+	}
+
+	@Override
+	@Transactional
+	public List<Picture> loadDevicePic(long id) {
+		// TODO Auto-generated method stub
+		Device dev = deviceDAO.get(id);
+		Set<Picture> sp = dev.getPictures();
+		List<Picture> lp = new ArrayList<Picture>();
+		for(Picture p : sp){
+			lp.add(p);
+		}
+		return lp;
+	}
+
+	@Override
+	@Transactional
+	public List<Device> loadBySupDev(long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Device where superDevice.id = ? and supOrSub = 1";
+		Object[] values = {id};
+		return deviceDAO.getListByHQL(hql, values);
 	}
 
 }

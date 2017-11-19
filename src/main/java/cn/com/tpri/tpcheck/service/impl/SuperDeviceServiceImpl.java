@@ -48,16 +48,9 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 	public List<SuperDevice> listByAccount(long id) {
 		// TODO Auto-generated method stub
 		Account account = accountDAO.get(id);
-		String ahql = "from Authority where account.id = ?";
-		Object[] aval = {id};
-		List<Authority> la = authorityDAO.getListByHQL(ahql, aval);
-		List<SuperDevice> lsd = new ArrayList<SuperDevice>();
-		for(Authority auth : la){
-			String sdhql = "from SuperDevice where department.id = ?";
-			Object[] sdval = {auth.getDepartment().getId()};
-			lsd.addAll(superDeviceDAO.getListByHQL(sdhql, sdval));
-		}
-		return lsd;
+		String hql = "from SuperDevice where department.company.id = ?";
+		Object[] values = {account.getCompany().getId()};
+		return superDeviceDAO.getListByHQL(hql, values);
 		
 	}
 

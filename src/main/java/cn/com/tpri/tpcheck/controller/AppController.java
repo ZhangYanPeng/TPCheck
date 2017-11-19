@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.Picture;
@@ -31,6 +32,7 @@ import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.DeviceStore;
+import cn.com.tpri.tpcheck.store.RecordStore;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
 
 @Controller
@@ -65,6 +67,15 @@ public class AppController {
 		return superDeviceService.listByAccount(Long.valueOf(id));
 	}
 	
+	@RequestMapping(value = "/loadAllDevs")
+	public @ResponseBody List<SuperDevice> loadAllDevs(String id){
+		return superDeviceService.listByAccount(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/loadAllSubDevs")
+	public @ResponseBody List<Device> loadAllSubDevs(String id){
+		return deviceService.loadBySupDev(Long.valueOf(id));
+	}
 	
 	@RequestMapping(value = "/loadCheckDevice")
 	public @ResponseBody List<SuperDeviceStore> loadCheckDevice(String devices, String type){
@@ -81,6 +92,11 @@ public class AppController {
 	@RequestMapping(value = "/loadDeviceInfo")
 	public @ResponseBody DeviceStore loadDeviceInfo(String id){
 		return deviceService.loadDeviceInfos(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/loadDevicePic")
+	public @ResponseBody List<Picture> loadDevicePic(String id){
+		return deviceService.loadDevicePic(Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadCheckItem")
@@ -137,6 +153,16 @@ public class AppController {
 			
 		}
 		return re;
+	}
+	
+	@RequestMapping(value = "/delRecord")
+	public @ResponseBody int delRecord(String rid, String aid){
+		return deviceCheckRecordService.delete(Long.valueOf(rid),Long.valueOf(aid));
+	}
+	
+	@RequestMapping(value = "/loadRecord")
+	public @ResponseBody RecordStore loadRecord(String rid){	
+		return deviceCheckRecordService.loadRecrod(Long.valueOf(rid));
 	}
 	
 	@RequestMapping(value = "/modifyPassword")
