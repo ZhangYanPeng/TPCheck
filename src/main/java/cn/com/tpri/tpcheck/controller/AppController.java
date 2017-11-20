@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.com.tpri.tpcheck.entity.Account;
+import cn.com.tpri.tpcheck.entity.Blog;
 import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
+import cn.com.tpri.tpcheck.service.IBlogService;
 import cn.com.tpri.tpcheck.service.IDeviceCheckItemService;
 import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
@@ -51,6 +53,8 @@ public class AppController {
 	IDeviceCheckItemService deviceCheckItemService;
 	@Autowired
 	IDeviceCheckRecordService deviceCheckRecordService;
+	@Autowired
+	IBlogService blogService;
 	
 	@RequestMapping(value = "/login")
 	public @ResponseBody Account login(String username, String password){
@@ -172,5 +176,14 @@ public class AppController {
 		accountService.edit(account);
 		return accountService.load(Long.valueOf(id));
 	}
-		
+	
+	@RequestMapping(value = "/getLastBlog")
+	public @ResponseBody List<Blog> getLastBlog(String n){
+		return blogService.lastBlog(Integer.valueOf(n));
+	}
+	
+	@RequestMapping(value = "/getBlogPic")
+	public @ResponseBody Picture getBlogPic(String id){
+		return blogService.getBlogPic(Long.valueOf(id));
+	}
 }

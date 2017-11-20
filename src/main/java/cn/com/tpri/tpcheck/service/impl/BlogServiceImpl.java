@@ -1,6 +1,7 @@
 package cn.com.tpri.tpcheck.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.BlogDAOImpl;
 import cn.com.tpri.tpcheck.entity.Blog;
+import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.service.IBlogService;
 import cn.com.tpri.tpcheck.support.PageResults;
 @Service
@@ -70,6 +72,30 @@ public class BlogServiceImpl implements IBlogService{
 	public Blog load(long id) {
 		// TODO Auto-generated method stub
 		return blogDAO.get(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Blog> lastBlog(Integer n) {
+		// TODO Auto-generated method stub
+		String hqlString = "from Blog order by date desc";
+		List<Blog> lb = blogDAO.getListByHQL(hqlString, null);
+		if(n > lb.size())
+			n=lb.size();
+		return lb.subList(0, n);
+	}
+
+	@Override
+	@Transactional
+	public Picture getBlogPic(long id) {
+		// TODO Auto-generated method stub
+		Blog blog = blogDAO.get(id);
+		Set<Picture> bp = blog.getPic();
+		if(bp!=null && bp.size()>0){
+			return bp.iterator().next();
+		}else{
+			return null;
+		}
 	}
 
 }
