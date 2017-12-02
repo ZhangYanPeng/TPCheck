@@ -27,6 +27,7 @@ import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.Picture;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.IAccountService;
+import cn.com.tpri.tpcheck.service.IAuthorityService;
 import cn.com.tpri.tpcheck.service.IBlogService;
 import cn.com.tpri.tpcheck.service.IDeviceCheckItemService;
 import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
@@ -55,6 +56,8 @@ public class AppController {
 	IDeviceCheckRecordService deviceCheckRecordService;
 	@Autowired
 	IBlogService blogService;
+	@Autowired
+	IAuthorityService authorityService;
 	
 	@RequestMapping(value = "/login")
 	public @ResponseBody Account login(String username, String password){
@@ -94,8 +97,8 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = "/loadDeviceInfo")
-	public @ResponseBody DeviceStore loadDeviceInfo(String id){
-		return deviceService.loadDeviceInfos(Long.valueOf(id));
+	public @ResponseBody DeviceStore loadDeviceInfo(String aid, String id){
+		return deviceService.loadDeviceInfos(Long.valueOf(aid),Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadDevicePic")
@@ -124,6 +127,9 @@ public class AppController {
 	public @ResponseBody int uploadRecord(String rec) throws JSONException, ParseException{
 		JSONObject jb = new JSONObject(rec);
 		DeviceCheckRecord record = new DeviceCheckRecord();
+		
+		if( authorityService.checkAuthority(jb.getLong("aid"), jb.getLong("did")) == 0 )
+			return 0;
 		
 		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd H:m:s");
 		Date date = sdf.parse(jb.getString("date"));
