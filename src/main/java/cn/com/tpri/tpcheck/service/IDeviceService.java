@@ -21,7 +21,7 @@ public interface IDeviceService {
 	PageResults<Device> list(int page, long did, long btid);
 	int loadInSuperDevice(List<List> info, long did, long btid);
 	int loadInSubDevice(List<List> info, Long did, Long btid);
-	DeviceStore loadDeviceInfos(long id);
+	DeviceStore loadDeviceInfos(long aid, long id);
 	List<DeviceInfo> loadInfos(long id);
 	List<DeviceParam> loadParams(long id);
 	void update(Map param);

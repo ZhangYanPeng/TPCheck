@@ -1,4 +1,4 @@
-package cn.com.tpri.tpcheck.service.impl;
+﻿package cn.com.tpri.tpcheck.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.com.tpri.tpcheck.dao.impl.AccountDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.AuthorityDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.BaseTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DepartmentDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceCheckItemDAOImpl;
@@ -18,6 +20,7 @@ import cn.com.tpri.tpcheck.dao.impl.DeviceInfoDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
+import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
@@ -52,7 +55,10 @@ public class DeviceServiceImpl implements IDeviceService{
 	DeviceCheckItemDAOImpl deviceCheckItemDAO;
 	@Autowired
 	DeviceCheckRecordDAOImpl deviceCheckRecordDAO;
-
+	@Autowired
+	AccountDAOImpl accountDAO;
+	@Autowired
+	AuthorityDAOImpl authorityDAO;
 
 	@Override
 	@Transactional
@@ -265,10 +271,16 @@ public class DeviceServiceImpl implements IDeviceService{
 
 	@Override
 	@Transactional
-	public DeviceStore loadDeviceInfos(long id) {
+	public DeviceStore loadDeviceInfos(long aid, long id) {
 		// TODO Auto-generated method stub
 		Device d = deviceDAO.get(id);
-		return new DeviceStore(d);
+		Account account = accountDAO.get(aid);
+		String hql = "from Authority where account.id=? and department.id=?";
+		Object[] values = {account.getId(), d.getSuperDevice().getDepartment().getId()};
+		if( authorityDAO.getListByHQL(hql, values)!=null && authorityDAO.getListByHQL(hql, values).size()>0)
+			return new DeviceStore(d);
+		else
+			return null;
 	}
 	
 	@Override

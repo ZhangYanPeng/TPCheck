@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.com.tpri.tpcheck.dao.impl.AuthorityDAOImpl;
 import cn.com.tpri.tpcheck.entity.Authority;
 import cn.com.tpri.tpcheck.service.IAuthorityService;
+import cn.com.tpri.tpcheck.store.DeviceStore;
 @Service
 public class AuthorityServiceImpl implements IAuthorityService{
 
@@ -68,6 +69,18 @@ public class AuthorityServiceImpl implements IAuthorityService{
 		String hql = "from Authority where account.id = ?";
 		Object[] values = {aid};
 		return authorityDAO.getListByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public int checkAuthority(long aid, long did) {
+		// TODO Auto-generated method stub
+		String hql = "from Authority where account.id=? and department.id=?";
+		Object[] values = {aid, did};
+		if( authorityDAO.getListByHQL(hql, values)!=null && authorityDAO.getListByHQL(hql, values).size()>0)
+			return 1;
+		else
+			return 0;
 	}
 
 }

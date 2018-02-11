@@ -11,4 +11,5 @@ public interface IAuthorityService {
 	int edit(Authority auth);
 	Authority load(long id);
 	List<Authority> loadByAccount(Long aid);
+	int checkAuthority(long aid, long did);
 }
