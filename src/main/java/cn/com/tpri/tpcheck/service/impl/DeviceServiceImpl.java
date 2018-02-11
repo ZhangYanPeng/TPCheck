@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.com.tpri.tpcheck.dao.impl.BaseTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DepartmentDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceCheckItemDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DeviceCheckRecordDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceInfoDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
@@ -19,6 +20,7 @@ import cn.com.tpri.tpcheck.dao.impl.DeviceTypeDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
 import cn.com.tpri.tpcheck.entity.Device;
 import cn.com.tpri.tpcheck.entity.DeviceCheckItem;
+import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.DeviceType;
@@ -48,6 +50,8 @@ public class DeviceServiceImpl implements IDeviceService{
 	BaseTypeDAOImpl baseTypeDAO;
 	@Autowired
 	DeviceCheckItemDAOImpl deviceCheckItemDAO;
+	@Autowired
+	DeviceCheckRecordDAOImpl deviceCheckRecordDAO;
 
 
 	@Override
@@ -333,6 +337,15 @@ public class DeviceServiceImpl implements IDeviceService{
 		String hql = "from Device where superDevice.id = ? and supOrSub = 1";
 		Object[] values = {id};
 		return deviceDAO.getListByHQL(hql, values);
+	}
+
+	@Override
+	@Transactional
+	public List<DeviceCheckRecord> loadDeviceCheckRecords(Long id) {
+		// TODO Auto-generated method stub
+		String hql = "from DeviceCheckRecord where device.id = ?";
+		Object[] values = {id};
+		return deviceCheckRecordDAO.getListByHQL(hql, values);
 	}
 
 }

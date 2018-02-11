@@ -8,7 +8,6 @@
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript">
 	var aid = getQueryString("id");
-	console.log(aid);
 	$(document).ready(function() {
 		if (aid != "-1") {
 			$.ajax({
@@ -61,7 +60,7 @@
 			success : function(data) {
 				if( data==1 )
 					alert("更改成功！");
-				if(data ==-2 )
+				else if(data ==-2 )
 					alert("用户名已存在！请更换");
 				else
 					alert("网络错误，请重试");
