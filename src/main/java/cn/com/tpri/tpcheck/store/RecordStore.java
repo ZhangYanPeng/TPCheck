@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.Picture;
+import cn.com.tpri.tpcheck.service.IPictureService;
+import cn.com.tpri.tpcheck.service.impl.PictureServiceImpl;
 
 public class RecordStore {
 	private long id;
@@ -19,6 +23,7 @@ public class RecordStore {
 	private long device;
 	
 	public RecordStore(DeviceCheckRecord dcr){
+		
 		this.id = dcr.getId();
 		this.record = dcr.getRecord();
 		this.date = dcr.getDate().toGMTString();

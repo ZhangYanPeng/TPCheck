@@ -97,8 +97,25 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = "/loadDeviceInfo")
-	public @ResponseBody DeviceStore loadDeviceInfo(String aid, String id){
-		return deviceService.loadDeviceInfos(Long.valueOf(aid),Long.valueOf(id));
+	public @ResponseBody DeviceStore loadDeviceInfo(String id){
+		List<DeviceCheckRecord> ldcr= deviceService.loadDeviceCheckRecords(Long.valueOf(id));
+		for( DeviceCheckRecord dcr : ldcr){
+			try{
+				if(dcr.getImgStr() != null && dcr.getImgStr() != "" ){
+					String[] pics = dcr.getImgStr().split(";");
+					for (int i=1; i<pics.length;i++){
+						Picture pic = pictureService.loadByName(pics[i]);
+						if(pic != null){
+							pic.setDeviceCheckRecord(dcr);
+							pictureService.updateInfo(pic);
+						}
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return deviceService.loadDeviceInfos(Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadDevicePic")
