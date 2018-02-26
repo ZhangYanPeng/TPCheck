@@ -22,7 +22,11 @@ public class DealExcel {
 			// TODO: handle exception
 			try {
 				Double v_int = cell.getNumericCellValue();
-				return v_int.toString();
+				String tmp = v_int.toString();
+				if(tmp.length()>=2 && tmp.charAt(tmp.length()-1)=='0' && tmp.charAt(tmp.length()-2)=='.' )
+					return tmp.substring(0,tmp.length()-2);
+				else
+					return tmp;
 			} catch (Exception e1) {
 				return "";
 			}
