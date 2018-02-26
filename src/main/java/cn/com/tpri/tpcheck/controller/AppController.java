@@ -97,7 +97,7 @@ public class AppController {
 	}
 	
 	@RequestMapping(value = "/loadDeviceInfo")
-	public @ResponseBody DeviceStore loadDeviceInfo(String id){
+	public @ResponseBody DeviceStore loadDeviceInfo(String aid, String id){
 		List<DeviceCheckRecord> ldcr= deviceService.loadDeviceCheckRecords(Long.valueOf(id));
 		for( DeviceCheckRecord dcr : ldcr){
 			try{
@@ -115,7 +115,7 @@ public class AppController {
 				e.printStackTrace();
 			}
 		}
-		return deviceService.loadDeviceInfos(Long.valueOf(id));
+		return deviceService.loadDeviceInfos(Long.valueOf(aid),Long.valueOf(id));
 	}
 	
 	@RequestMapping(value = "/loadDevicePic")
