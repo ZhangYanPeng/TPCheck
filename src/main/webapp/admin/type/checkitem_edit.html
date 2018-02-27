@@ -1,24 +1,55 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>编辑检查项</title>
-<link rel="stylesheet" type="text/css" href="../css/css.css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript">
-	var cid = getQueryString("id");
-	
-	$(document).ready(function() {
-		if (cid != "-1") {
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>编辑检查项</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		var cid = getQueryString("id");
+
+		$(document).ready(
+			function() {
+				if (cid != "-1") {
+					jQuery.support.cors = true;
+					$.ajax({
+						sync : false,
+						cache : false,
+						type : 'POST',
+						crossDomain : true,
+						url : "load_check_item",
+						data : {
+							id : cid
+						},
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded;charset=utf-8",
+						error : function(e) {
+							alert("网络错误，请重试");
+						},
+						success : function(data) {
+							$("#description").val(data.description);
+							$("#type").val(data.type);
+							$("#id").val(data.id);
+						}
+					});
+				} else {
+					$("#id").val(cid);
+				}
+			});
+
+		function save() {
+			jQuery.support.cors = true;
 			$.ajax({
 				sync : false,
 				cache : false,
 				type : 'POST',
 				crossDomain : true,
-				url : "load_check_item",
+				url : "edit_check_item",
 				data : {
-					id : cid
+					id : $("#id").val(),
+					description : $("#description").val(),
+					type : $("#type").val()
 				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded;charset=utf-8",
@@ -26,49 +57,21 @@
 					alert("网络错误，请重试");
 				},
 				success : function(data) {
-					$("#description").val(data.description);
-					$("#type").val(data.type);
-					$("#id").val(data.id);
+					if (data == 1)
+						alert("更改成功！");
+					else
+						alert("操作失败，请重试");
 				}
 			});
-		}else{
-			$("#id").val(cid);
 		}
-	});
-	
-	function save(){
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "edit_check_item",
-			data : {
-				id : $("#id").val(),
-				description : $("#description").val(),
-				type : $("#type").val()
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				if( data==1 )
-					alert("更改成功！");
-				else
-					alert("操作失败，请重试");
-			}
-		});
-	}
-</script>
+	</script>
 </head>
 <body>
 	<div id="pageAll">
 		<div class="pageTop">
 			<div class="page">
 				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
-					href="#">设备类型管理</a>&nbsp;-</span>&nbsp;检查项编辑
+				href="#">设备类型管理</a>&nbsp;-</span>&nbsp;检查项编辑
 			</div>
 		</div>
 		<div class="page ">
@@ -80,14 +83,16 @@
 				<div class="baBody">
 					<input id="id" type="hidden" class="input3" />
 					<div class="bbD">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查项：<input id="description" type="text" class="input3" />
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;检查项：<input
+						id="description" type="text" class="input3" />
 					</div>
 					<div class="bbD">
 						检查项类型：<input id="type" type="text" class="input3" />
 					</div>
 					<div class="bbD">
 						<p class="bbDP">
-							<button class="btn_ok btn_yes" href="#" onclick="javascript:save();">提交</button>
+							<button class="btn_ok btn_yes" href="#"
+							onclick="javascript:save();">提交</button>
 							<a class="btn_ok btn_no" href="checkitem.html">返回</a>
 						</p>
 					</div>
