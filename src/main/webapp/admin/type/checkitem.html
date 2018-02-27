@@ -1,170 +1,170 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>检查项管理</title>
-<link rel="stylesheet" type="text/css" href="../css/css.css" />
-<link rel="stylesheet" href="../css/jqpagination.css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
-<script src="../js/jquery.jqpagination.js"></script>
-<!-- <script type="text/javascript" src="js/page.js" ></script> -->
-<script type="text/javascript" src="../js/init.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		loadBaseType();
-	});
-	
-	function loadBaseType(){
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "list_base_type",
-			data : {
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded; charset=utf-8",
-			error : function(e) {
-				console.log(e);
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				var op_de = $('<option></option>').attr('value','-1').append("---------请选择基础类型---------");
-				$('#baseType').html(op_de);
-				$.each(data,function(index, value) {
-					var op = $('<option></option>').attr('value',value.id).append(value.name);
-					$('#baseType').append(op);
-				});
-			}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>检查项管理</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<link rel="stylesheet" href="../css/jqpagination.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.jqpagination.js"></script>
+	<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			loadBaseType();
 		});
-	}
-	
-	function loadType(){
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "list_type",
-			data : {
-				baseType : $('#baseType').val()
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded; charset=utf-8",
-			error : function(e) {
-				console.log(e);
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				var op_de = $('<option></option>').attr('value','-1').append("---------请选择设备类型---------");
-				$('#type').html(op_de);
-				$.each(data,function(index, value) {
-					var op = $('<option></option>').attr('value',value.id).append(value.name);
-					$('#type').append(op);
-				});
-			}
-		});
-	}
-	
-	function list() {
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "list_check_item",
-			data : {
-				id : $('#type').val()
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded; charset=utf-8",
-			error : function(e) {
-				console.log(e);
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				var tab_title = "<tr>"
-					+ "<td width='366px' class='tdColor tdC'>序号</td>"
-					+ "<td width='830px' class='tdColor'>检查项</td>"
-					+ "<td width='430px' class='tdColor'>操作</td>"
-					+ "	</tr>";
-				$("#checkitemlist").html(tab_title);
-				$.each(data,function(index, value) {
-					var td_id = $('<td></td>').append(
-							value.id);
-					var a_edit = $('<a></a>').attr('href',"checkitem_edit.html?id="+value.id);
-					a_edit.append("<img class='operation' src='../img/update.png'></a>");
-					var td_n = $('<td></td>').append(value.description);
-					var td_op = $('<td></td>')
-						.append(a_edit)
-						.append("<img class='operation delban' src='../img/delete.png' onclick='javascript:removeCheckItem("
-							+ value.id
-							+ ");' /></td>");
-					var tr = $('<tr></tr>').attr(
-							'height', "40px");
-					tr.append(td_id).append(td_n)
-							.append(td_op);
-					$("#checkitemlist").append(tr);
-				});
-			}
-		});
-	}
-	
-	function removeCheckItem(cid){
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "delete_check_item",
-			data : {id : cid},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				if(data == -1)
-					alert('有记录包含该检查项，不能删除!')
-				else
-					list();
-			}
-		});
-	}
-	
-	function add(){
-		if ( $("#type").val() == -1 ){
-			alert("请选择设备类型");
-			return;
+
+		function loadBaseType() {
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "list_base_type",
+				data : {},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var op_de = $('<option></option>').attr('value', '-1').append(
+						"---------请选择基础类型---------");
+					$('#baseType').html(op_de);
+					$.each(data, function(index, value) {
+						var op = $('<option></option>').attr('value', value.id).append(value.name);
+						$('#baseType').append(op);
+					});
+				}
+			});
 		}
-		if ( $("#description").val() == "" || $("#type").val() == -1){
-			alert("请补充完整信息");
-			return;
+
+		function loadType() {
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "list_type",
+				data : {
+					baseType : $('#baseType').val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var op_de = $('<option></option>').attr('value', '-1').append(
+						"---------请选择设备类型---------");
+					$('#type').html(op_de);
+					$.each(data, function(index, value) {
+						var op = $('<option></option>').attr('value', value.id).append(value.name);
+						$('#type').append(op);
+					});
+				}
+			});
 		}
-		$.ajax({
-			sync : false,
-			cache : false,
-			type : 'POST',
-			crossDomain : true,
-			url : "add_check_item",
-			data : {
-				tid : $("#type").val(),
-				ct : $("#checktype").val(),
-				description : $("#description").val()
-			},
-			dataType : "json",
-			contentType : "application/x-www-form-urlencoded;charset=utf-8",
-			error : function(e) {
-				alert("网络错误，请重试");
-			},
-			success : function(data) {
-				list(1);
+
+		function list() {
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "list_check_item",
+				data : {
+					id : $('#type').val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					console.log(e);
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					var tab_title = "<tr>"
+						+ "<td width='366px' class='tdColor tdC'>序号</td>"
+						+ "<td width='830px' class='tdColor'>检查项</td>"
+						+ "<td width='430px' class='tdColor'>操作</td>"
+						+ "	</tr>";
+					$("#checkitemlist").html(tab_title);
+					$.each(data,
+						function(index, value) {
+							var td_id = $('<td></td>').append(value.id);
+							var a_edit = $('<a></a>').attr('href', "checkitem_edit.html?id=" + value.id);
+							a_edit.append("<img class='operation' src='../img/update.png'></a>");
+							var td_n = $('<td></td>').append(value.description);
+							var td_op = $('<td></td>').append(a_edit).append("<img class='operation delban' src='../img/delete.png' onclick='javascript:removeCheckItem(" + value.id + ");' /></td>");
+							var tr = $('<tr></tr>').attr('height', "40px");
+							tr.append(td_id).append(td_n).append(td_op);
+							$("#checkitemlist").append(tr);
+						});
+				}
+			});
+		}
+
+		function removeCheckItem(cid) {
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "delete_check_item",
+				data : {
+					id : cid
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					if (data == -1)
+						alert('有记录包含该检查项，不能删除!')
+					else
+						list();
+				}
+			});
+		}
+
+		function add() {
+			if ($("#type").val() == -1) {
+				alert("请选择设备类型");
+				return;
 			}
-		});
-	}
-</script>
+			if ($("#description").val() == "" || $("#type").val() == -1) {
+				alert("请补充完整信息");
+				return;
+			}
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "add_check_item",
+				data : {
+					tid : $("#type").val(),
+					ct : $("#checktype").val(),
+					description : $("#description").val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					list(1);
+				}
+			});
+		}
+	</script>
 </head>
 
 <body>
@@ -178,39 +178,41 @@
 		<div class="page">
 			<!-- user页面样式 -->
 			<div class="connoisseur">
-			
+
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<select id="baseType" class="userinput" onchange="javascript:loadType();"></select>
-							<select id="type" class="userinput" onchange="list();" ><option selected="selected" value="-1">--------请先选择基础类型--------</option></select>
-							<br/>
-							<br/>
-							<select id="checktype" class="userinput">
-								<option value="-1" selected="selected">--------请选择检查项类型--------</option>
-								<option value="0" >无额外输入</option>
-								<option value="1" >文字</option>
-								<option value="2" >图片</option>
-								<option value="3" >图文</option>
-							</select>
-							-&nbsp;&nbsp;<input class="userinput" type="text" placeholder="请输入检查项内容" id="description" />
-							<a href="javascript:add();"><button class="userbtn" disabled="disabled">新增</button></a>
-						</div>
-					</form>
-				</div>
-
-				<!-- user 表格 显示 -->
-				<div class="conShow">
-					<table id="checkitemlist" border="1" cellspacing="0" cellpadding="0">
-					</table>
-				</div>
-				
+							<select id="baseType" class="userinput"
+							onchange="javascript:loadType();"></select> <select id="type"
+							class="userinput" onchange="list();"><option
+							selected="selected" value="-1">--------请先选择基础类型--------</option></select>
+							<br /> <br /> <select id="checktype" class="userinput">
+							<option value="-1" selected="selected">--------请选择检查项类型--------</option>
+							<option value="0">无额外输入</option>
+							<option value="1">文字</option>
+							<option value="2">图片</option>
+							<option value="3">图文</option>
+						</select> -&nbsp;&nbsp;<input class="userinput" type="text"
+						placeholder="请输入检查项内容" id="description" /> <a
+						href="javascript:add();"><button class="userbtn"
+						disabled="disabled">新增</button></a>
+					</div>
+				</form>
 			</div>
-			<!-- user 表格 显示 end-->
-		</div>
-		<!-- user页面样式end -->
-	</div>
 
-	<!-- 删除弹出框  end-->
+			<!-- user 表格 显示 -->
+			<div class="conShow">
+				<table id="checkitemlist" border="1" cellspacing="0"
+				cellpadding="0">
+			</table>
+		</div>
+
+	</div>
+	<!-- user 表格 显示 end-->
+</div>
+<!-- user页面样式end -->
+</div>
+
+<!-- 删除弹出框  end-->
 </body>
 </html>
