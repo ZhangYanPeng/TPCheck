@@ -241,8 +241,8 @@ public class DeviceServiceImpl implements IDeviceService{
 				DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 				if(dp == null){
 					dp = new DeviceParam();
-					dp.setLevel(Integer.valueOf(pDesList.get(i).split("@")[1]));
-					dp.setDescription(pDesList.get(i).split("@")[0]);
+					dp.setLevel(Integer.valueOf(pDesList.get(i).split("#")[1]));
+					dp.setDescription(pDesList.get(i).split("#")[0]);
 					dp.setName(pList.get(i));
 					dp.setDeviceType(dt);
 					deviceParamDAO.save(dp);

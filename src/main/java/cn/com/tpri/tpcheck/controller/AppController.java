@@ -34,6 +34,7 @@ import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
+import cn.com.tpri.tpcheck.service.impl.DepartmentServiceImpl;
 import cn.com.tpri.tpcheck.store.DeviceStore;
 import cn.com.tpri.tpcheck.store.RecordStore;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
@@ -145,24 +146,25 @@ public class AppController {
 		JSONObject jb = new JSONObject(rec);
 		DeviceCheckRecord record = new DeviceCheckRecord();
 		
-		if( authorityService.checkAuthority(jb.getLong("aid"), jb.getLong("did")) == 0 )
+		Device dev = deviceService.load(jb.getLong("did"));
+		if( authorityService.checkAuthority(jb.getLong("aid"), dev.getSuperDevice().getDepartment().getId()) == 0 )
 			return 0;
-		
+
 		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd H:m:s");
 		Date date = sdf.parse(jb.getString("date"));
 		record.setDate(date);
 		record.setAccount(accountService.load(jb.getLong("aid")));
-		record.setDevice(deviceService.load(jb.getLong("did")));
+		record.setDevice(dev);
 		try{
 			if(jb.getString("ciid") != null && jb.getString("ciid") != "" && jb.getLong("ciid") >= 0)
 				record.setDeviceCheckItem(deviceCheckItemService.load(jb.getLong("ciid")));
 		}catch(Exception e){
 			
 		}
-			
+
 		record.setRecord(jb.getString("content"));
 		record.setImgStr(jb.getString("pics"));
-		
+
 		int re = deviceCheckRecordService.add(record);
 		record = deviceCheckRecordService.find(jb.getLong("aid"),jb.getLong("did"),date);
 		try{
