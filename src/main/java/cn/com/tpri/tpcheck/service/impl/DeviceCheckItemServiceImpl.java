@@ -44,10 +44,6 @@ public class DeviceCheckItemServiceImpl implements IDeviceCheckItemService {
 	public int delete(long id) {
 		// TODO Auto-generated method stub
 		try {
-			Set<DeviceCheckRecord> dr = deviceCheckItemDAO.get(id).getDeviceCheckRecords();
-			if( dr != null && dr.size()>0 ){
-				return -1;
-			}
 			deviceCheckItemDAO.deleteById(id);
 		} catch (Exception e) {
 			// TODO: handle exception

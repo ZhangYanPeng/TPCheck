@@ -24,12 +24,6 @@ public class DeviceCheckItem {
 	private long id;
 	
 	private String description;
-	private int type;
-	
-	@JsonIgnore
-	@OneToMany( fetch = FetchType.LAZY )
-	@JoinColumn( name = "deviceCheckItem_id" )
-	private Set<DeviceCheckRecord> deviceCheckRecords;
 	
 	@ManyToOne
 	private DeviceType deviceType;
@@ -58,19 +52,4 @@ public class DeviceCheckItem {
 		this.deviceType = deviceType;
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public Set<DeviceCheckRecord> getDeviceCheckRecords() {
-		return deviceCheckRecords;
-	}
-
-	public void setDeviceCheckRecords(Set<DeviceCheckRecord> deviceCheckRecords) {
-		this.deviceCheckRecords = deviceCheckRecords;
-	}
 }

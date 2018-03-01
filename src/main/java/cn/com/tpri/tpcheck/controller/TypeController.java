@@ -113,7 +113,6 @@ public class TypeController {
 	public @ResponseBody int addCheckItem(String tid, String ct, String description){
 		DeviceCheckItem dci = new DeviceCheckItem();
 		dci.setDescription(description);
-		dci.setType(Integer.valueOf(ct));
 		dci.setDeviceType(deviceTypeService.load(Long.valueOf(tid)));
 		return deviceCheckItemService.add(dci);
 	}
@@ -137,7 +136,6 @@ public class TypeController {
 	public @ResponseBody int editCheckItem(String id, String description, String type){
 		DeviceCheckItem checkitem = deviceCheckItemService.load(Long.valueOf(id));
 		checkitem.setDescription(description);
-		checkitem.setType(Integer.valueOf(type));
 		return deviceCheckItemService.edit(checkitem);
 	}
 	

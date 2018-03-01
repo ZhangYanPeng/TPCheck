@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>编辑用户</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		var aid = getQueryString("id");
+
+		$(document).ready(
+			function() {
+				loadCompany();
+				if (aid != "-1") {
+					jQuery.support.cors = true;
+					$.ajax({
+						sync : false,
+						cache : false,
+						type : 'POST',
+						crossDomain : true,
+						url : "load_account",
+						data : {
+							id : aid
+						},
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded;charset=utf-8",
+						error : function(e) {
+							alert("网络错误，请重试");
+						},
+						success : function(data) {
+							$("#username").val(data.username);
+							$("#password").val(data.password);
+							$("#company").val(data.company.id);
+							$("#position").val(data.position);
+							$("#id").val(data.id);
+							loadDepartment();
+						}
+					});
+				} else {
+					$("#id").val(aid);
+				}
+			});
+
+		function loadCompany() {
+			if ($("#company").html() != "")
+				return;
+			var default_op = "<option selected='selected' value='-1'>-----------请选择单位-----------</option>";
+			$("#company").html(default_op);
+			jQuery.support.cors = true;
+			$.ajax({
+				async : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "getAllCompany",
+				data : {},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					$.each(data, function(index, value) {
+						var op = $('<option></option>').attr('value', value.id).append(value.name);
+						$("#company").append(op);
+					});
+				}
+			});
+		}
+
+		function loadDepartment() {
+			jQuery.support.cors = true;
+			$.ajax({
+				async : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "getAllDepartment",
+				data : {
+					company : $('#company').val()
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					$("#dlist").html("");
+					$.each(data,function(index, value) {
+						var inp = $("<input></input>").attr("type", "checkbox").attr('checked', true).attr("name", "auth").attr("value", value.id);
+						var li = $("<li></li>").append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").append(inp).append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").append(value.name)
+						$("#dlist").append(li);
+					});
+					if (aid != -1) {
+						jQuery.support.cors = true;
+						$.ajax({
+							sync : false,
+							cache : false,
+							type : 'POST',
+							crossDomain : true,
+							url : "load_authority",
+							data : {
+								id : aid
+							},
+							dataType : "json",
+							contentType : "application/x-www-form-urlencoded;charset=utf-8",
+							error : function(e) {
+								alert("网络错误，请重试");
+							},
+							success : function(dat) {
+								$("[name='auth']").each(function() {
+									$(this).prop('checked', false);
+								});
+								$.each(dat,function(index,value) {
+									$("[name='auth']").each(
+										function() {
+											if ($(this).val() == value.department.id) {
+												$(this).prop('checked',true);
+											}
+										});
+								});
+							}
+						});
+					}
+				}
+			});
+		}
+
+		function sall() {
+			$("[name='auth']").each(function() {
+				$(this).prop('checked', true);
+			});
+		}
+
+		function save() {
+			if ($("#company").val() == '-1') {
+				alert("请选择单位!");
+				return;
+			}
+
+			var auths = [];
+			$("[name='auth']:checked").each(function() {
+				auths.push($(this).val());
+			});
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "edit_account",
+				data : {
+					id : $("#id").val(),
+					username : $("#username").val(),
+					password : $("#password").val(),
+					company : $("#company").val(),
+					position : $("#position").val(),
+					authority : auths
+				},
+				traditional : true,
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded;charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					if (data == 1)
+						alert("更改成功！");
+					else if (data == -2)
+						alert("填写信息有误，请检查");
+					else
+						alert("操作失败，请重试");
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;<a
+				href="#">用户管理</a>&nbsp;-</span>&nbsp;用户编辑
+			</div>
+		</div>
+		<div class="page ">
+			<!-- 会员注册页面样式 -->
+			<div class="banneradd bor">
+				<div class="baTopNo">
+					<span>用户编辑</span>
+				</div>
+				<div class="baBody">
+					<input id="id" type="hidden" class="input3" />
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;用户名：<input id="username" type="text"
+						class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：<input id="password"
+						type="text" class="input3" />
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位：<select
+						class="input3" id="company"
+						onchange="javascript:loadDepartment();"></select>
+					</div>
+					<div class="bbD">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;职位：<select
+						class="input3" id="position">
+						<option value="1">管理者</option>
+						<option value="0">工作人员</option>
+					</select>
+				</div>
+				<div class="bbD">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;权限：&nbsp;&nbsp;
+					<button onclick="javascript:sall();">全选</button>
+					<ul id="dlist">
+					</ul>
+				</div>
+				<div class="bbD">
+					<p class="bbDP">
+						<button class="btn_ok btn_yes" onclick="javascript:save();">提交</button>
+						<a class="btn_ok btn_no" href="account.html">返回</a>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- 会员注册页面样式end -->
+	</div>
+</div>
+</body>
+</html>

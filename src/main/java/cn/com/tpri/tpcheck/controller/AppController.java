@@ -155,12 +155,6 @@ public class AppController {
 		record.setDate(date);
 		record.setAccount(accountService.load(jb.getLong("aid")));
 		record.setDevice(dev);
-		try{
-			if(jb.getString("ciid") != null && jb.getString("ciid") != "" && jb.getLong("ciid") >= 0)
-				record.setDeviceCheckItem(deviceCheckItemService.load(jb.getLong("ciid")));
-		}catch(Exception e){
-			
-		}
 
 		record.setRecord(jb.getString("content"));
 		record.setImgStr(jb.getString("pics"));

@@ -27,10 +27,6 @@ public class RecordStore {
 		this.id = dcr.getId();
 		this.record = dcr.getRecord();
 		this.date = dcr.getDate().toGMTString();
-		if( dcr.getDeviceCheckItem() != null )
-			this.deviceCheckItem = dcr.getDeviceCheckItem().getDescription();
-		else
-			this.deviceCheckItem = "";
 		pictures = new ArrayList<String>();
 		for(Picture pic : dcr.getPictures()){
 			pictures.add(pic.getSrc());

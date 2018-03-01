@@ -35,9 +35,6 @@ public class DeviceCheckRecord {
 	@ManyToOne
 	private Device device;
 	
-	@ManyToOne
-	private DeviceCheckItem deviceCheckItem;
-	
 	@JsonIgnore
 	@OneToMany( fetch = FetchType.LAZY )
 	@JoinColumn( name = "deviceCheckRecord_id" )
@@ -81,14 +78,6 @@ public class DeviceCheckRecord {
 
 	public void setError(String error) {
 		this.error = error;
-	}
-
-	public DeviceCheckItem getDeviceCheckItem() {
-		return deviceCheckItem;
-	}
-
-	public void setDeviceCheckItem(DeviceCheckItem deviceCheckItem) {
-		this.deviceCheckItem = deviceCheckItem;
 	}
 
 	public Set<Picture> getPictures() {
