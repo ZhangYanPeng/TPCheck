@@ -63,8 +63,8 @@ public class DeviceController {
 	}
 	
 	@RequestMapping(value = "/list_device")
-	public @ResponseBody PageResults<Device> listDevice(String page, String did, String btid){
-		return deviceService.list(Integer.valueOf(page), Long.valueOf(did), Long.valueOf(btid));
+	public @ResponseBody PageResults<Device> listDevice(String page, String did, String btid, String device){
+		return deviceService.list(Integer.valueOf(page), Long.valueOf(did), Long.valueOf(btid),device);
 	}
 	
 	@RequestMapping(value = "/delete_device")

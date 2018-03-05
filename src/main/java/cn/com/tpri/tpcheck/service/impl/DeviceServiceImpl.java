@@ -138,11 +138,11 @@ public class DeviceServiceImpl implements IDeviceService{
 
 	@Override
 	@Transactional
-	public PageResults<Device> list(int page, long did, long btid) {
+	public PageResults<Device> list(int page, long did, long btid, String device) {
 		// TODO Auto-generated method stub
-		String hql = "from Device where superDevice.department.id = ? and deviceType.baseType.id = ?";
-		String countHql = "select count(*) from Device where superDevice.department.id = ? and deviceType.baseType.id = ?";
-		Object[] values = {did, btid};
+		String hql = "from Device where superDevice.department.id = ? and deviceType.baseType.id = ? and name like ?";
+		String countHql = "select count(*) from Device where superDevice.department.id = ? and deviceType.baseType.id = ? and name like ?";
+		Object[] values = {did, btid,"%%"+device+"%%"};
 		return deviceDAO.findPageByFetchedHql(hql, countHql, page, Constants.PAGE_SIZE, values);
 	}
 
@@ -162,8 +162,8 @@ public class DeviceServiceImpl implements IDeviceService{
 			DeviceParam dp = deviceParamDAO.getByHQL(hql, values);
 			if(dp == null){
 				dp = new DeviceParam();
-				dp.setLevel(Integer.valueOf(pDesList.get(i).split("@")[1]));
-				dp.setDescription(pDesList.get(i).split("@")[0]);
+				dp.setLevel(Integer.valueOf(pDesList.get(i).split("#")[1]));
+				dp.setDescription(pDesList.get(i).split("#")[0]);
 				dp.setName(pList.get(i));
 				dp.setDeviceType(dt);
 				deviceParamDAO.save(dp);

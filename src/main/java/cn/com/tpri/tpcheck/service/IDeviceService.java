@@ -18,7 +18,7 @@ public interface IDeviceService {
 	int add(Device device);
 	int delete(long device);
 	int edit(Device device);
-	PageResults<Device> list(int page, long did, long btid);
+	PageResults<Device> list(int page, long did, long btid, String device);
 	int loadInSuperDevice(List<List> info, long did, long btid);
 	int loadInSubDevice(List<List> info, Long did, Long btid);
 	DeviceStore loadDeviceInfos(long aid, long id);

@@ -17,7 +17,11 @@ public class DealExcel {
 
 	public static String getCellCotent(Cell cell) {
 		try {
-			return cell.getStringCellValue();
+			String tmp =  cell.getStringCellValue();
+			if(tmp.length()>=2 && tmp.charAt(tmp.length()-1)=='0' && tmp.charAt(tmp.length()-2)=='.' )
+				return tmp.substring(0,tmp.length()-2);
+			else
+				return tmp;
 		} catch (Exception e) {
 			// TODO: handle exception
 			try {

@@ -84,7 +84,8 @@
 				data : {
 					page : p,
 					did : $('#department').val(),
-					btid : $('#baseType').val()
+					btid : $('#baseType').val(),
+					device : $('#device').val()
 				},
 				dataType : "json",
 				contentType : "application/x-www-form-urlencoded; charset=utf-8",
@@ -297,40 +298,45 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<select class="userinput" id="company"
-							onchange="javascript:loadDepartment();">
-						</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; <select class="userinput"
-						id="department" onchange="javascript:list(1);"><option
-						selected="selected" value='-1'>---------请先选择单位---------</option>
-					</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; <select class="userinput"
-					id="baseType" onchange="javascript:list(1);"><option
-					selected="selected" value='-1'></option>
-				</select>
+							<select class="userinput" id="company" onchange="javascript:loadDepartment();">
+							</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+							<select class="userinput" id="department" onchange="javascript:list(1);">
+								<option selected="selected" value='-1'>---------请先选择单位---------</option>
+							</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+							<select class="userinput" id="baseType" onchange="javascript:list(1);">
+								<option selected="selected" value='-1'></option>
+							</select>
+						</div>
+						<div class="cfD">
+							&nbsp;&nbsp;&nbsp;<input class="userinput" id="device" placeholder="请输入查找设备编号" /> 
+							<a href="javascript:list(1);">
+								<button class="userbtn" disabled="disabled">搜索</button>
+							</a>
+						</div>
+					</form>
+				</div>
+
+				<!-- user 表格 显示 -->
+				<div class="conShow">
+					<table id="devicelist" border="1" cellspacing="0" cellpadding="0">
+					</table>
+				</div>
+
+				<div class="paging">
+					<div class="pagination">
+						<a href="#" class="first" onclick="javascript:first();">&laquo;</a>
+						<a href="#" class="previous" onclick="javascript:previous();">&lsaquo;</a>
+						<input id="page_num" type="text" readonly="readonly" /> <a
+						href="#" class="next" onclick="javascript:next();">&rsaquo;</a> <a
+						href="#" class="last" onclick="javascript:last();">&raquo;</a>
+					</div>
+				</div>
 			</div>
-		</form>
-	</div>
-
-	<!-- user 表格 显示 -->
-	<div class="conShow">
-		<table id="devicelist" border="1" cellspacing="0" cellpadding="0">
-		</table>
-	</div>
-
-	<div class="paging">
-		<div class="pagination">
-			<a href="#" class="first" onclick="javascript:first();">&laquo;</a>
-			<a href="#" class="previous" onclick="javascript:previous();">&lsaquo;</a>
-			<input id="page_num" type="text" readonly="readonly" /> <a
-			href="#" class="next" onclick="javascript:next();">&rsaquo;</a> <a
-			href="#" class="last" onclick="javascript:last();">&raquo;</a>
+			<!-- user 表格 显示 end-->
 		</div>
+		<!-- user页面样式end -->
 	</div>
-</div>
-<!-- user 表格 显示 end-->
-</div>
-<!-- user页面样式end -->
-</div>
 
-<!-- 删除弹出框  end-->
+	<!-- 删除弹出框  end-->
 </body>
 </html>
