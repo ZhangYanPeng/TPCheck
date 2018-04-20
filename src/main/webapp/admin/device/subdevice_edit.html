@@ -36,6 +36,7 @@
 				},
 				success : function(data) {
 					$("#params").html("");
+					$("#params").append($("<tr></tr>").append($("<td>编号</td>")).append($("<td></td>").append($("<input></input>").attr("readonly","readonly").val(did).attr('type', 'text').attr('class', 'input3'))));
 					$.each(data, function(index, value) {
 						var td_p = $("<td></td>").append(value.name);
 						var in_p = $("<input></input>").attr('id', value.id).attr('name', value.id).attr('type', 'text').attr('class', 'input3');

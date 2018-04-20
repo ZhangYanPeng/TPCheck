@@ -91,11 +91,11 @@ public class TypeController {
 	}
 	
 	@RequestMapping(value = "/edit_param")
-	public @ResponseBody int editParam(String id, String name, String description, String level){
+	public @ResponseBody int editParam(String id, String name, String description, String authority){
 		DeviceParam param = deviceParamService.load(Long.valueOf(id));
 		param.setName(name);
 		param.setDescription(description);
-		param.setLevel(Integer.valueOf(level));
+		param.setLevel(Integer.valueOf(authority));
 		return deviceParamService.edit(param);
 	}
 	
