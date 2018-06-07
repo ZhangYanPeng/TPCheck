@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>设备检查记录管理</title>
+	<link rel="stylesheet" type="text/css" href="../css/css.css" />
+	<link rel="stylesheet" href="../css/jqpagination.css" />
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script src="../js/jquery.jqpagination.js"></script>
+	<!-- <script type="text/javascript" src="js/page.js" ></script> -->
+	<script type="text/javascript" src="../js/init.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		var page_num = 1;
+		var total_num = 0;
+		$(document).ready(function() {
+			loadQuestion(1);
+		});
+
+		function loadQuestion(p){
+			jQuery.support.cors = true;
+			$.ajax({
+				sync : false,
+				cache : false,
+				type : 'POST',
+				crossDomain : true,
+				url : "list_question",
+				data : {
+					page : p
+				},
+				dataType : "json",
+				contentType : "application/x-www-form-urlencoded; charset=utf-8",
+				error : function(e) {
+					alert("网络错误，请重试");
+				},
+				success : function(data) {
+					total_num = data.pageCount;
+					page_num = p;
+					$("#page_num").val(p);
+
+					var tab_title = "<tr>"
+					+ "<td width='66px' class='tdColor tdC'>序号</td>"
+					+ "<td width='200px' class='tdColor'>记录用户</td>"
+					+ "<td width='200px' class='tdColor'>日期</td>"
+					+ "<td width='400px' class='tdColor'>问题</td>"
+					+ "<td width='400px' class='tdColor'>附加信息</td>"
+					+ "	</tr>";
+					$("#qlist").html(tab_title);
+
+					$.each(data.results,
+						function(index, value) {
+							var td_id = $('<td></td>').append(value.id);
+							var td_un = $('<td></td>').append(value.account.username);
+							var td_da = $('<td></td>').append(getTimeStr(value.date));
+							var td_re = $('<td></td>').append(value.record);
+							var td_info = $('<td></td>');
+
+							jQuery.support.cors = true;
+							$.ajax({
+								sync : true,
+								cache : false,
+								type : 'POST',
+								crossDomain : true,
+								url : "load_ques_pic",
+								data : {
+									id : value.id
+								},
+								dataType : "json",
+								contentType : "application/x-www-form-urlencoded; charset=utf-8",
+								error : function(e) {
+									alert("网络错误，请重试");
+								},
+								success : function(data) {
+									$.each(data,function(ind,val) {
+										var img = $("<img></img>").attr('src', val.src).attr("height", '40px');
+										var a_img = $("<a></a>").attr('href', val.src).attr('target', "_blank").append(img);
+										td_info.append(a_img);
+									});
+								}
+							});
+							var tr = $('<tr></tr>').attr('height', "40px");
+							tr.append(td_id).append(td_un).append(td_da).append(td_re).append(td_info);
+							$("#qlist").append(tr);
+						});
+				}
+			});
+		}
+
+		function first() {
+			if (page_num == 1)
+				return;
+			page_num = 1;
+			list(1);
+		}
+
+		function previous() {
+			if (page_num == 1)
+				return;
+			page_num = page_num - 1;
+			list(page_num);
+		}
+
+		function next() {
+			if (page_num == total_num)
+				return;
+			page_num = page_num + 1;
+			list(page_num);
+		}
+
+		function last() {
+			if (page_num == total_num)
+				return;
+			page_num = total_num;
+			list(page_num);
+		}
+	</script>
+</head>
+
+<body>
+	<div id="pageAll">
+		<div class="pageTop">
+			<div class="page">
+				<img src="../img/coin02.png" /><span><a href="#">首页</a>&nbsp;-&nbsp;-</span>&nbsp;上报问题记录
+			</div>
+		</div>
+
+		<div class="page">
+			<!-- user页面样式 -->
+			<div class="connoisseur">
+
+				<div class="conform">
+					
+				</div>
+
+				<!-- user 表格 显示 -->
+				<div class="conShow">
+					<table id="qlist" border="1" cellspacing="0"cellpadding="0"></table>
+				</div>
+
+			</div>
+			<!-- user 表格 显示 end-->
+		</div>
+	<!-- user页面样式end -->
+	</div>
+
+<!-- 删除弹出框  end-->
+</body>
+</html>

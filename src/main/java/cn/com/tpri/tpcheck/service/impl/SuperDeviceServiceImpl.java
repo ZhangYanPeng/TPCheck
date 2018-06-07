@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.com.tpri.tpcheck.dao.impl.AccountDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.AuthorityDAOImpl;
+import cn.com.tpri.tpcheck.dao.impl.DepartmentDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.SuperDeviceDAOImpl;
 import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.Authority;
+import cn.com.tpri.tpcheck.entity.Department;
 import cn.com.tpri.tpcheck.entity.SuperDevice;
 import cn.com.tpri.tpcheck.service.ISuperDeviceService;
 import cn.com.tpri.tpcheck.store.SuperDeviceStore;
@@ -25,6 +27,8 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 	AccountDAOImpl accountDAO;
 	@Autowired
 	AuthorityDAOImpl authorityDAO;
+	@Autowired
+	DepartmentDAOImpl departmentDAO;
 	
 	@Override
 	@Transactional
@@ -56,6 +60,18 @@ public class SuperDeviceServiceImpl implements ISuperDeviceService {
 		}
 		return lsd;
 		
+	}
+
+	@Override
+	@Transactional
+	public List<SuperDevice> listByDep(long id) {
+		// TODO Auto-generated method stub
+		Department dep = departmentDAO.get(id);
+		List<SuperDevice> lsd = new ArrayList<SuperDevice>();
+		for( SuperDevice sd : dep.getSuperDevices()){
+			lsd.add(sd);
+		}
+		return lsd;
 	}
 
 }

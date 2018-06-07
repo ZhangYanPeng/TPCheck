@@ -17,6 +17,8 @@ public class DeviceStore {
 	private String description;
 	private int supOrSub;
 	private long supDevId;
+	private String department;
+	private String location;
 
 	private DeviceType deviceType;
 	private List<DeviceCheckItem> deviceCheckItems;
@@ -30,9 +32,11 @@ public class DeviceStore {
 		this.description = d.getDescription();
 		this.supOrSub = d.getSupOrSub();
 		this.deviceType = d.getDeviceType();
+		this.department = d.getSuperDevice().getDepartment().getName();
 		for(Device dev : d.getSuperDevice().getDevices()){
 			if( dev.getSupOrSub()==0){
 				this.supDevId = dev.getId();
+				this.location = dev.getName()+"--"+d.getName();
 			}
 		}
 		deviceCheckItems = new ArrayList<DeviceCheckItem>();
@@ -120,6 +124,22 @@ public class DeviceStore {
 
 	public void setDeviceCheckRecords(List<RecordStore> deviceCheckRecords) {
 		this.deviceCheckRecords = deviceCheckRecords;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	

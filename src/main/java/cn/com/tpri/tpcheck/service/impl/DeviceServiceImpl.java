@@ -277,7 +277,7 @@ public class DeviceServiceImpl implements IDeviceService{
 		Account account = accountDAO.get(aid);
 		String hql = "from Authority where account.id=? and department.id=?";
 		Object[] values = {account.getId(), d.getSuperDevice().getDepartment().getId()};
-		if( authorityDAO.getListByHQL(hql, values)!=null && authorityDAO.getListByHQL(hql, values).size()>0)
+		if( authorityDAO.getListByHQL(hql, values)!=null && authorityDAO.getListByHQL(hql, values).size()>0 || account.getCompany().getId()==0)
 			return new DeviceStore(d);
 		else
 			return null;

@@ -28,6 +28,9 @@ public class Picture {
 	private DeviceCheckRecord deviceCheckRecord;
 	
 	@ManyToOne
+	private Question question;
+	
+	@ManyToOne
 	private Blog blog;
 
 	public long getId() {
@@ -95,5 +98,14 @@ public class Picture {
 	public void setBlog(Blog blog) {
 		this.blog = blog;
 	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+	
 	
 }

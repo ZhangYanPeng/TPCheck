@@ -23,9 +23,11 @@ import cn.com.tpri.tpcheck.entity.DeviceCheckRecord;
 import cn.com.tpri.tpcheck.entity.DeviceInfo;
 import cn.com.tpri.tpcheck.entity.DeviceParam;
 import cn.com.tpri.tpcheck.entity.Picture;
+import cn.com.tpri.tpcheck.entity.Question;
 import cn.com.tpri.tpcheck.service.IDeviceCheckRecordService;
 import cn.com.tpri.tpcheck.service.IDeviceService;
 import cn.com.tpri.tpcheck.service.IPictureService;
+import cn.com.tpri.tpcheck.service.IQuestionService;
 import cn.com.tpri.tpcheck.support.DealExcel;
 import cn.com.tpri.tpcheck.support.PageResults;
 
@@ -39,6 +41,8 @@ public class DeviceController {
 	IPictureService pictureService;
 	@Autowired
 	IDeviceCheckRecordService deviceCheckRecordService;
+	@Autowired
+	IQuestionService questionService;
 
 	@RequestMapping(value = "/upload_devices")
 	public @ResponseBody int uploadDevices(@RequestParam String type, @RequestParam String btid, @RequestParam String did, @RequestParam MultipartFile devices, HttpServletRequest request) {
@@ -127,5 +131,15 @@ public class DeviceController {
 	@RequestMapping(value = "/load_rec_pic")
 	public @ResponseBody List<Picture> loadRecPic(String id){
 		return pictureService.getRecPic(Long.valueOf(id));
+	}
+	
+	@RequestMapping(value = "/list_question")
+	public @ResponseBody PageResults<Question> listQuestion(String page){
+		return questionService.list(Integer.valueOf(page));
+	}
+	
+	@RequestMapping(value = "/load_ques_pic")
+	public @ResponseBody List<Picture> loadQuePic(String id){
+		return pictureService.getQuePic(Long.valueOf(id));
 	}
 }
