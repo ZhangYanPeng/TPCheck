@@ -26,7 +26,8 @@ public class RecordStore {
 		
 		this.id = dcr.getId();
 		this.record = dcr.getRecord();
-		this.date = dcr.getDate().toGMTString();
+		this.date = (dcr.getDate().getYear()+1900)+"年"+dcr.getDate().getMonth()+"月"+dcr.getDate().getDay()+"日"
+				+dcr.getDate().getHours()+"时"+dcr.getDate().getMinutes()+"分"+dcr.getDate().getSeconds()+"秒";
 		pictures = new ArrayList<String>();
 		for(Picture pic : dcr.getPictures()){
 			pictures.add(pic.getSrc());

@@ -256,36 +256,34 @@
 				<div class="conform">
 					<form>
 						<div class="cfD">
-							<select class="userinput" id="company"
-							onchange="javascript:loadDepartment();">
-						</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; <select class="userinput"
-						id="department"><option selected="selected"
-						value='-1'>---------请先选择单位---------</option>
-					</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; <select class="userinput"
-					id="baseType"><option selected="selected" value='-1'></option>
-				</select>
-			</div>
+							<select class="userinput" id="company" onchange="javascript:loadDepartment();">
+							</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp; 
+							<select class="userinput" id="department">
+								<option selected="selected" value='-1'>---------请先选择单位---------</option>
+							</select>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+							<select class="userinput" id="baseType">
+								<option selected="selected" value='-1'></option>
+							</select>
+						</div>
 
-			<div class="cfD">
-				&nbsp;&nbsp;&nbsp;<input class="userinput" id="device"
-				placeholder="请输入查找设备编号" /> <a href="javascript:list(1);"><button
-				class="userbtn" disabled="disabled">搜索</button></a>
+						<div class="cfD">
+							&nbsp;&nbsp;&nbsp;<input class="userinput" id="device"
+							placeholder="请输入查找设备编号" /> <a href="javascript:list(1);"><button
+							class="userbtn" disabled="disabled">搜索</button></a>
+						</div>
+					</form>
+				</div>
+
+				<!-- user 表格 显示 -->
+				<div class="conShow">
+					<table id="checkrecordlist" border="1" cellspacing="0"cellpadding="0"></table>
+				</div>
+
 			</div>
-		</form>
+			<!-- user 表格 显示 end-->
+		</div>
+	<!-- user页面样式end -->
 	</div>
-
-	<!-- user 表格 显示 -->
-	<div class="conShow">
-		<table id="checkrecordlist" border="1" cellspacing="0"
-		cellpadding="0">
-	</table>
-</div>
-
-</div>
-<!-- user 表格 显示 end-->
-</div>
-<!-- user页面样式end -->
-</div>
 
 <!-- 删除弹出框  end-->
 </body>

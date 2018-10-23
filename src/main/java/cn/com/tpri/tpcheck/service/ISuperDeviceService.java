@@ -11,4 +11,5 @@ public interface ISuperDeviceService {
 	List<SuperDevice> list(long did);
 	SuperDeviceStore getAllInformation(long id,String type);
 	List<SuperDevice> listByAccount(long id);
+	List<SuperDevice> listByDep(long id);
 }

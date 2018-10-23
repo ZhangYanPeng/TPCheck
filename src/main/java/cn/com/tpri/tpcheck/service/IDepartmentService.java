@@ -12,4 +12,5 @@ public interface IDepartmentService {
 	public int delete(Long id);
 	public List<Department> list(long cid);
 	PageResults<Department> getByPage(int page, long cid);
+	public List<Department> listByAccount(Long cid, Long aid);
 }

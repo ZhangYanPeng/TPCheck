@@ -1,6 +1,7 @@
 package cn.com.tpri.tpcheck.service.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 
+import cn.com.tpri.tpcheck.dao.impl.AccountDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.CompanyDAOImpl;
 import cn.com.tpri.tpcheck.dao.impl.DeviceParamDAOImpl;
+import cn.com.tpri.tpcheck.entity.Account;
 import cn.com.tpri.tpcheck.entity.Company;
 import cn.com.tpri.tpcheck.entity.Department;
 import cn.com.tpri.tpcheck.entity.Device;
@@ -33,6 +36,8 @@ public class CompanyServiceImpl implements ICompanyService {
 	CompanyDAOImpl companyDAO;
 	@Autowired
 	DeviceParamDAOImpl deviceParamDAO;
+	@Autowired
+	AccountDAOImpl accountDAO;
 	
 	@Override
 	@Transactional
@@ -145,6 +150,20 @@ public class CompanyServiceImpl implements ICompanyService {
 		} catch (Exception e) {
 			// TODO: handle exception
 			return 0;
+		}
+	}
+
+	@Override
+	@Transactional
+	public List<Company> getByAccount(long aid) {
+		// TODO Auto-generated method stub
+		Account account = accountDAO.load(aid);
+		if(account.getCompany().getId()==0)
+			return companyDAO.getListByHQL("from Company", null);
+		else{
+			List<Company> lc = new ArrayList<Company>();
+			lc.add(account.getCompany());
+			return lc;
 		}
 	}
 
